@@ -1,7 +1,8 @@
 <template>
   <section class="box" :style="gridStyle">
     <header class="box__header">{{ box.title }}</header>
-    <div class="box__content"></div>
+    <div class="box__content">
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus possimus provident alias quidem dolorem expedita nihil quam eaque repellendus unde veritatis atque iure cum quibusdam nemo ullam doloremque, quae ipsa.</div>
   </section>
 </template>
 <script>
@@ -43,6 +44,11 @@ export default {
   &__header {
     font-size: 2rem;
     font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  &__content {
+    padding: 5rem 0; //temporal para verse bonito
   }
 }
 </style>
