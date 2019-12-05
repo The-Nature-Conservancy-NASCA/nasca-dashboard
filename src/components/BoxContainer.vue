@@ -1,13 +1,13 @@
 <template>
   <main class="box-container">
-    <Box v-for="(box, i) in boxes" :key="i" :box="box"/>
+    <Box v-for="(box, i) in boxes" :key="i" :box="box" />
   </main>
 </template>
 <script>
-import Box from './Box.vue';
+import Box from "./Box.vue";
 
 export default {
-  name: 'BoxContainer',
+  name: "BoxContainer",
   components: {
     Box
   },
@@ -15,14 +15,14 @@ export default {
     return {
       boxes: [
         {
-          title: 'Cobertura',
+          title: "Cobertura",
           position: {
             x: 1,
             y: 1
           }
         },
         {
-          title: 'Biodiversidad',
+          title: "Biodiversidad",
           position: {
             x: 1,
             y: 2
@@ -30,14 +30,14 @@ export default {
           rowSpan: 2
         },
         {
-          title: 'Carbono',
+          title: "Carbono",
           position: {
             x: 2,
             y: 1
           }
         },
         {
-          title: 'Implementación',
+          title: "Implementación",
           position: {
             x: 3,
             y: 1
@@ -45,23 +45,23 @@ export default {
           colSpan: 2
         },
         {
-          title: 'Metas',
+          title: "Metas",
           position: {
             x: 4,
             y: 1
           }
         },
         {
-          title: 'Participantes',
+          title: "Participantes",
           position: {
             x: 4,
             y: 2
           }
         }
       ]
-    }
+    };
   }
-}
+};
 </script>
 <style lang="scss" scoped>
 .box-container {

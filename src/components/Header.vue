@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <img src="../assets/images/tnc-logo.svg" alt="logo" width="200">
+    <img src="../assets/images/tnc-logo.svg" alt="logo" width="200" />
   </div>
 </template>
 
@@ -13,5 +13,5 @@ export default {
 <style scoped lang="scss">
 .header {
   padding: 1rem;
-}  
+}
 </style>

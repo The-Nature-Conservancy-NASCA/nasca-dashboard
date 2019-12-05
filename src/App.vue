@@ -6,11 +6,11 @@
 </template>
 
 <script>
-import BoxContainer from './components/BoxContainer.vue';
-import Header from './components/Header.vue';
+import BoxContainer from "./components/BoxContainer.vue";
+import Header from "./components/Header.vue";
 
 export default {
-  name: 'app',
+  name: "app",
   components: {
     Header,
     BoxContainer
@@ -20,7 +20,7 @@ export default {
 
 <style lang="scss">
 :root {
-  --color-green-tnc: #4AA241;
+  --color-green-tnc: #4aa241;
 }
 
 * {
