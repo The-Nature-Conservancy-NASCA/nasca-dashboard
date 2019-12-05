@@ -1,28 +1,49 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <Header msg="Welcome to Your Vue.js App" />
+    <BoxContainer />
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import BoxContainer from './components/BoxContainer.vue';
+import Header from './components/Header.vue';
 
 export default {
-  name: "app",
+  name: 'app',
   components: {
-    HelloWorld
+    Header,
+    BoxContainer
   }
 };
 </script>
 
 <style lang="scss">
-#app {
+:root {
+  --color-green-tnc: #4AA241;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-size: 1.4rem;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+}
+
+#app {
+  background-color: rgb(228, 228, 228);
+  height: 100vh;
+  padding: 0 8rem;
+  width: 100vw;
 }
 </style>
