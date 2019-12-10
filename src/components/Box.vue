@@ -2,12 +2,25 @@
   <section class="box" :style="gridStyle">
     <header class="box__header">{{ box.title }}</header>
     <div class="box__content">
-    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus possimus provident alias quidem dolorem expedita nihil quam eaque repellendus unde veritatis atque iure cum quibusdam nemo ullam doloremque, quae ipsa.</div>
+      <component :is="content" />
+    </div>
   </section>
 </template>
 <script>
+
+import GraficaBar from './GraficaBar.vue';
+import GraficaPie from './GraficaPie.vue';
+
 export default {
   name: "Box",
+  components: {
+    GraficaBar
+  },
+  data() {
+    return {
+      content: GraficaPie
+    };
+  },
   props: {
     box: {
       type: Object,

@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div>
     <Header msg="Welcome to Your Vue.js App" />
     <BoxContainer />
   </div>
