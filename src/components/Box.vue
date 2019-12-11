@@ -2,25 +2,17 @@
   <section class="box" :style="gridStyle">
     <header class="box__header">{{ box.title }}</header>
     <div class="box__content">
-      <component :is="content" />
+      <component :is="box.content" />
     </div>
   </section>
 </template>
 <script>
 
-import GraficaBar from './GraficaBar.vue';
-import GraficaPie from './GraficaPie.vue';
+import * as components from './boxContents';
 
 export default {
   name: "Box",
-  components: {
-    GraficaBar
-  },
-  data() {
-    return {
-      content: GraficaPie
-    };
-  },
+  components,
   props: {
     box: {
       type: Object,

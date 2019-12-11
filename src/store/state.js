@@ -5,7 +5,8 @@ export default {
       position: {
         x: 1,
         y: 1
-      }
+      },
+      content: 'GraficaPie'
     },
     {
       title: "Biodiversidad",
@@ -13,14 +14,16 @@ export default {
         x: 1,
         y: 2
       },
-      rowSpan: 2
+      rowSpan: 2,
+      content: 'GraficaBar'
     },
     {
       title: "Carbono",
       position: {
         x: 2,
         y: 1
-      }
+      },
+      content: 'GraficaPie'
     },
     {
       title: "Implementación",
@@ -28,21 +31,24 @@ export default {
         x: 3,
         y: 1
       },
-      colSpan: 2
+      colSpan: 2,
+      content: 'GraficaBar'
     },
     {
       title: "Metas",
       position: {
         x: 4,
         y: 1
-      }
+      },
+      content: 'GraficaPie'
     },
     {
       title: "Participantes",
       position: {
         x: 4,
         y: 2
-      }
+      },
+      content: 'GraficaBar'
     }
   ]
 }
