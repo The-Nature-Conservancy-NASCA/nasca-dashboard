@@ -1,5 +1,6 @@
 <template>
   <section>
+  <h3>{{color}}</h3>
     <svg ref="bar-graph" width="500" height="500"></svg>
   </section>
 </template>
@@ -13,6 +14,11 @@ export default {
     select(svg)
       .append("p")
       .text("Hola desde D3");
+  },
+  computed: {
+    color() {
+      return this.$store.getters.colorPorCobertura("22");
+    }
   }
 };
 </script>
