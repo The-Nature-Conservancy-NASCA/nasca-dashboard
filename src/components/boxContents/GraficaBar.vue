@@ -10,7 +10,11 @@ export default {
   name: 'GraficaBar',
   mounted() {
     const svg = this.$refs['bar-graph'];
-      select(svg).append('p').text('Hola desde D3');
+    select(svg)
+      .append("circle")
+        .attr("cx", 50)
+        .attr("cy", 50)
+        .attr("r", 10);
   }
 }
 </script>

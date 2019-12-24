@@ -6,7 +6,7 @@ export default {
         x: 1,
         y: 1
       },
-      content: 'GraficaPie'
+      content: "Treemap"
     },
     {
       title: "Biodiversidad",
