@@ -15,7 +15,7 @@ export default {
         y: 2
       },
       rowSpan: 2,
-      content: 'GraficaBar'
+      content: "GraficaBar"
     },
     {
       title: "Carbono",
@@ -23,7 +23,7 @@ export default {
         x: 2,
         y: 1
       },
-      content: 'GraficaPie'
+      content: "GraficaPie"
     },
     {
       title: "Implementación",
@@ -32,7 +32,7 @@ export default {
         y: 1
       },
       colSpan: 2,
-      content: 'GraficaBar'
+      content: "GraficaBar"
     },
     {
       title: "Metas",
@@ -40,7 +40,7 @@ export default {
         x: 4,
         y: 1
       },
-      content: 'GraficaPie'
+      content: "GraficaPie"
     },
     {
       title: "Participantes",
@@ -48,7 +48,17 @@ export default {
         x: 4,
         y: 2
       },
-      content: 'GraficaBar'
+      content: "GraficaBar"
     }
-  ]
-}
+  ],
+  biodiversidad: [],
+  colores: [],
+  iconos: [],
+  carbono: [],
+  metas: [],
+  coberturas: [],
+  implementaciones: [],
+  aliados: [],
+  participantes: [],
+  contribuciones: []
+};

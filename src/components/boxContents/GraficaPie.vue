@@ -5,7 +5,6 @@
 </template>
 <script>
 export default {
-  name: 'GraficaPie',
-
-}
+  name: "GraficaPie"
+};
 </script>

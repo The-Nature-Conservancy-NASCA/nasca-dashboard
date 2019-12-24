@@ -7,8 +7,7 @@
   </section>
 </template>
 <script>
-
-import * as components from './boxContents';
+import * as components from "./boxContents";
 
 export default {
   name: "Box",

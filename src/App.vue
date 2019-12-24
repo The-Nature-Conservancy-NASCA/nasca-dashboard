@@ -1,7 +1,10 @@
 <template>
   <div>
-    <Header msg="Welcome to Your Vue.js App" />
-    <BoxContainer />
+    <Header />
+    <BoxContainer v-if="dataLoaded" />
+    <div class="loader" v-else>
+      <img src="@/assets/images/loader.gif" alt="" />
+    </div>
   </div>
 </template>
 
@@ -9,11 +12,79 @@
 import BoxContainer from "./components/BoxContainer.vue";
 import Header from "./components/Header.vue";
 
+import { buildQuery } from "./lib/queryBuilder";
+
+const BASE_DATA_URL =
+  "https://services9.arcgis.com/LQG65AprqDvQfUnp/ArcGIS/rest/services/TNCServices4/FeatureServer/";
+const ICON_DATA_URL =
+  "https://services9.arcgis.com/LQG65AprqDvQfUnp/ArcGIS/rest/services/iconos_biodiversidad/FeatureServer/";
+
 export default {
   name: "app",
   components: {
     Header,
     BoxContainer
+  },
+  data() {
+    return {
+      dataLoaded: false
+    };
+  },
+  created() {
+    let requests = [];
+    requests.push(fetch(`${BASE_DATA_URL}2/${buildQuery()}`)); // Biodiversidad
+    requests.push(fetch(`${BASE_DATA_URL}12/${buildQuery()}`)); // Colores Coberturas
+    requests.push(fetch(`${ICON_DATA_URL}0/${buildQuery()}`)); // Iconos
+    requests.push(fetch(`${BASE_DATA_URL}11/${buildQuery()}`)); // Carbono
+    requests.push(fetch(`${BASE_DATA_URL}6/${buildQuery()}`)); // Metas
+    requests.push(fetch(`${BASE_DATA_URL}13/${buildQuery()}`)); // Coberturas
+    requests.push(fetch(`${BASE_DATA_URL}8/${buildQuery()}`)); // Implementaciones Predios
+    requests.push(fetch(`${BASE_DATA_URL}7/${buildQuery()}`)); // Aliados
+    requests.push(fetch(`${BASE_DATA_URL}5/${buildQuery()}`)); // Participantes
+    requests.push(fetch(`${BASE_DATA_URL}9/${buildQuery()}`)); // Contribuciones
+    Promise.all(requests).then(responses => {
+      const parsePromises = responses.map(response => response.json());
+      Promise.all(parsePromises).then(dataset => {
+        this.$store.commit(
+          "SET_BIODIVERSIDAD",
+          dataset[0].features.map(feature => feature.attributes)
+        );
+        this.$store.commit(
+          "SET_COLORES",
+          dataset[1].features.map(feature => feature.attributes)
+        );
+        this.$store.commit(
+          "SET_ICONOS",
+          dataset[2].features.map(feature => feature.attributes)
+        );
+        this.$store.commit(
+          "SET_CARBONO",
+          dataset[3].features.map(feature => feature.attributes)
+        );
+        this.$store.commit(
+          "SET_METAS",
+          dataset[4].features.map(feature => feature.attributes)
+        );
+        this.$store.commit(
+          "SET_COBERTURAS",
+          dataset[5].features.map(feature => feature.attributes)
+        );
+        this.$store.commit(
+          "SET_IMPLEMENTACIONES",
+          dataset[6].features.map(feature => feature.attributes)
+        );
+        this.$store.commit(
+          "SET_ALIADOS",
+          dataset[7].features.map(feature => feature.attributes)
+        );
+        this.$store.commit(
+          "SET_PARTICIPANTES",
+          dataset[8].features.map(feature => feature.attributes)
+        );
+        this.$store.commit('SET_CONTRIBUCIONES', dataset[9].features.map(feature => feature.attributes));
+        this.dataLoaded = true;
+      });
+    });
   }
 };
 </script>
@@ -44,6 +115,14 @@ body {
   background-color: rgb(228, 228, 228);
   height: 100vh;
   padding: 0 8rem;
+  width: 100vw;
+}
+
+.loader {
+  align-items: center;
+  display: flex;
+  height: calc(100vh - 8.2rem);
+  justify-content: center;
   width: 100vw;
 }
 </style>
