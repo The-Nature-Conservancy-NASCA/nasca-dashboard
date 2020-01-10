@@ -6,7 +6,7 @@ export default {
         x: 1,
         y: 1
       },
-      content: "Treemap"
+      content: "Cobertura"
     },
     {
       title: "Biodiversidad",
@@ -60,5 +60,12 @@ export default {
   implementaciones: [],
   aliados: [],
   participantes: [],
-  contribuciones: []
+  contribuciones: [],
+  estrategias: [],
+  proyectos: [],
+  predios: [],
+  filtro: {
+    modo: "colombia",
+    valor: null
+  }
 };

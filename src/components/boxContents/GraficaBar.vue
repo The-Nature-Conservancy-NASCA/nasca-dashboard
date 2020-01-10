@@ -1,6 +1,6 @@
 <template>
   <section>
-  <h3>{{color}}</h3>
+    <h3>{{ color }}</h3>
     <svg ref="bar-graph" width="500" height="500"></svg>
   </section>
 </template>
