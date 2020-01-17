@@ -11,7 +11,7 @@
 </template>
 <style lang="scss" scoped>
 .graph__container {
-  width: 400px;
+  width: 1000px;
   height: 300px;
 }
 </style>
@@ -22,7 +22,7 @@ export default {
   name: "BarChart",
   props: {
     graphData: {
-      type: Object,
+      type: Array,
       required: true
     }
   },
@@ -78,7 +78,6 @@ export default {
           `translate(${this.margin.left}, ${this.margin.top})`
         );
       try {
-        console.log(this.graphData.length);
         const xScale = d3
           .scaleBand()
           .domain(d3.range(this.graphData.length))

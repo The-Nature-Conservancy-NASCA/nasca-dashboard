@@ -2,6 +2,60 @@ export default {
   filtro(state) {
     return state.filtro;
   },
+  biodiversidadAves: state => {
+    const features = state.biodiversidad.filter(
+      item => item.grupo_tnc === "Aves"
+    );
+    const covers = [...new Set(features.map(item => item.cobertura))];
+    const data = [];
+    covers.forEach(cover => {
+      const count = [
+        ...new Set(
+          features
+            .filter(item => item.cobertura === cover)
+            .map(item => item.especie)
+        )
+      ].length;
+      data.push({ name: cover, value: count });
+    });
+    return data;
+  },
+  biodiversidadEscarabajos: state => {
+    const features = state.biodiversidad.filter(
+      item => item.grupo_tnc === "Escarabajos"
+    );
+    const covers = [...new Set(features.map(item => item.cobertura))];
+    const data = [];
+    covers.forEach(cover => {
+      const count = [
+        ...new Set(
+          features
+            .filter(item => item.cobertura === cover)
+            .map(item => item.especie)
+        )
+      ].length;
+      data.push({ name: cover, value: count });
+    });
+    return data;
+  },
+  biodiversidadMamiferos: state => {
+    const features = state.biodiversidad.filter(
+      item => item.grupo_tnc === "Mamíferos"
+    );
+    const covers = [...new Set(features.map(item => item.cobertura))];
+    const data = [];
+    covers.forEach(cover => {
+      const count = [
+        ...new Set(
+          features
+            .filter(item => item.cobertura === cover)
+            .map(item => item.especie)
+        )
+      ].length;
+      data.push({ name: cover, value: count });
+    });
+    return data;
+  },
   colorPorCobertura: state => idCobertura => {
     return state.colores.find(color => color.ID_cobertura === idCobertura)
       .color;
@@ -31,6 +85,51 @@ export default {
     return idsProyecto
       ? state.predios.filter(predio => idsProyecto.includes(predio.ID_proyecto))
       : state.predios;
+  },
+  carbono: state => {
+    const features = state.carbono;
+    const domain = {
+      0: "Biomasa",
+      1: "Suelos",
+      2: "Madera"
+    };
+    const field = "comportamiento";
+    const defaultKey = "Total";
+    const startYear = new Date(features[0].fecha).getFullYear();
+    const years = Array.from(Array(startYear + 21).keys()).slice(startYear);
+    const data = [];
+    features.forEach((feat, i) => {
+      let key;
+      if (!field) {
+        key = defaultKey;
+      } else {
+        if (field === "comportamiento") {
+          key = domain[feat[field]];
+        } else {
+          key = feat[field];
+        }
+      }
+      for (let j = 0; j <= 20; j++) {
+        const t = `T${j}`;
+        const year = years[j];
+        if (i == 0) {
+          const obj = { year: year };
+          obj[key] = feat[t];
+          data.push(obj);
+        } else {
+          const obj = data.filter(el => el.year == year)[0];
+          if (key in obj) {
+            obj[key] += feat[t];
+          } else {
+            obj[key] = feat[t];
+          }
+        }
+      }
+    });
+    return {
+      data: data,
+      years: years
+    };
   },
   coberturasPorProyectos: (state, getters) => idsProyecto => {
     if (idsProyecto) {

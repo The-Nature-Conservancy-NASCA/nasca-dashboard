@@ -15,7 +15,7 @@ export default {
         y: 2
       },
       rowSpan: 2,
-      content: "GraficaBar"
+      content: "Biodiversidad"
     },
     {
       title: "Carbono",
@@ -23,7 +23,7 @@ export default {
         x: 2,
         y: 1
       },
-      content: "GraficaPie"
+      content: "Carbono"
     },
     {
       title: "Implementación",
