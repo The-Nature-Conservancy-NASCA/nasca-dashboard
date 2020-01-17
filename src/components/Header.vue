@@ -2,14 +2,24 @@
   <div class="header">
     <img src="../assets/images/tnc-logo.svg" alt="logo" width="200" />
     <div class="header__estrategias">
-    <select @change="cambiarEstrategia" v-model="estrategiaSelected" >
-      <option v-for="estrategia in estrategias" :key="estrategia.id" :value="estrategia.id" >{{estrategia.nombre}}</option>
-    </select>
-    <select @change="cambiarProyecto" v-model="proyectoSelected" >
-      <option v-for="proyecto in proyectos" :key="proyecto.id" :value="proyecto.id" >{{proyecto.nombre}}</option>
-    </select>
-    <span>Viendo: {{estrategiaSelected}}</span>
-    <button @click="seleccionarTodo">Ver todo</button>
+      <select @change="cambiarEstrategia" v-model="estrategiaSelected">
+        <option
+          v-for="estrategia in estrategias"
+          :key="estrategia.id"
+          :value="estrategia.id"
+          >{{ estrategia.nombre }}</option
+        >
+      </select>
+      <select @change="cambiarProyecto" v-model="proyectoSelected">
+        <option
+          v-for="proyecto in proyectos"
+          :key="proyecto.id"
+          :value="proyecto.id"
+          >{{ proyecto.nombre }}</option
+        >
+      </select>
+      <span>Viendo: {{ estrategiaSelected }}</span>
+      <button @click="seleccionarTodo">Ver todo</button>
     </div>
   </div>
 </template>

@@ -45,5 +45,8 @@ export default {
   RESET_FILTRO(state) {
     state.filtro.modo = "colombia";
     state.filtro.value = null;
+  },
+  CHANGE_YEAR(state, payload) {
+    state.filtro.year = payload;
   }
 };

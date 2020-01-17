@@ -153,4 +153,19 @@ body {
   justify-content: center;
   width: 100vw;
 }
+
+.tooltip__graph {
+  position: absolute;
+  height: auto;
+  padding: 5px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+  display: none;
+
+  .tooltip__title {
+    font-weight: bold;
+  }
+}
 </style>

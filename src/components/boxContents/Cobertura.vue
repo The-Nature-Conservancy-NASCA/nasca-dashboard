@@ -14,7 +14,7 @@ export default {
   computed: {
     cobertura() {
       return this.$store.getters.coberturas;
-    },
+    }
   }
 }
 </script>

@@ -32,7 +32,7 @@ export default {
         y: 1
       },
       colSpan: 2,
-      content: "GraficaBar"
+      content: "Implementaciones"
     },
     {
       title: "Metas",
@@ -66,6 +66,7 @@ export default {
   predios: [],
   filtro: {
     modo: "colombia",
-    valor: null
+    valor: null,
+    year: null
   }
 };
