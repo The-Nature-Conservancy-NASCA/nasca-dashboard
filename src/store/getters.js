@@ -50,7 +50,6 @@ export default {
     }
   },
   coberturas: (state, getters) => {
-    debugger
     const features =
       state.filtro.modo === "estrategia"
         ? getters.coberturasPorEstrategia(state.filtro.valor)
@@ -148,10 +147,10 @@ export default {
     // ];
 
     const data = [
-      {"name": "Manejo Sostenible", "value": 0},
-      {"name": "Bosque", "value": 0},
-      {"name": "Restauración", "value": 0},
-      {"name": "Producción Sostenible", "value": 0}
+      { name: "Manejo Sostenible", value: 0 },
+      { name: "Bosque", value: 0 },
+      { name: "Restauración", value: 0 },
+      { name: "Producción Sostenible", value: 0 }
     ];
     features.forEach(feat => {
       data[0].value += feat.area_manejo_sostenible;
