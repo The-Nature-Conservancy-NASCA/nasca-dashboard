@@ -50,7 +50,6 @@ export default {
     }
   },
   coberturas: (state, getters) => {
-    debugger
     const features =
       state.filtro.modo === "estrategia"
         ? getters.coberturasPorEstrategia(state.filtro.valor)

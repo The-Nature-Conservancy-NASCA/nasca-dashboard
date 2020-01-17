@@ -1,13 +1,17 @@
 <template>
-  <section>
+  <section class="treemap">
     <div>
       <button>Proyecto</button>
       <button>Corine</button>
     </div>
     <div ref="graph" class="graph__container"></div>
     <div id="tooltip__treemap" class="tooltip__graph"></div>
-    <div>
-      <button v-for="year in years" :key="year" @click="changeYear(year)">{{year}}</button>
+    <div class="treemap__buttons">
+      <button
+        v-for="year in years"
+        :key="year"
+        @click="changeYear(year)"
+        :class="buttonClass(year)">{{year}}</button>
     </div>
   </section>
 </template>
@@ -15,6 +19,39 @@
 .graph__container {
   width: 400px;
   height: 300px;
+}
+
+.treemap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  &__buttons {
+    display: flex;
+    justify-content: space-evenly;
+    width: 50%;
+
+    button {
+      box-shadow: 0 2px 5px rgba(0, 0, 0, .4);
+      background-color: #DDD;
+      cursor: pointer;
+      border: none;
+      padding: 1rem;
+      transition: all .2s;
+
+      &.selected {
+        background-color: var(--color-green-tnc);
+        color: #fff;
+      }
+      
+      &:hover {
+        box-shadow: 0 5px 8px rgba(0, 0, 0, .4);
+        transform: translateY(-2px);
+      }
+
+    }
+  }
 }
 </style>
 <script>
@@ -31,6 +68,9 @@ export default {
   computed: {
     years() {
       return this.graphData.years;
+    },
+    selectedYear() {
+      return this.$store.getters.filtro.year;
     }
   },
   data() {
@@ -132,6 +172,12 @@ export default {
           .attr("height", d => d.y1 - d.y0);
       } catch (error) {
         console.log(error);
+      }
+    },
+    buttonClass(year) {
+      return {
+        selected: this.selectedYear === year,
+        unselected: this.selectedYear !== year
       }
     }
   },
