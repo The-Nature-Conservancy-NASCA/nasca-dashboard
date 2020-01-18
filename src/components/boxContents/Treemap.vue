@@ -1,12 +1,12 @@
 <template>
   <section class="treemap">
-    <div>
+    <div class="treemap__buttons">
       <button>Proyecto</button>
       <button>Corine</button>
     </div>
     <div ref="graph" class="graph__container"></div>
     <div id="tooltip__treemap" class="tooltip__graph"></div>
-    <div class="treemap__buttons">
+    <div class="treemap__year-buttons">
       <button
         v-for="year in years"
         :key="year"
@@ -17,8 +17,9 @@
 </template>
 <style lang="scss" scoped>
 .graph__container {
-  width: 400px;
-  height: 300px;
+  width: 50rem;
+  height: 20rem;
+  margin-top: -3.5rem;
 }
 
 .treemap {
@@ -28,9 +29,13 @@
   flex-direction: column;
 
   &__buttons {
+    transform: translateY(-3.5rem);
+  }
+
+  &__year-buttons {
     display: flex;
     justify-content: space-evenly;
-    width: 50%;
+    width: 100%;
 
     button {
       box-shadow: 0 2px 5px rgba(0, 0, 0, .4);
@@ -94,7 +99,7 @@ export default {
     render() {
       this.el = d3.select(this.$refs["graph"]);
       this.el.html("");
-      this.margin = { top: 10, right: 10, bottom: 10, left: 10 };
+      this.margin = { top: 10, right: 0, bottom: 10, left: 0 };
       this.width =
         parseInt(this.el.style("width")) - this.margin.left - this.margin.right;
       this.height =

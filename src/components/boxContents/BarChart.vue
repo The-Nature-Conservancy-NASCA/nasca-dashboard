@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="bar-chart">
     <div ref="graph" class="graph__container"></div>
     <div id="tooltip__barchart" class="tooltip__graph"></div>
     <div>
@@ -11,8 +11,13 @@
 </template>
 <style lang="scss" scoped>
 .graph__container {
-  width: 1000px;
-  height: 300px;
+  width: 100rem;
+  height: 22rem;
+}
+.bar-chart {
+  align-items: center;
+  display: flex;
+  justify-content: center;
 }
 </style>
 <script>

@@ -51,8 +51,5 @@ export default {
     margin-bottom: 1rem;
   }
 
-  &__content {
-    padding: 5rem 0; //temporal para verse bonito
-  }
 }
 </style>

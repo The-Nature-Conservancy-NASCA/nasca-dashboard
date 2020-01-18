@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="biodiversidad">
     <div>
       <PieChart :graphData="biodiversidadAves"/>
     </div>
@@ -32,3 +32,11 @@ export default {
   }
 };
 </script>
+
+<style lang="scss">
+  .biodiversidad {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+  }
+</style>

@@ -6,9 +6,9 @@
 </template>
 <style lang="scss" scoped>
 .graph__container {
-  width: 200px;
-  height: 200px;
-  margin: 50px auto 50px auto;
+  width: 20rem;
+  height: 20rem;
+  margin: 2rem auto;
 }
 </style>
 <script>

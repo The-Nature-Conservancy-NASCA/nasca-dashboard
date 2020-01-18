@@ -12,7 +12,7 @@ export default {
       title: "Biodiversidad",
       position: {
         x: 1,
-        y: 2
+        y: 3
       },
       rowSpan: 2,
       content: "Biodiversidad"
@@ -20,24 +20,24 @@ export default {
     {
       title: "Carbono",
       position: {
-        x: 2,
-        y: 1
+        x: 1,
+        y: 2
       },
       content: "Carbono"
     },
     {
       title: "Implementación",
       position: {
-        x: 3,
+        x: 2,
         y: 1
       },
       colSpan: 2,
       content: "Implementaciones"
     },
     {
-      title: "Metas",
+      title: "Participantes",
       position: {
-        x: 4,
+        x: 3,
         y: 1
       },
       content: "GraficaPie"
@@ -45,10 +45,18 @@ export default {
     {
       title: "Participantes",
       position: {
-        x: 4,
+        x: 3,
         y: 2
       },
-      content: "GraficaBar"
+      content: "GraficaPie"
+    },
+    {
+      title: "Donantes",
+      position: {
+        x: 3,
+        y: 3
+      },
+      content: "GraficaPie"
     }
   ],
   biodiversidad: [],

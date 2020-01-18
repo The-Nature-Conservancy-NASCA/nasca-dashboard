@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="stacked-area">
     <div>
       <button>Total</button>
       <button>Compartimiento</button>
@@ -11,8 +11,14 @@
 </template>
 <style lang="scss" scoped>
 .graph__container {
-  width: 600px;
-  height: 300px;
+  width: 60rem;
+  height: 20rem;
+}
+.stacked-area {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 </style>
 <script>
