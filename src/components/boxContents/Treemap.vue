@@ -11,7 +11,10 @@
         v-for="year in years"
         :key="year"
         @click="changeYear(year)"
-        :class="buttonClass(year)">{{year}}</button>
+        :class="buttonClass(year)"
+      >
+        {{ year }}
+      </button>
     </div>
   </section>
 </template>
@@ -38,23 +41,22 @@
     width: 100%;
 
     button {
-      box-shadow: 0 2px 5px rgba(0, 0, 0, .4);
-      background-color: #DDD;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+      background-color: #ddd;
       cursor: pointer;
       border: none;
       padding: 1rem;
-      transition: all .2s;
+      transition: all 0.2s;
 
       &.selected {
         background-color: var(--color-green-tnc);
         color: #fff;
       }
-      
+
       &:hover {
-        box-shadow: 0 5px 8px rgba(0, 0, 0, .4);
+        box-shadow: 0 5px 8px rgba(0, 0, 0, 0.4);
         transform: translateY(-2px);
       }
-
     }
   }
 }
@@ -67,6 +69,10 @@ export default {
   props: {
     graphData: {
       type: Object,
+      required: true
+    },
+    graphId: {
+      type: String,
       required: true
     }
   },
@@ -99,6 +105,9 @@ export default {
     render() {
       this.el = d3.select(this.$refs["graph"]);
       this.el.html("");
+      if (!this.graphData.children.length) {
+        return;
+      }
       this.margin = { top: 10, right: 0, bottom: 10, left: 0 };
       this.width =
         parseInt(this.el.style("width")) - this.margin.left - this.margin.right;
@@ -110,6 +119,7 @@ export default {
 
       const treemapGroup = this.el
         .append("svg")
+        .attr("id", this.graphId)
         .attr("class", "treemap")
         .attr("width", this.width + this.margin.left + this.margin.right)
         .attr("height", this.height + this.margin.top + this.margin.bottom)
@@ -183,7 +193,7 @@ export default {
       return {
         selected: this.selectedYear === year,
         unselected: this.selectedYear !== year
-      }
+      };
     }
   },
   mounted() {

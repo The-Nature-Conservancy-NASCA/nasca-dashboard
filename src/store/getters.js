@@ -2,9 +2,9 @@ export default {
   filtro(state) {
     return state.filtro;
   },
-  biodiversidadAves: state => {
+  biodiversidad: state => group => {
     const features = state.biodiversidad.filter(
-      item => item.grupo_tnc === "Aves"
+      item => item.grupo_tnc === group
     );
     const covers = [...new Set(features.map(item => item.cobertura))];
     const data = [];
@@ -20,41 +20,19 @@ export default {
     });
     return data;
   },
-  biodiversidadEscarabajos: state => {
+  biodiversityGroupCount: state => group => {
     const features = state.biodiversidad.filter(
-      item => item.grupo_tnc === "Escarabajos"
+      item => item.grupo_tnc === group
     );
-    const covers = [...new Set(features.map(item => item.cobertura))];
-    const data = [];
-    covers.forEach(cover => {
-      const count = [
-        ...new Set(
-          features
-            .filter(item => item.cobertura === cover)
-            .map(item => item.especie)
-        )
-      ].length;
-      data.push({ name: cover, value: count });
-    });
-    return data;
+    return [...new Set(features.map(item => item.especie))].length;
   },
-  biodiversidadMamiferos: state => {
-    const features = state.biodiversidad.filter(
-      item => item.grupo_tnc === "Mamíferos"
-    );
-    const covers = [...new Set(features.map(item => item.cobertura))];
-    const data = [];
-    covers.forEach(cover => {
-      const count = [
-        ...new Set(
-          features
-            .filter(item => item.cobertura === cover)
-            .map(item => item.especie)
-        )
-      ].length;
-      data.push({ name: cover, value: count });
-    });
-    return data;
+  biodiversityIcon: state => group => {
+    const icono = state.iconos.find(item => item.grupo_tnc === group);
+    return icono ? icono.url : null;
+  },
+  gruposBiodiversidad(state) {
+    const features = state.biodiversidad;
+    return [...new Set(features.map(item => item.grupo_tnc))];
   },
   colorPorCobertura: state => idCobertura => {
     return state.colores.find(color => color.ID_cobertura === idCobertura)
@@ -164,7 +142,6 @@ export default {
           .map(item => new Date(item.fecha_visita).getFullYear())
       )
     ];
-
     const data = { name: "coberturas", children: [], years: years };
     features
       .filter(feature => new Date(feature.fecha_visita).getFullYear() == year)
@@ -245,17 +222,32 @@ export default {
     //   )
     // ];
 
-    const data = [
-      { name: "Manejo Sostenible", value: 0 },
-      { name: "Bosque", value: 0 },
-      { name: "Restauración", value: 0 },
-      { name: "Producción Sostenible", value: 0 }
-    ];
+    const actions = {
+      "Manejo sostenible": "area_manejo_sostenible",
+      Bosque: "area_bosque",
+      Restauración: "area_restauracion",
+      "Producción sostenible": "areas_p_sostenibles"
+    };
+
+    const data = [];
     features.forEach(feat => {
-      data[0].value += feat.area_manejo_sostenible;
-      data[1].value += feat.area_bosque;
-      data[2].value += feat.area_restauracion;
-      data[3].value += feat.areas_p_sostenibles;
+      for (let action in actions) {
+        if (!actions.hasOwnProperty(action)) {
+          continue;
+        }
+        let obj;
+        const area = feat[actions[action]];
+        obj = data.find(item => item.name === action);
+        if (obj) {
+          obj.value += area;
+        } else {
+          obj = {
+            name: action,
+            value: area
+          };
+          data.push(obj);
+        }
+      }
     });
 
     return data;

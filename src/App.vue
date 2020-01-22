@@ -36,9 +36,14 @@ export default {
     requests.push(fetch(`${ICON_DATA_URL}0/${buildQuery()}`)); // Iconos
     requests.push(fetch(`${BASE_DATA_URL}11/${buildQuery()}`)); // Carbono
     requests.push(fetch(`${BASE_DATA_URL}6/${buildQuery()}`)); // Metas
-    requests.push(fetch(`${BASE_DATA_URL}13/${buildQuery({
-      outFields: "ID_predio%2C+ID_cobertura%2C+corine1%2C+corine2%2C+cobertura_proyecto%2C+verificacion%2C+fecha_visita%2C+carbono_biomasa%2C+carbono_suelos%2C+carbono_madera%2C+subcobertura_proyecto%2C+area"
-    })}`)); // Coberturas
+    requests.push(
+      fetch(
+        `${BASE_DATA_URL}13/${buildQuery({
+          outFields:
+            "ID_predio%2C+ID_cobertura%2C+corine1%2C+corine2%2C+cobertura_proyecto%2C+verificacion%2C+fecha_visita%2C+carbono_biomasa%2C+carbono_suelos%2C+carbono_madera%2C+subcobertura_proyecto%2C+area"
+        })}`
+      )
+    ); // Coberturas
     requests.push(fetch(`${BASE_DATA_URL}8/${buildQuery()}`)); // Implementaciones Predios
     requests.push(fetch(`${BASE_DATA_URL}7/${buildQuery()}`)); // Aliados
     requests.push(fetch(`${BASE_DATA_URL}5/${buildQuery()}`)); // Participantes
@@ -52,9 +57,13 @@ export default {
         })}`
       )
     ); // Proyectos
-    requests.push(fetch(`${BASE_DATA_URL}2/${buildQuery({
-      outFields: "ID_proyecto%2C+grupo_tnc%2C+cobertura%2C+especie"
-    })}`)); // Biodiversidad
+    requests.push(
+      fetch(
+        `${BASE_DATA_URL}2/${buildQuery({
+          outFields: "ID_proyecto%2C+grupo_tnc%2C+cobertura%2C+especie"
+        })}`
+      )
+    ); // Biodiversidad
     Promise.all(requests).then(responses => {
       const parsePromises = responses.map(response => response.json());
       Promise.all(parsePromises).then(dataset => {
@@ -166,6 +175,16 @@ body {
 
   .tooltip__title {
     font-weight: bold;
+  }
+}
+
+svg {
+  path,
+  rect {
+    -moz-transition: all 0.25s;
+    -o-transition: all 0.25s;
+    -webkit-transition: all 0.25s;
+    transition: all 0.25s;
   }
 }
 </style>

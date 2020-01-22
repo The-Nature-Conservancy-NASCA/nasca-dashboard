@@ -29,6 +29,10 @@ export default {
     graphData: {
       type: Array,
       required: true
+    },
+    graphId: {
+      typre: String,
+      required: true
     }
   },
   computed: {
@@ -58,7 +62,11 @@ export default {
       this.el = d3.select(this.$refs["graph"]);
       this.el.html("");
 
-      this.margin = { top: 10, right: 10, bottom: 10, left: 55 };
+      if (!this.graphData.length) {
+        return;
+      }
+
+      this.margin = { top: 10, right: 10, bottom: 20, left: 75 };
       this.offset = { left: 10, bottom: 10 };
 
       // compute width and height based on parent div
@@ -69,11 +77,16 @@ export default {
         this.margin.top -
         this.margin.bottom;
 
-      this.color = d3.scaleOrdinal(d3.schemeCategory10);
+      this.color = "#6EA19F";
       this.factor = 0.5;
+
+      this.title = "Área total por acción";
+      this.ylabel = "Acción";
+      this.xlabel = "Área (ha)";
 
       const barGroup = this.el
         .append("svg")
+        .attr("id", this.graphId)
         .attr("class", "bar")
         .attr("width", this.width + this.margin.left + this.margin.right)
         .attr("height", this.height + this.margin.top + this.margin.bottom)
@@ -144,12 +157,12 @@ export default {
           )
           .attr("x", () => this.margin.left + this.offset.left)
           .attr("height", xScale.bandwidth() * this.factor)
-          .attr("fill", d => this.color(d.name))
+          .attr("fill", this.color)
           .transition()
           .attr("width", d => yScale(d.value));
         barGroup
           .append("g")
-          .attr("class", "axis")
+          .attr("class", "y axis")
           .attr(
             "transform",
             `translate(${this.margin.left}, ${-this.margin.bottom -
@@ -158,13 +171,50 @@ export default {
           .call(yAxis);
         barGroup
           .append("g")
-          .attr("class", "axis")
+          .attr("class", "x axis")
           .attr(
             "transform",
             `translate(${this.margin.left + this.offset.left}, ${this.height -
               this.margin.bottom})`
           )
           .call(xAxis);
+        barGroup
+          .append("text")
+          .attr("class", "title")
+          .attr("text-anchor", "middle")
+          .attr(
+            "x",
+            (this.width - this.margin.left - this.margin.right) / 2 +
+              this.margin.left -
+              this.margin.right
+          )
+          .attr("y", 0)
+          .text(this.title);
+        barGroup
+          .append("text")
+          .attr("class", "x label")
+          .attr("text-anchor", "middle")
+          .attr(
+            "x",
+            (this.width - this.margin.left - this.margin.right) / 2 +
+              this.margin.left -
+              this.margin.right
+          )
+          .attr("y", this.height + this.margin.bottom - 2)
+          .text(this.xlabel);
+        barGroup
+          .append("text")
+          .attr("text-anchor", "middle")
+          .attr("x", -(this.height / 2))
+          .attr("y", () => {
+            const yAxisWidth = d3
+              .select(".y.axis")
+              .node()
+              .getBBox().width;
+            return -(yAxisWidth + this.offset.left + 10);
+          })
+          .attr("transform", "rotate(-90)")
+          .text(this.ylabel);
       } catch (error) {
         console.log(error);
       }

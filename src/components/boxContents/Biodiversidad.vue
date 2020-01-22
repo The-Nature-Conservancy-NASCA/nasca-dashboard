@@ -1,42 +1,50 @@
 <template>
   <div class="biodiversidad">
-    <div>
-      <PieChart :graphData="biodiversidadAves"/>
-    </div>
-    <div>
-      <PieChart :graphData="biodiversidadEscarabajos"/>
-    </div>
-    <div>
-      <PieChart :graphData="biodiversidadMamiferos"/>
+    <div v-for="group in groups" :key="group">
+      <PieChart
+        :graphData="biodiversidad(group)"
+        :icono="icono(group)"
+        :group="group"
+        :count="groupCount(group)"
+        :graphId="`piechart__biodiversidad__${group}`"
+      />
+      <DownloadImageBtn :graphId="`piechart__biodiversidad__${group}`" />
     </div>
   </div>
 </template>
 <script>
+import DownloadImageBtn from "./DownloadImageBtn";
 import PieChart from "./PieChart.vue";
 
 export default {
   name: "Carbono",
   components: {
+    DownloadImageBtn,
     PieChart
   },
   computed: {
-    biodiversidadAves() {
-      return this.$store.getters.biodiversidadAves;
+    groups() {
+      return this.$store.getters.gruposBiodiversidad;
+    }
+  },
+  methods: {
+    biodiversidad(group) {
+      return this.$store.getters.biodiversidad(group);
     },
-    biodiversidadEscarabajos() {
-      return this.$store.getters.biodiversidadEscarabajos;
+    groupCount(group) {
+      return this.$store.getters.biodiversityGroupCount(group);
     },
-    biodiversidadMamiferos() {
-      return this.$store.getters.biodiversidadMamiferos;
+    icono(group) {
+      return this.$store.getters.biodiversityIcon(group);
     }
   }
 };
 </script>
 
 <style lang="scss">
-  .biodiversidad {
-    display: flex;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
-  }
+.biodiversidad {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}
 </style>

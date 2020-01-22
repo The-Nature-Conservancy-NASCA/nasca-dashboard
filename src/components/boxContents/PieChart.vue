@@ -1,6 +1,13 @@
 <template>
-  <section>
+  <section class="pie-chart">
+    <div class="graph__header">
+      <h5>{{ group }}</h5>
+      <h4>{{ count }}</h4>
+    </div>
     <div ref="graph" class="graph__container"></div>
+    <div v-if="icono">
+      <img class="pie-chart__icon" :src="icono" alt="" />
+    </div>
     <div id="tooltip__piechart" class="tooltip__graph"></div>
   </section>
 </template>
@@ -10,6 +17,25 @@
   height: 20rem;
   margin: 2rem auto;
 }
+
+.graph__header {
+  text-align: center;
+}
+
+.pie-chart {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  &__icon {
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, calc(-50% + 15px));
+    width: 150px;
+  }
+}
 </style>
 <script>
 import * as d3 from "d3";
@@ -17,9 +43,25 @@ import * as d3 from "d3";
 export default {
   name: "PieChart",
   props: {
+    count: {
+      type: Number,
+      required: false
+    },
     graphData: {
       type: Array,
       required: true
+    },
+    graphId: {
+      type: String,
+      required: true
+    },
+    group: {
+      type: String,
+      required: true
+    },
+    icono: {
+      type: String,
+      required: false
     }
   },
   data() {
@@ -43,11 +85,14 @@ export default {
       this.width = parseInt(this.el.style("width"));
       this.height = parseInt(this.el.style("height"));
       this.color = d3.scaleOrdinal(d3.schemeCategory10);
+      this.tooltipOffset = 15;
       const svg = this.el
         .append("svg")
+        .attr("id", this.graphId)
         .attr("width", this.width)
         .attr("height", this.height);
       try {
+        const that = this;
         const outerRadius = this.width / 2;
         const innerRadius = outerRadius / 1.25;
         const arc = d3
@@ -71,13 +116,13 @@ export default {
               .attr("fill-opacity", 0.75);
             const coordinates = [d3.event.pageX, d3.event.pageY];
             const tooltipContent = `
-        <span class="tooltip__title">${d.data.name}</span><br>
-        <span class="tooltip__value">${Math.round(
-          d.value
-        )}</span><span class="tooltip__subtitle"> especies</span>
-        `;
+            <span class="tooltip__title">${d.data.name}</span><br>
+            <span class="tooltip__value">${Math.round(
+              d.value
+            )}</span><span class="tooltip__subtitle"> especies</span>
+            `;
             d3.select("#tooltip__piechart")
-              .style("left", `${coordinates[0]}px`)
+              .style("left", `${coordinates[0] + that.tooltipOffset}px`)
               .style("top", `${coordinates[1]}px`)
               .style("display", "block")
               .style("font-size", "11px")
@@ -86,7 +131,7 @@ export default {
           .on("mousemove", function() {
             const coordinates = [d3.event.pageX, d3.event.pageY];
             d3.select("#tooltip__piechart")
-              .style("left", `${coordinates[0]}px`)
+              .style("left", `${coordinates[0] + that.tooltipOffset}px`)
               .style("top", `${coordinates[1]}px`);
           })
           .on("mouseout", function() {
