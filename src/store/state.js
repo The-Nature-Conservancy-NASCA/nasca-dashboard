@@ -26,7 +26,7 @@ export default {
       content: "Carbono"
     },
     {
-      title: "Implementación",
+      title: "Implementaciones",
       position: {
         x: 2,
         y: 1
@@ -48,7 +48,7 @@ export default {
         x: 3,
         y: 2
       },
-      content: "GraficaPie"
+      content: "ParticipantesOtros"
     },
     {
       title: "Donantes",

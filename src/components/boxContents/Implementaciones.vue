@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="implementaciones.length">
     <BarChart
       :graphData="implementaciones"
       :graphId="'barchart__implementaciones'"
@@ -29,11 +29,13 @@ export default {
   },
   methods: {
     prepareData(graphData) {
-      const data = graphData.map(item => {
-        return { accion: item.name, area: item.value }
-      });
-      const header = Object.keys(data[0]);
-      return { data: data, header: header };
+      if (graphData.length) {
+        const data = graphData.map(item => {
+          return { accion: item.name, area: item.value };
+        });
+        const header = Object.keys(data[0]);
+        return { data: data, header: header };
+      }
     }
   }
 };

@@ -103,6 +103,7 @@ export default {
       this.$store.dispatch("changeYear", newYear);
     },
     render() {
+      // console.log(this.graphData);
       this.el = d3.select(this.$refs["graph"]);
       this.el.html("");
       if (!this.graphData.children.length) {

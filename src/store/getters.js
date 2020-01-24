@@ -272,7 +272,6 @@ export default {
         : state.filtro.modo === "proyecto"
         ? getters.participantesPorProyectos([state.filtro.valor])
         : state.participantes;
-    console.log(features);
     const genders = {
       Hombres: "numero_hombres",
       Mujeres: "numero_mujeres"
@@ -298,5 +297,35 @@ export default {
       }
     });
     return data;
+  },
+  gruposParticipantes: (state, getters) => {
+    const features =
+      state.filtro.modo === "estrategia"
+        ? getters.participantesPorEstrategia(state.filtro.valor)
+        : state.filtro.modo === "proyecto"
+        ? getters.participantesPorProyectos([state.filtro.valor])
+        : state.participantes;
+
+    const groups = {
+      Indígenas: "numero_indigenas",
+      Campesinos: "numero_campesinos"
+    };
+    const counts = {};
+    features.forEach(feat => {
+      for (let group in groups) {
+        if (!groups.hasOwnProperty(group)) {
+          continue;
+        }
+        const count = feat[groups[group]];
+        if (count) {
+          if (group in counts) {
+            counts[group] += count;
+          } else {
+            counts[group] = count;
+          }
+        }
+      }
+    });
+    return counts;
   }
 };

@@ -26,12 +26,13 @@ export default {
   },
   methods: {
     prepareData(graphData) {
+      // console.log(graphData);
       const data = [];
       graphData.children.forEach(parent => {
         parent.children.forEach(child => {
           const obj = {
             nivel_1: parent.name,
-            nivel_2: child.name.replace(/, |,/g, "|"),
+            nivel_2: child.name ? child.name.replace(/, |,/g, "|") : null,
             area: child.value
           };
           data.push(obj);
