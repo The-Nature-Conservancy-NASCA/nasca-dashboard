@@ -194,8 +194,8 @@ export default {
         .predios(idsProyecto)
         .map(predio => predio.ID_predio);
 
-      return state.implementaciones.filter(impl =>
-        prediosPorProyecto.includes(impl.ID_predio)
+      return state.implementaciones.filter(item =>
+        prediosPorProyecto.includes(item.ID_predio)
       );
     }
   },
@@ -250,6 +250,53 @@ export default {
       }
     });
 
+    return data;
+  },
+  participantesPorProyectos: state => idsProyecto => {
+    if (idsProyecto) {
+      return state.participantes.filter(item =>
+        idsProyecto.includes(item.ID_proyecto)
+      );
+    }
+  },
+  participantesPorEstrategia: (state, getters) => idEstrategia => {
+    if (idEstrategia) {
+      const proyectos = getters.proyectosPorEstrategia(idEstrategia);
+      return getters.participantesPorProyectos(proyectos);
+    }
+  },
+  participantes: (state, getters) => {
+    const features =
+      state.filtro.modo === "estrategia"
+        ? getters.participantesPorEstrategia(state.filtro.valor)
+        : state.filtro.modo === "proyecto"
+        ? getters.participantesPorProyectos([state.filtro.valor])
+        : state.participantes;
+    console.log(features);
+    const genders = {
+      Hombres: "numero_hombres",
+      Mujeres: "numero_mujeres"
+    };
+    const data = [];
+    features.forEach(feat => {
+      for (let gender in genders) {
+        if (!genders.hasOwnProperty(gender)) {
+          continue;
+        }
+        let obj;
+        const count = feat[genders[gender]];
+        obj = data.find(item => item.name === gender);
+        if (obj) {
+          obj.value += count;
+        } else {
+          obj = {
+            name: gender,
+            value: count
+          };
+          data.push(obj);
+        }
+      }
+    });
     return data;
   }
 };

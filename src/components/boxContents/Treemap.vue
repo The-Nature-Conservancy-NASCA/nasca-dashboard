@@ -116,6 +116,7 @@ export default {
         this.margin.top -
         this.margin.bottom;
       this.color = d3.scaleOrdinal(d3.schemeCategory10);
+      this.tooltipOffset = 15;
 
       const treemapGroup = this.el
         .append("svg")
@@ -136,6 +137,7 @@ export default {
         .padding(0)
         .round(true)(root);
       try {
+        const that = this;
         treemapGroup
           .selectAll("rect")
           .data(root.leaves())
@@ -157,8 +159,8 @@ export default {
             )} ha</span>
               `;
             d3.select("#tooltip__treemap")
-              .style("left", `${coordinates[0] + 15}px`)
-              .style("top", `${coordinates[1] + 10}px`)
+              .style("left", `${coordinates[0] + that.tooltipOffset}px`)
+              .style("top", `${coordinates[1]}px`)
               .style("display", "block")
               .style("font-size", "11px")
               .html(tooltipContent);
@@ -166,8 +168,8 @@ export default {
           .on("mousemove", function() {
             const coordinates = [d3.event.pageX, d3.event.pageY];
             d3.select("#tooltip__treemap")
-              .style("left", `${coordinates[0] + 15}px`)
-              .style("top", `${coordinates[1] + 10}px`);
+              .style("left", `${coordinates[0] + that.tooltipOffset}px`)
+              .style("top", `${coordinates[1]}px`);
           })
           .on("mouseout", function() {
             treemapGroup

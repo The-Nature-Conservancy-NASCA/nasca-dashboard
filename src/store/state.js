@@ -40,7 +40,7 @@ export default {
         x: 3,
         y: 1
       },
-      content: "GraficaPie"
+      content: "ParticipantesGenero"
     },
     {
       title: "Participantes",

@@ -5,10 +5,10 @@
       <h4>{{ count }}</h4>
     </div>
     <div ref="graph" class="graph__container"></div>
+    <div id="tooltip__piechart" class="tooltip__graph"></div>
     <div v-if="icono">
       <img class="pie-chart__icon" :src="icono" alt="" />
     </div>
-    <div id="tooltip__piechart" class="tooltip__graph"></div>
   </section>
 </template>
 <style lang="scss" scoped>

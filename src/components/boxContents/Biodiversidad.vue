@@ -8,17 +8,22 @@
         :count="groupCount(group)"
         :graphId="`piechart__biodiversidad__${group}`"
       />
-      <DownloadImageBtn :graphId="`piechart__biodiversidad__${group}`" />
+      <div>
+        <DownloadDataBtn :exportData="prepareData(biodiversidad(group))" />
+        <DownloadImageBtn :graphId="`piechart__biodiversidad__${group}`" />
+      </div>
     </div>
   </div>
 </template>
 <script>
-import DownloadImageBtn from "./DownloadImageBtn";
+import DownloadDataBtn from "./DownloadDataBtn.vue";
+import DownloadImageBtn from "./DownloadImageBtn.vue";
 import PieChart from "./PieChart.vue";
 
 export default {
   name: "Carbono",
   components: {
+    DownloadDataBtn,
     DownloadImageBtn,
     PieChart
   },
@@ -36,6 +41,13 @@ export default {
     },
     icono(group) {
       return this.$store.getters.biodiversityIcon(group);
+    },
+    prepareData(graphData) {
+      const data = graphData.map(item => {
+        return { cobertura: item.name, especies: item.value };
+      });
+      const header = ["cobertura", "especies"];
+      return { data: data, header: header };
     }
   }
 };
