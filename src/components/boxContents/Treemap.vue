@@ -21,7 +21,7 @@
 <style lang="scss" scoped>
 .graph__container {
   width: 50rem;
-  height: 20rem;
+  height: 12rem;
   margin-top: -3.5rem;
 }
 
@@ -122,7 +122,7 @@ export default {
       const treemapGroup = this.el
         .append("svg")
         .attr("id", this.graphId)
-        .attr("class", "treemap")
+        .attr("class", "treemap graph")
         .attr("width", this.width + this.margin.left + this.margin.right)
         .attr("height", this.height + this.margin.top + this.margin.bottom)
         .append("g")

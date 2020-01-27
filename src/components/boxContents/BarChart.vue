@@ -12,7 +12,7 @@
 <style lang="scss" scoped>
 .graph__container {
   width: 100rem;
-  height: 22rem;
+  height: 12rem;
 }
 .bar-chart {
   align-items: center;
@@ -87,7 +87,7 @@ export default {
       const barGroup = this.el
         .append("svg")
         .attr("id", this.graphId)
-        .attr("class", "bar")
+        .attr("class", "bar graph")
         .attr("width", this.width + this.margin.left + this.margin.right)
         .attr("height", this.height + this.margin.top + this.margin.bottom)
         .append("g")

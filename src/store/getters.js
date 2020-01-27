@@ -327,5 +327,51 @@ export default {
       }
     });
     return counts;
+  },
+  biodiversidadExport: (state, getters) => group => {
+    const data = getters.biodiversidad(group).map(item => {
+      return { cobertura: item.name, especies: item.value };
+    });
+    const header = ["cobertura", "especies"];
+    return { data: data, header: header };
+  },
+  carbonoExport: (state, getters) => {
+    const data = [];
+    getters.carbono.data.forEach(item => {
+      const obj = {};
+      delete Object.assign(obj, item, { ["año"]: item["year"] })["year"];
+      data.push(obj);
+    });
+    const header = Object.keys(data[0]);
+    return { data: data, header: header };
+  },
+  coberturasExport: (state, getters) => {
+    const data = [];
+    getters.coberturas.children.forEach(parent => {
+      parent.children.forEach(child => {
+        const obj = {
+          nivel_1: parent.name,
+          nivel_2: child.name ? child.name.replace(/, |,/g, "|") : "",
+          area: child.value
+        };
+        data.push(obj);
+      });
+    });
+    const header = ["nivel_1", "nivel_2", "area"];
+    return { data, header };
+  },
+  implementacionesExport: (state, getters) => {
+    const data = getters.implementaciones.map(item => {
+      return { accion: item.name, area: item.value }
+    });
+    const header = Object.keys(data[0]);
+    return { data: data, header: header };
+  },
+  participantesExport: (state, getters) => {
+    const data = getters.participantes.map(item => {
+      return { genero: item.name, total: item.value }
+    });
+    const header = Object.keys(data[0]);
+    return { data: data, header: header };
   }
 };
