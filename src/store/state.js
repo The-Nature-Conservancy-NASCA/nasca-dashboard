@@ -6,7 +6,8 @@ export default {
         x: 1,
         y: 1
       },
-      content: "Cobertura"
+      content: "Cobertura",
+      rowSpan: 2
     },
     {
       title: "Biodiversidad",
@@ -29,9 +30,8 @@ export default {
       title: "Implementaciones",
       position: {
         x: 2,
-        y: 1
+        y: 2
       },
-      colSpan: 2,
       content: "Implementaciones"
     },
     {
@@ -75,6 +75,9 @@ export default {
   filtro: {
     modo: "colombia",
     valor: null,
-    year: null
+    year: {
+      coberturas: null
+    },
+    classificationScheme: null
   }
 };

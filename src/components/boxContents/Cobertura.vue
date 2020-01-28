@@ -1,6 +1,10 @@
 <template>
-  <div>
-    <Treemap :graphData="cobertura" :graphId="'treemap__carbono'" />
+  <div v-if="cobertura.children.length">
+    <Treemap
+      :graphData="cobertura"
+      :graphId="'treemap__coberturas'"
+      :component="'coberturas'"
+    />
   </div>
 </template>
 <script>

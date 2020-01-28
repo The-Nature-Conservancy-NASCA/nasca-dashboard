@@ -9,6 +9,11 @@
         :graphId="`piechart__biodiversidad__${group}`"
       />
     </div>
+    <div class="treemap__year-buttons">
+      <button v-for="year in years" :key="year">
+        {{ year }}
+      </button>
+    </div>
   </div>
 </template>
 <script>
@@ -22,6 +27,9 @@ export default {
   computed: {
     groups() {
       return this.$store.getters.gruposBiodiversidad;
+    },
+    years() {
+      return this.$store.getters.yearsBiodiversidad;
     }
   },
   methods: {

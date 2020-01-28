@@ -39,14 +39,27 @@ export default {
     state.predios = payload;
   },
   PONER_FILTRO_PROYECTO(state, payload) {
-    state.filtro.modo ="proyecto";
+    state.filtro.modo = "proyecto";
     state.filtro.valor = payload;
+    for (let key in state.filtro.year) {
+      if (state.filtro.year.hasOwnProperty(key)) {
+        state.filtro.year[key] = null;
+      }
+    }
   },
   RESET_FILTRO(state) {
     state.filtro.modo = "colombia";
     state.filtro.value = null;
+    for (let key in state.filtro.year) {
+      if (state.filtro.year.hasOwnProperty(key)) {
+        state.filtro.year[key] = null;
+      }
+    }
+  },
+  CHANGE_CLASSIFICATION_SCHEME(state, payload) {
+    state.filtro.classificationScheme = payload;
   },
   CHANGE_YEAR(state, payload) {
-    state.filtro.year = payload;
+    state.filtro.year[payload.component] = payload.year;
   }
 };

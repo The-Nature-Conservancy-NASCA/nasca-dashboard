@@ -34,6 +34,16 @@ export default {
     const features = state.biodiversidad;
     return [...new Set(features.map(item => item.grupo_tnc))];
   },
+  yearsBiodiversidad(state) {
+    const features = state.biodiversidad;
+    return [
+      ...new Set(
+        features
+          .filter(item => item.fecha_identificacion !== null)
+          .map(item => new Date(item.fecha_identificacion).getFullYear())
+      )
+    ].sort();
+  },
   colorPorCobertura: state => idCobertura => {
     return state.colores.find(color => color.ID_cobertura === idCobertura)
       .color;
@@ -133,7 +143,20 @@ export default {
         : state.filtro.modo === "proyecto"
         ? getters.coberturasPorProyectos([state.filtro.valor])
         : state.coberturas;
-    const year = state.filtro.year;
+
+    const constants = {
+      NAME: "coberturas",
+      PARENT_LABEL:
+        state.filtro.classificationScheme === "project"
+          ? "cobertura_proyecto"
+          : "corine1",
+      CHILD_LABEL:
+        state.filtro.classificationScheme === "project"
+          ? "subcobertura_proyecto"
+          : "corine2",
+      VALUE_FIELD: "area",
+      ID_FIELD: "ID_cobertura"
+    };
 
     const years = [
       ...new Set(
@@ -142,44 +165,52 @@ export default {
           .map(item => new Date(item.fecha_visita).getFullYear())
       )
     ];
-    const data = { name: "coberturas", children: [], years: years };
+    let year;
+    if (state.filtro.year.coberturas) {
+      year = state.filtro.year.coberturas;
+    } else {
+      year = years.slice(-1)[0];
+      state.filtro.year.coberturas = year;
+    }
+
+    const data = { name: constants.NAME, children: [], years: years };
     features
       .filter(feature => new Date(feature.fecha_visita).getFullYear() == year)
       .forEach(feat => {
         // features.forEach(feat => {
         const parentExists = !!data.children.filter(
-          child => child.name === feat["cobertura_proyecto"]
+          child => child.name === feat[constants.PARENT_LABEL]
         ).length;
         if (parentExists) {
           const parent = data.children.filter(
-            child => child.name === feat["cobertura_proyecto"]
+            child => child.name === feat[constants.PARENT_LABEL]
           )[0];
           const childrenExists = !!parent.children.filter(
-            child => child.name === feat["subcobertura_proyecto"]
+            child => child.name === feat[constants.CHILD_LABEL]
           ).length;
           if (childrenExists) {
             const childEl = parent.children.filter(
-              child => child.name === feat["subcobertura_proyecto"]
+              child => child.name === feat[constants.CHILD_LABEL]
             )[0];
-            childEl.value += feat["area"];
+            childEl.value += feat[constants.VALUE_FIELD];
           } else {
             const obj = {
-              name: feat["subcobertura_proyecto"],
-              id: feat["ID_cobertura"],
-              value: feat["area"],
-              color: getters.colorPorCobertura(feat["ID_cobertura"])
+              name: feat[constants.CHILD_LABEL],
+              id: feat[constants.ID_FIELD],
+              value: feat[constants.VALUE_FIELD],
+              color: getters.colorPorCobertura(feat[constants.ID_FIELD])
             };
             parent.children.push(obj);
           }
         } else {
           const obj = {
-            name: feat["cobertura_proyecto"],
+            name: feat[constants.PARENT_LABEL],
             children: [
               {
-                name: feat["subcobertura_proyecto"],
-                id: feat["ID_cobertura"],
-                value: feat["area"],
-                color: getters.colorPorCobertura(feat["ID_cobertura"])
+                name: feat[constants.CHILD_LABEL],
+                id: feat[constants.ID_FIELD],
+                value: feat[constants.VALUE_FIELD],
+                color: getters.colorPorCobertura(feat[constants.ID_FIELD])
               }
             ]
           };
@@ -362,14 +393,14 @@ export default {
   },
   implementacionesExport: (state, getters) => {
     const data = getters.implementaciones.map(item => {
-      return { accion: item.name, area: item.value }
+      return { accion: item.name, area: item.value };
     });
     const header = Object.keys(data[0]);
     return { data: data, header: header };
   },
   participantesExport: (state, getters) => {
     const data = getters.participantes.map(item => {
-      return { genero: item.name, total: item.value }
+      return { genero: item.name, total: item.value };
     });
     const header = Object.keys(data[0]);
     return { data: data, header: header };

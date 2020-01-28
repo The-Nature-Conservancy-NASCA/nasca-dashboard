@@ -1,8 +1,11 @@
 <template>
   <section class="treemap">
-    <div class="treemap__buttons">
-      <button>Proyecto</button>
-      <button>Corine</button>
+    <div
+      v-if="this.$store.state.filtro.modo == 'proyecto'"
+      class="treemap__buttons"
+    >
+      <button @click="changeClassificationScheme('project')">Proyecto</button>
+      <button @click="changeClassificationScheme('corine')">Corine</button>
     </div>
     <div ref="graph" class="graph__container"></div>
     <div id="tooltip__treemap" class="tooltip__graph"></div>
@@ -67,6 +70,10 @@ import * as d3 from "d3";
 export default {
   name: "Treemap",
   props: {
+    component: {
+      type: String,
+      required: true
+    },
     graphData: {
       type: Object,
       required: true
@@ -81,7 +88,7 @@ export default {
       return this.graphData.years;
     },
     selectedYear() {
-      return this.$store.getters.filtro.year;
+      return this.$store.getters.filtro.year[this.component];
     }
   },
   data() {
@@ -99,8 +106,14 @@ export default {
     }
   },
   methods: {
-    changeYear(newYear) {
-      this.$store.dispatch("changeYear", newYear);
+    changeClassificationScheme(schemeName) {
+      this.$store.dispatch("changeClassificationScheme", schemeName);
+    },
+    changeYear(year) {
+      this.$store.dispatch("changeYear", {
+        year: year,
+        component: this.component
+      });
     },
     render() {
       // console.log(this.graphData);
@@ -183,7 +196,8 @@ export default {
           .attr("x", d => d.x0)
           .attr("y", d => d.y0)
           .attr("fill-opacity", 0.75)
-          .attr("fill", d => d.data.color)
+          // .attr("fill", d => d.data.color)
+          .attr("fill", d => this.color(d.parent.data.name))
           .attr("stroke-width", 0.25)
           .attr("stroke", "gray")
           .attr("width", d => d.x1 - d.x0)
@@ -200,7 +214,6 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch("changeYear", this.graphData.years.slice(-1)[0]);
     this.render();
   }
 };
