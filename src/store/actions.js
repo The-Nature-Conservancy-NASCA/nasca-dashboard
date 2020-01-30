@@ -11,4 +11,4 @@ export default {
   changeYear({ commit }, yearInfo) {
     commit("CHANGE_YEAR", yearInfo);
   }
-}
+};

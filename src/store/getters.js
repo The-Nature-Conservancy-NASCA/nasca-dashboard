@@ -3,9 +3,14 @@ export default {
     return state.filtro;
   },
   biodiversidad: state => group => {
-    const features = state.biodiversidad.filter(
-      item => item.grupo_tnc === group
-    );
+    const year = state.filtro.year.biodiversidad;
+    const features = state.biodiversidad.filter(item => {
+      return (
+        item.grupo_tnc === group &&
+        new Date(item.fecha_identificacion).getFullYear() <= year &&
+        item.fecha_identificacion !== null
+      );
+    });
     const covers = [...new Set(features.map(item => item.cobertura))];
     const data = [];
     covers.forEach(cover => {
@@ -21,9 +26,14 @@ export default {
     return data;
   },
   biodiversityGroupCount: state => group => {
-    const features = state.biodiversidad.filter(
-      item => item.grupo_tnc === group
-    );
+    const year = state.filtro.year.biodiversidad;
+    const features = state.biodiversidad.filter(item => {
+      return (
+        item.grupo_tnc === group &&
+        new Date(item.fecha_identificacion).getFullYear() <= year &&
+        item.fecha_identificacion !== null
+      );
+    });
     return [...new Set(features.map(item => item.especie))].length;
   },
   biodiversityIcon: state => group => {
@@ -31,18 +41,28 @@ export default {
     return icono ? icono.url : null;
   },
   gruposBiodiversidad(state) {
-    const features = state.biodiversidad;
+    const year = state.filtro.year.biodiversidad;
+    const features = state.biodiversidad.filter(item => {
+      return (
+        new Date(item.fecha_identificacion).getFullYear() <= year &&
+        item.fecha_identificacion !== null
+      );
+    });
     return [...new Set(features.map(item => item.grupo_tnc))];
   },
   yearsBiodiversidad(state) {
     const features = state.biodiversidad;
-    return [
+    const years = [
       ...new Set(
         features
           .filter(item => item.fecha_identificacion !== null)
           .map(item => new Date(item.fecha_identificacion).getFullYear())
       )
     ].sort();
+    if (!state.filtro.year.biodiversidad) {
+      state.filtro.year.biodiversidad = years.slice(-1)[0];
+    }
+    return years;
   },
   colorPorCobertura: state => idCobertura => {
     return state.colores.find(color => color.ID_cobertura === idCobertura)

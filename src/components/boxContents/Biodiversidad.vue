@@ -9,8 +9,8 @@
         :graphId="`piechart__biodiversidad__${group}`"
       />
     </div>
-    <div class="treemap__year-buttons">
-      <button v-for="year in years" :key="year">
+    <div class="treemap__year-buttons" v-if="groups.length">
+      <button v-for="year in years" :key="year" @click="changeYear(year)">
         {{ year }}
       </button>
     </div>
@@ -20,7 +20,7 @@
 import PieChart from "./PieChart.vue";
 
 export default {
-  name: "Carbono",
+  name: "Biodiversidad",
   components: {
     PieChart
   },
@@ -36,12 +36,21 @@ export default {
     biodiversidad(group) {
       return this.$store.getters.biodiversidad(group);
     },
+    changeYear(year) {
+      this.$store.dispatch("changeYear", {
+        year: year,
+        component: "biodiversidad"
+      });
+    },
     groupCount(group) {
       return this.$store.getters.biodiversityGroupCount(group);
     },
     icono(group) {
       return this.$store.getters.biodiversityIcon(group);
     }
+  },
+  beforeMount() {
+    this.years;
   }
 };
 </script>

@@ -76,6 +76,7 @@ export default {
     modo: "colombia",
     valor: null,
     year: {
+      biodiversidad: null,
       coberturas: null
     },
     classificationScheme: null
