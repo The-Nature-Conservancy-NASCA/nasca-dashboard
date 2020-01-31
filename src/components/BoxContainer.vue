@@ -21,12 +21,12 @@ export default {
 <style lang="scss" scoped>
 .box-container {
   display: grid;
-  grid-gap: 2rem;
+  grid-gap: 1.5rem;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-auto-rows: 28vh;
-  margin: 0 3rem 3rem 3rem;
+  grid-auto-rows: 29vh;
+  margin: 0 3rem 2rem 2rem;
 
-  @media screen and (max-width: 90rem) {
+  @media screen and (max-width: 768px) {
     display: flex;
     flex-direction: column;
 
