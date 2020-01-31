@@ -2,9 +2,28 @@ export default {
   filtro(state) {
     return state.filtro;
   },
-  biodiversidad: state => group => {
+  biodiversidadPorProyectos: state => idsProyecto => {
+    if (idsProyecto) {
+      return state.biodiversidad.filter(item =>
+        idsProyecto.includes(item.ID_proyecto)
+      );
+    }
+  },
+  biodiversidadPorEstrategia: (state, getters) => idEstrategia => {
+    if (idEstrategia) {
+      const proyectos = getters.proyectosPorEstrategia(idEstrategia);
+      return getters.biodiversidadPorProyectos(proyectos);
+    }
+  },
+  biodiversidad: (state, getters) => group => {
     const year = state.filtro.year.biodiversidad;
-    const features = state.biodiversidad.filter(item => {
+    let features =
+      state.filtro.modo === "estrategia"
+        ? getters.biodiversidadPorEstrategia(state.filtro.valor)
+        : state.filtro.modo === "proyecto"
+        ? getters.biodiversidadPorProyectos([state.filtro.valor])
+        : state.biodiversidad;
+    features = features.filter(item => {
       return (
         item.grupo_tnc === group &&
         new Date(item.fecha_identificacion).getFullYear() <= year &&
@@ -25,9 +44,15 @@ export default {
     });
     return data;
   },
-  biodiversityGroupCount: state => group => {
+  biodiversityGroupCount: (state, getters) => group => {
     const year = state.filtro.year.biodiversidad;
-    const features = state.biodiversidad.filter(item => {
+    let features =
+      state.filtro.modo === "estrategia"
+        ? getters.biodiversidadPorEstrategia(state.filtro.valor)
+        : state.filtro.modo === "proyecto"
+        ? getters.biodiversidadPorProyectos([state.filtro.valor])
+        : state.biodiversidad;
+    features = state.biodiversidad.filter(item => {
       return (
         item.grupo_tnc === group &&
         new Date(item.fecha_identificacion).getFullYear() <= year &&
@@ -40,9 +65,15 @@ export default {
     const icono = state.iconos.find(item => item.grupo_tnc === group);
     return icono ? icono.url : null;
   },
-  gruposBiodiversidad(state) {
+  gruposBiodiversidad(state, getters) {
     const year = state.filtro.year.biodiversidad;
-    const features = state.biodiversidad.filter(item => {
+    let features =
+      state.filtro.modo === "estrategia"
+        ? getters.biodiversidadPorEstrategia(state.filtro.valor)
+        : state.filtro.modo === "proyecto"
+        ? getters.biodiversidadPorProyectos([state.filtro.valor])
+        : state.biodiversidad;
+    features = state.biodiversidad.filter(item => {
       return (
         new Date(item.fecha_identificacion).getFullYear() <= year &&
         item.fecha_identificacion !== null
@@ -96,7 +127,9 @@ export default {
   },
   regiones: state => idsProyecto => {
     return idsProyecto
-      ? state.regiones.filter(region => idsProyecto.includes(region.ID_proyecto))
+      ? state.regiones.filter(region =>
+          idsProyecto.includes(region.ID_proyecto)
+        )
       : state.regiones;
   },
   carbonoPorProyectos: (state, getters) => idsProyecto => {
