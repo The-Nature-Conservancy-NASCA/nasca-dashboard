@@ -56,7 +56,7 @@ export default {
         x: 3,
         y: 3
       },
-      content: "GraficaPie"
+      content: "ParticipantesOtros"
     }
   ],
   biodiversidad: [],
