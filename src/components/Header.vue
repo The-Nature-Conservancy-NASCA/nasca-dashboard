@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     cambiarEstrategia() {
-      console.log("nueva estrategia: ", this.estrategiaSelected);
+      console.error("nueva estrategia: ", this.estrategiaSelected);
     },
     cambiarProyecto() {
       this.$store.dispatch("cambiarProyecto", this.proyectoSelected);

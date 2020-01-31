@@ -203,7 +203,7 @@ export default {
           .attr("width", d => d.x1 - d.x0)
           .attr("height", d => d.y1 - d.y0);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     },
     buttonClass(year) {

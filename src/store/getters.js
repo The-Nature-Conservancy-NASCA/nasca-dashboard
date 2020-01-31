@@ -59,7 +59,7 @@ export default {
         item.fecha_identificacion !== null
       );
     });
-    console.log([...new Set(features.map(item => item.especie))].length);
+    //console.log([...new Set(features.map(item => item.especie))].length);
     return [...new Set(features.map(item => item.especie))].length;
   },
   biodiversityIcon: state => group => {
