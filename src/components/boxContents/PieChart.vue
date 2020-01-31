@@ -5,16 +5,16 @@
       <h4>{{ count }}</h4>
     </div>
     <div ref="graph" class="graph__container"></div>
+    <div id="tooltip__piechart" class="tooltip__graph"></div>
     <div v-if="icono">
       <img class="pie-chart__icon" :src="icono" alt="" />
     </div>
-    <div id="tooltip__piechart" class="tooltip__graph"></div>
   </section>
 </template>
 <style lang="scss" scoped>
 .graph__container {
-  width: 20rem;
-  height: 20rem;
+  width: 12rem;
+  height: 12rem;
   margin: 2rem auto;
 }
 
@@ -33,7 +33,7 @@
     position: absolute;
     top: 50%;
     transform: translate(-50%, calc(-50% + 15px));
-    width: 150px;
+    width: 100px;
   }
 }
 </style>
@@ -88,6 +88,7 @@ export default {
       this.tooltipOffset = 15;
       const svg = this.el
         .append("svg")
+        .attr("class", "pie graph")
         .attr("id", this.graphId)
         .attr("width", this.width)
         .attr("height", this.height);

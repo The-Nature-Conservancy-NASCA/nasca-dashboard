@@ -1,21 +1,17 @@
 <template>
-  <div>
+  <div v-if="implementaciones.length">
     <BarChart
       :graphData="implementaciones"
       :graphId="'barchart__implementaciones'"
     />
-    <DownloadImageBtn :graphId="'barchart__implementaciones'" />
   </div>
 </template>
 <script>
 import BarChart from "./BarChart.vue";
-import DownloadImageBtn from "./DownloadImageBtn";
-
 export default {
   name: "Implementaciones",
   components: {
-    BarChart,
-    DownloadImageBtn
+    BarChart
   },
   computed: {
     implementaciones() {

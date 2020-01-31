@@ -60,13 +60,19 @@ export default {
     requests.push(
       fetch(
         `${BASE_DATA_URL}2/${buildQuery({
-          outFields: "ID_proyecto%2C+grupo_tnc%2C+cobertura%2C+especie"
+          outFields:
+            "ID_proyecto%2C+grupo_tnc%2C+cobertura%2C+especie%2C+fecha_identificacion"
         })}`
       )
     ); // Biodiversidad
+    requests.push(fetch(`${BASE_DATA_URL}0/${buildQuery()}`)); // Regiones
     Promise.all(requests).then(responses => {
       const parsePromises = responses.map(response => response.json());
       Promise.all(parsePromises).then(dataset => {
+        this.$store.commit(
+          "SET_REGIONES",
+          dataset[13].features.map(feature => feature.attributes)
+        );
         this.$store.commit(
           "SET_BIODIVERSIDAD",
           dataset[12].features.map(feature => feature.attributes)

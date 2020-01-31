@@ -1,10 +1,5 @@
 <template>
   <section class="stacked-area">
-    <div>
-      <button>Total</button>
-      <button>Compartimiento</button>
-      <button>SNC</button>
-    </div>
     <div ref="graph" class="graph__container"></div>
     <div id="tooltip__stackedarea" class="tooltip__graph"></div>
   </section>
@@ -12,7 +7,7 @@
 <style lang="scss" scoped>
 .graph__container {
   width: 60rem;
-  height: 20rem;
+  height: 12rem;
 }
 .stacked-area {
   align-items: center;
@@ -68,12 +63,12 @@ export default {
         this.margin.top -
         this.margin.bottom;
       this.xlabel = "Año";
-      this.ylabel = "Carbono (MtCO2e)";
+      this.ylabel = "Carbono";
       this.title = "Captura de carbono";
       const areaGroup = this.el
         .append("svg")
         .attr("id", this.graphId)
-        .attr("class", "area")
+        .attr("class", "area graph")
         .attr("width", this.width + this.margin.left + this.margin.right)
         .attr("height", this.height + this.margin.top + this.margin.bottom)
         .append("g")

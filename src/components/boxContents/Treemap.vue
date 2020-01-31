@@ -1,8 +1,11 @@
 <template>
   <section class="treemap">
-    <div class="treemap__buttons">
-      <button>Proyecto</button>
-      <button>Corine</button>
+    <div
+      v-if="this.$store.state.filtro.modo == 'proyecto'"
+      class="treemap__buttons"
+    >
+      <button @click="changeClassificationScheme('project')">Proyecto</button>
+      <button @click="changeClassificationScheme('corine')">Corine</button>
     </div>
     <div ref="graph" class="graph__container"></div>
     <div id="tooltip__treemap" class="tooltip__graph"></div>
@@ -21,7 +24,7 @@
 <style lang="scss" scoped>
 .graph__container {
   width: 50rem;
-  height: 20rem;
+  height: 12rem;
   margin-top: -3.5rem;
 }
 
@@ -67,6 +70,10 @@ import * as d3 from "d3";
 export default {
   name: "Treemap",
   props: {
+    component: {
+      type: String,
+      required: true
+    },
     graphData: {
       type: Object,
       required: true
@@ -81,7 +88,7 @@ export default {
       return this.graphData.years;
     },
     selectedYear() {
-      return this.$store.getters.filtro.year;
+      return this.$store.getters.filtro.year[this.component];
     }
   },
   data() {
@@ -99,10 +106,17 @@ export default {
     }
   },
   methods: {
-    changeYear(newYear) {
-      this.$store.dispatch("changeYear", newYear);
+    changeClassificationScheme(schemeName) {
+      this.$store.dispatch("changeClassificationScheme", schemeName);
+    },
+    changeYear(year) {
+      this.$store.dispatch("changeYear", {
+        year: year,
+        component: this.component
+      });
     },
     render() {
+      // console.log(this.graphData);
       this.el = d3.select(this.$refs["graph"]);
       this.el.html("");
       if (!this.graphData.children.length) {
@@ -116,11 +130,12 @@ export default {
         this.margin.top -
         this.margin.bottom;
       this.color = d3.scaleOrdinal(d3.schemeCategory10);
+      this.tooltipOffset = 15;
 
       const treemapGroup = this.el
         .append("svg")
         .attr("id", this.graphId)
-        .attr("class", "treemap")
+        .attr("class", "treemap graph")
         .attr("width", this.width + this.margin.left + this.margin.right)
         .attr("height", this.height + this.margin.top + this.margin.bottom)
         .append("g")
@@ -136,6 +151,7 @@ export default {
         .padding(0)
         .round(true)(root);
       try {
+        const that = this;
         treemapGroup
           .selectAll("rect")
           .data(root.leaves())
@@ -157,8 +173,8 @@ export default {
             )} ha</span>
               `;
             d3.select("#tooltip__treemap")
-              .style("left", `${coordinates[0] + 15}px`)
-              .style("top", `${coordinates[1] + 10}px`)
+              .style("left", `${coordinates[0] + that.tooltipOffset}px`)
+              .style("top", `${coordinates[1]}px`)
               .style("display", "block")
               .style("font-size", "11px")
               .html(tooltipContent);
@@ -166,8 +182,8 @@ export default {
           .on("mousemove", function() {
             const coordinates = [d3.event.pageX, d3.event.pageY];
             d3.select("#tooltip__treemap")
-              .style("left", `${coordinates[0] + 15}px`)
-              .style("top", `${coordinates[1] + 10}px`);
+              .style("left", `${coordinates[0] + that.tooltipOffset}px`)
+              .style("top", `${coordinates[1]}px`);
           })
           .on("mouseout", function() {
             treemapGroup
@@ -180,7 +196,8 @@ export default {
           .attr("x", d => d.x0)
           .attr("y", d => d.y0)
           .attr("fill-opacity", 0.75)
-          .attr("fill", d => d.data.color)
+          // .attr("fill", d => d.data.color)
+          .attr("fill", d => this.color(d.parent.data.name))
           .attr("stroke-width", 0.25)
           .attr("stroke", "gray")
           .attr("width", d => d.x1 - d.x0)
@@ -197,7 +214,6 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch("changeYear", this.graphData.years.slice(-1)[0]);
     this.render();
   }
 };

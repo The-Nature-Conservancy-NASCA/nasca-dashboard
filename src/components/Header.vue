@@ -20,13 +20,22 @@
       </select>
       <span>Viendo: {{ estrategiaSelected }}</span>
       <button @click="seleccionarTodo">Ver todo</button>
+      <DownloadDataBtn />
+      <DownloadImageBtn />
     </div>
   </div>
 </template>
 
 <script>
+import DownloadDataBtn from "./DownloadDataBtn.vue";
+import DownloadImageBtn from "./DownloadImageBtn.vue";
+
 export default {
   name: "Header",
+  components: {
+    DownloadDataBtn,
+    DownloadImageBtn
+  },
   data() {
     return {
       estrategiaSelected: "",

@@ -6,7 +6,8 @@ export default {
         x: 1,
         y: 1
       },
-      content: "Cobertura"
+      content: "Cobertura",
+      rowSpan: 2
     },
     {
       title: "Biodiversidad",
@@ -26,12 +27,11 @@ export default {
       content: "Carbono"
     },
     {
-      title: "Implementación",
+      title: "Implementaciones",
       position: {
         x: 2,
-        y: 1
+        y: 2
       },
-      colSpan: 2,
       content: "Implementaciones"
     },
     {
@@ -40,7 +40,7 @@ export default {
         x: 3,
         y: 1
       },
-      content: "GraficaPie"
+      content: "ParticipantesGenero"
     },
     {
       title: "Participantes",
@@ -48,7 +48,7 @@ export default {
         x: 3,
         y: 2
       },
-      content: "GraficaPie"
+      content: "ParticipantesOtros"
     },
     {
       title: "Donantes",
@@ -70,11 +70,17 @@ export default {
   participantes: [],
   contribuciones: [],
   estrategias: [],
+  regiones: [],
   proyectos: [],
   predios: [],
   filtro: {
     modo: "colombia",
     valor: null,
-    year: null
+    year: {
+      biodiversidad: null,
+      coberturas: null
+    },
+    carbonoField: null,
+    classificationScheme: null
   }
 };
