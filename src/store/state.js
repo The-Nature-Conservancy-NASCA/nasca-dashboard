@@ -40,15 +40,8 @@ export default {
         x: 3,
         y: 1
       },
-      content: "ParticipantesGenero"
-    },
-    {
-      title: "Participantes",
-      position: {
-        x: 3,
-        y: 2
-      },
-      content: "ParticipantesOtros"
+      colSpan: 2,
+      content: "Participantes"
     },
     {
       title: "Donantes",

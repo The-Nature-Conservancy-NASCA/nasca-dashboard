@@ -59,6 +59,7 @@ export default {
         item.fecha_identificacion !== null
       );
     });
+    console.log([...new Set(features.map(item => item.especie))].length);
     return [...new Set(features.map(item => item.especie))].length;
   },
   biodiversityIcon: state => group => {
@@ -66,6 +67,9 @@ export default {
     return icono ? icono.url : null;
   },
   gruposBiodiversidad(state, getters) {
+    if (!state.filtro.year.biodiversidad) {
+      getters.yearsBiodiversidad;
+    }
     const year = state.filtro.year.biodiversidad;
     let features =
       state.filtro.modo === "estrategia"
@@ -81,8 +85,13 @@ export default {
     });
     return [...new Set(features.map(item => item.grupo_tnc))];
   },
-  yearsBiodiversidad(state) {
-    const features = state.biodiversidad;
+  yearsBiodiversidad(state, getters) {
+    const features =
+      state.filtro.modo === "estrategia"
+        ? getters.biodiversidadPorEstrategia(state.filtro.valor)
+        : state.filtro.modo === "proyecto"
+        ? getters.biodiversidadPorProyectos([state.filtro.valor])
+        : state.biodiversidad;
     const years = [
       ...new Set(
         features
