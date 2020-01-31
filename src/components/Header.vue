@@ -18,7 +18,6 @@
           >{{ proyecto.nombre }}</option
         >
       </select>
-      <span>Viendo: {{ estrategiaSelected }}</span>
       <button @click="seleccionarTodo">Ver todo</button>
       <DownloadDataBtn />
       <DownloadImageBtn />
@@ -70,5 +69,19 @@ export default {
   display: flex;
   justify-content: space-between;
   padding: 1rem;
+
+  button {
+      background-color: transparent;
+      border: none;
+      color: #999;
+      cursor: pointer;
+      font-size: 1.6rem;
+      padding: 1rem;
+      transition: color .3s;
+
+      &:hover {
+        color: #666;
+     }
+  }
 }
 </style>
