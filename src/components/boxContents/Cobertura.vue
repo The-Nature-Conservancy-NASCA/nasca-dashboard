@@ -1,5 +1,5 @@
 <template>
-  <div v-if="cobertura.children.length">
+  <div class="cobertura" v-if="cobertura.children.length">
     <Treemap
       :graphData="cobertura"
       :graphId="'treemap__coberturas'"

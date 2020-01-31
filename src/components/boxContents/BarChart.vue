@@ -11,8 +11,8 @@
 </template>
 <style lang="scss" scoped>
 .graph__container {
-  width: 50rem;
-  height: 12rem;
+  width: 90%;
+  height: 20rem;
 }
 .bar-chart {
   align-items: center;

@@ -1,7 +1,9 @@
 <template>
-  <button @click="downloadData()">
-    Descargar datos
-  </button>
+  <a @click="downloadData()" title="Descargar datos">
+    <i class="material-icons">
+      assignment_returned
+    </i>
+  </a>
 </template>
 <script>
 import * as JSZip from "jszip";
@@ -60,3 +62,17 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+a {
+  cursor: pointer;
+
+  .material-icons {
+    color: #999;
+    transition: color 0.3s;
+
+    &:hover {
+      color: #666;
+    }
+  }
+}
+</style>

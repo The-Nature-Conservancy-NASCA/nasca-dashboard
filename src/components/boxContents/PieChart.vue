@@ -1,8 +1,8 @@
 <template>
   <section class="pie-chart">
     <div class="graph__header">
-      <h5>{{ group }}</h5>
-      <h4>{{ count }}</h4>
+      <h4>{{ group }}</h4>
+      <h5>{{ count }}</h5>
     </div>
     <div ref="graph" class="graph__container"></div>
     <div id="tooltip__piechart" class="tooltip__graph"></div>
@@ -20,6 +20,16 @@
 
 .graph__header {
   text-align: center;
+
+  h4 {
+    color: #666;
+    font-size: 1.8rem;
+    text-transform: uppercase;
+  }
+
+  h5 {
+    font-size: 1.6rem;
+  }
 }
 
 .pie-chart {
@@ -32,7 +42,7 @@
     left: 50%;
     position: absolute;
     top: 50%;
-    transform: translate(-50%, calc(-50% + 15px));
+    transform: translate(-50%, calc(-50% + 24px));
     width: 100px;
   }
 }

@@ -44,11 +44,20 @@ export default {
   border-top: 3px solid var(--color-green-tnc);
   box-shadow: 0 3px 5px rgba(black, 0.4);
   padding: 1.4rem;
+  position: relative;
 
   &__header {
     font-size: 2rem;
     font-weight: 700;
     margin-bottom: 1rem;
+  }
+
+  &__content {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
   }
 
 }

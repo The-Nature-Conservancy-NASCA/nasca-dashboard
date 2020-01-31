@@ -23,7 +23,7 @@
 </template>
 <style lang="scss" scoped>
 .graph__container {
-  width: 50rem;
+  width: 90%;
   height: 30rem;
   margin-top: -1.5rem;
 }

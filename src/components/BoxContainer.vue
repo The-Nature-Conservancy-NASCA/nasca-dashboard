@@ -26,11 +26,12 @@ export default {
   grid-auto-rows: 29vh;
   margin: 0 3rem 2rem 2rem;
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 900px) {
     display: flex;
     flex-direction: column;
 
     .box {
+      height: 50vh;
       margin-bottom: 1rem;
     }
   }

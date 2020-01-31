@@ -8,9 +8,13 @@
         :count="count()"
       />
     </div>
-    <div v-for="group in Object.keys(groups)" :key="group">
-      <h5>{{ group }}</h5>
-      <h4>{{ countOtros(group) }}</h4>
+    <div
+      class="other-participantes"
+      v-for="group in Object.keys(groups)"
+      :key="group"
+    >
+      <h4>{{ group }}</h4>
+      <h5>{{ countOtros(group) }}</h5>
     </div>
   </div>
 </template>
@@ -40,11 +44,26 @@ export default {
   }
 };
 </script>
-<style scoped>
+<style lang="scss" scoped>
 .container {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   width: 100%;
   justify-content: space-evenly;
+}
+
+.other-participantes {
+  text-align: center;
+
+  h4 {
+    color: #666;
+    font-size: 1.8rem;
+    text-transform: uppercase;
+  }
+
+  h5 {
+    font-size: 1.6rem;
+  }
 }
 </style>

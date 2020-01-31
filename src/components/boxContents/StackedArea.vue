@@ -6,8 +6,9 @@
 </template>
 <style lang="scss" scoped>
 .graph__container {
-  width: 60rem;
-  height: 12rem;
+  width: 90%;
+  height: 15rem;
+  margin-top: 2rem;
 }
 .stacked-area {
   align-items: center;

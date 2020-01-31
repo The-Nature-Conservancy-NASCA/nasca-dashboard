@@ -70,18 +70,24 @@ export default {
   justify-content: space-between;
   padding: 1rem;
 
-  button {
-      background-color: transparent;
-      border: none;
-      color: #999;
-      cursor: pointer;
-      font-size: 1.6rem;
-      padding: 1rem;
-      transition: color .3s;
+  &__estrategias {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
 
-      &:hover {
-        color: #666;
-     }
+  button {
+    background-color: transparent;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    font-size: 1.6rem;
+    padding: 1rem;
+    transition: color 0.3s;
+
+    &:hover {
+      color: #666;
+    }
   }
 }
 </style>
