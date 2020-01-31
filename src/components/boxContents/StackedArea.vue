@@ -1,10 +1,5 @@
 <template>
   <section class="stacked-area">
-    <div>
-      <button>Total</button>
-      <button>Compartimiento</button>
-      <button>SNC</button>
-    </div>
     <div ref="graph" class="graph__container"></div>
     <div id="tooltip__stackedarea" class="tooltip__graph"></div>
   </section>

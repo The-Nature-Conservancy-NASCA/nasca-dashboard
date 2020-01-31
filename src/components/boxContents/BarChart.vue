@@ -11,7 +11,7 @@
 </template>
 <style lang="scss" scoped>
 .graph__container {
-  width: 100rem;
+  width: 50rem;
   height: 12rem;
 }
 .bar-chart {

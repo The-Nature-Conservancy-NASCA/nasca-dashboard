@@ -70,6 +70,7 @@ export default {
   participantes: [],
   contribuciones: [],
   estrategias: [],
+  regiones: [],
   proyectos: [],
   predios: [],
   filtro: {
@@ -79,6 +80,7 @@ export default {
       biodiversidad: null,
       coberturas: null
     },
+    carbonoField: null,
     classificationScheme: null
   }
 };

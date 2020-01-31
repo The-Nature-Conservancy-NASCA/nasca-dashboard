@@ -94,24 +94,56 @@ export default {
       ? state.predios.filter(predio => idsProyecto.includes(predio.ID_proyecto))
       : state.predios;
   },
-  carbono: state => {
-    const features = state.carbono;
+  regiones: state => idsProyecto => {
+    return idsProyecto
+      ? state.regiones.filter(region => idsProyecto.includes(region.ID_proyecto))
+      : state.regiones;
+  },
+  carbonoPorProyectos: (state, getters) => idsProyecto => {
+    if (idsProyecto) {
+      const regionesPorProyecto = getters
+        .regiones(idsProyecto)
+        .map(region => region.ID_region);
+
+      return state.carbono.filter(item =>
+        regionesPorProyecto.includes(item.ID_region)
+      );
+    }
+  },
+  carbonoPorEstrategia: (state, getters) => idEstrategia => {
+    if (idEstrategia) {
+      const proyectos = getters.proyectosPorEstrategia(idEstrategia);
+      return getters.carbonoPorProyectos(proyectos);
+    }
+  },
+  carbono: (state, getters) => {
+    const features =
+      state.filtro.modo === "estrategia"
+        ? getters.carbonoPorEstrategia(state.filtro.valor)
+        : state.filtro.modo === "proyecto"
+        ? getters.carbonoPorProyectos([state.filtro.valor])
+        : state.carbono;
     const domain = {
       0: "Biomasa",
       1: "Suelos",
       2: "Madera"
     };
-    const field = "comportamiento";
+    const field = state.filtro.carbonoField;
     const defaultKey = "Total";
-    const startYear = new Date(features[0].fecha).getFullYear();
-    const years = Array.from(Array(startYear + 21).keys()).slice(startYear);
+    let years;
+    if (features.length) {
+      const startYear = new Date(features[0].fecha).getFullYear();
+      years = Array.from(Array(startYear + 21).keys()).slice(startYear);
+    } else {
+      years = [];
+    }
     const data = [];
     features.forEach((feat, i) => {
       let key;
       if (!field) {
         key = defaultKey;
       } else {
-        if (field === "comportamiento") {
+        if (field === "compartimiento") {
           key = domain[feat[field]];
         } else {
           key = feat[field];

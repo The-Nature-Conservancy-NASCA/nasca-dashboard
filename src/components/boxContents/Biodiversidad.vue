@@ -9,8 +9,13 @@
         :graphId="`piechart__biodiversidad__${group}`"
       />
     </div>
-    <div class="treemap__year-buttons" v-if="groups.length">
-      <button v-for="year in years" :key="year" @click="changeYear(year)">
+    <div class="biodiversidad__year-buttons" v-if="groups.length">
+      <button
+        v-for="year in years"
+        :key="year"
+        @click="changeYear(year)"
+        :class="buttonClass(year)"
+      >
         {{ year }}
       </button>
     </div>
@@ -28,6 +33,9 @@ export default {
     groups() {
       return this.$store.getters.gruposBiodiversidad;
     },
+    selectedYear() {
+      return this.$store.getters.filtro.year.biodiversidad;
+    },
     years() {
       return this.$store.getters.yearsBiodiversidad;
     }
@@ -35,6 +43,12 @@ export default {
   methods: {
     biodiversidad(group) {
       return this.$store.getters.biodiversidad(group);
+    },
+    buttonClass(year) {
+      return {
+        selected: this.selectedYear === year,
+        unselected: this.selectedYear !== year
+      };
     },
     changeYear(year) {
       this.$store.dispatch("changeYear", {
@@ -60,5 +74,34 @@ export default {
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
+
+  &__buttons {
+    transform: translateY(-3.5rem);
+  }
+
+  &__year-buttons {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+
+    button {
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+      background-color: #ddd;
+      cursor: pointer;
+      border: none;
+      padding: 1rem;
+      transition: all 0.2s;
+
+      &.selected {
+        background-color: var(--color-green-tnc);
+        color: #fff;
+      }
+
+      &:hover {
+        box-shadow: 0 5px 8px rgba(0, 0, 0, 0.4);
+        transform: translateY(-2px);
+      }
+    }
+  }
 }
 </style>

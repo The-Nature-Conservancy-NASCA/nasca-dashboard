@@ -32,6 +32,9 @@ export default {
   SET_ESTRATEGIAS(state, payload) {
     state.estrategias = payload;
   },
+  SET_REGIONES(state, payload) {
+    state.regiones = payload;
+  },
   SET_PROYECTOS(state, payload) {
     state.proyectos = payload;
   },
