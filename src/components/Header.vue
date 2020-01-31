@@ -66,6 +66,9 @@ export default {
 
 <style scoped lang="scss">
 .header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
   padding: 1rem;
 }
 </style>
