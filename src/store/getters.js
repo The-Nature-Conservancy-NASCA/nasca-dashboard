@@ -134,19 +134,82 @@ export default {
       ? state.predios.filter(predio => idsProyecto.includes(predio.ID_proyecto))
       : state.predios;
   },
-  regiones: state => idsProyecto => {
+  regionesProyecto: state => idProyecto => {
+    return idProyecto
+      ? state.regiones.filter(region => idProyecto == region.ID_proyecto)
+      : state.regiones;
+  },
+  regionesEstrategia: state => idsProyecto => {
     return idsProyecto
       ? state.regiones.filter(region =>
           idsProyecto.includes(region.ID_proyecto)
         )
       : state.regiones;
   },
+  carbonoPorProyecto: (state, getters) => {
+    const idProyecto = state.filtro.valor;
+    console.log(idProyecto);
+    if (idProyecto) {
+      const regionesPorProyecto = getters
+        .regionesProyecto(idProyecto)
+        .map(region => region.ID_region);
+      const features = state.carbono.filter(item =>
+        regionesPorProyecto.includes(item.ID_region)
+      );
+      const domain = {
+        0: "Biomasa",
+        1: "Suelos",
+        2: "Madera"
+      };
+      const field = state.filtro.carbonoField;
+      const defaultKey = "Total";
+      let years;
+      if (features.length) {
+        const startYear = new Date(features[0].fecha).getFullYear();
+        years = Array.from(Array(startYear + 21).keys()).slice(startYear);
+      } else {
+        years = [];
+      }
+      const data = [];
+      features.forEach((feat, i) => {
+        let key;
+        if (!field) {
+          key = defaultKey;
+        } else {
+          if (field === "compartimiento") {
+            key = domain[feat[field]];
+          } else {
+            key = feat[field];
+          }
+        }
+        for (let j = 0; j <= 20; j++) {
+          const t = `T${j}`;
+          const year = years[j];
+          if (i == 0) {
+            const obj = { year: year };
+            obj[key] = feat[t];
+            data.push(obj);
+          } else {
+            const obj = data.filter(el => el.year == year)[0];
+            if (key in obj) {
+              obj[key] += feat[t];
+            } else {
+              obj[key] = feat[t];
+            }
+          }
+        }
+      });
+      return {
+        data: data,
+        years: years
+      };
+    }
+  },
   carbonoPorProyectos: (state, getters) => idsProyecto => {
     if (idsProyecto) {
       const regionesPorProyecto = getters
-        .regiones(idsProyecto)
+        .regionesEstrategia(idsProyecto)
         .map(region => region.ID_region);
-
       return state.carbono.filter(item =>
         regionesPorProyecto.includes(item.ID_region)
       );
@@ -159,12 +222,12 @@ export default {
     }
   },
   carbono: (state, getters) => {
-    const features =
-      state.filtro.modo === "estrategia"
-        ? getters.carbonoPorEstrategia(state.filtro.valor)
-        : state.filtro.modo === "proyecto"
-        ? getters.carbonoPorProyectos([state.filtro.valor])
-        : state.carbono;
+    let features;
+    if (state.filtro.modo === "estrategia") {
+      features = getters.carbonoPorEstrategia(state.filtro.valor);
+    } else if (state.filtro.modo === "colombia") {
+      features = state.carbono;
+    }
     const domain = {
       0: "Biomasa",
       1: "Suelos",
@@ -172,15 +235,9 @@ export default {
     };
     const field = state.filtro.carbonoField;
     const defaultKey = "Total";
-    let years;
-    if (features.length) {
-      const startYear = new Date(features[0].fecha).getFullYear();
-      years = Array.from(Array(startYear + 21).keys()).slice(startYear);
-    } else {
-      years = [];
-    }
+    const yearField = "T20";
     const data = [];
-    features.forEach((feat, i) => {
+    features.forEach(feat => {
       let key;
       if (!field) {
         key = defaultKey;
@@ -191,27 +248,14 @@ export default {
           key = feat[field];
         }
       }
-      for (let j = 0; j <= 20; j++) {
-        const t = `T${j}`;
-        const year = years[j];
-        if (i == 0) {
-          const obj = { year: year };
-          obj[key] = feat[t];
-          data.push(obj);
-        } else {
-          const obj = data.filter(el => el.year == year)[0];
-          if (key in obj) {
-            obj[key] += feat[t];
-          } else {
-            obj[key] = feat[t];
-          }
-        }
+      const obj = data.find(item => item.name == key);
+      if (obj) {
+        obj.value += feat[yearField];
+      } else {
+        data.push({ name: key, value: feat[yearField] });
       }
     });
-    return {
-      data: data,
-      years: years
-    };
+    return data;
   },
   coberturasPorProyectos: (state, getters) => idsProyecto => {
     if (idsProyecto) {

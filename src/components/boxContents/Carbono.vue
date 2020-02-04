@@ -1,5 +1,12 @@
 <template>
-  <div v-if="carbono.data.length" class="carbono">
+  <div
+    v-if="
+      this.$store.state.filtro.modo === 'proyecto'
+        ? carbonoProyecto.data.length
+        : carbono.length
+    "
+    class="carbono"
+  >
     <div class="carbono__ctas">
       <button :class="buttonClass(null)" @click="changeField(null)">
         Total
@@ -25,15 +32,29 @@
         SNC
       </button>
     </div>
-    <StackedArea :graphData="carbono" :graphId="'areachart__carbono'" />
+    <StackedArea
+      v-if="this.$store.state.filtro.modo === 'proyecto'"
+      :graphData="carbonoProyecto"
+      :graphId="'areachart__carbono'"
+    />
+    <div
+      class="carbono__numbers"
+      v-if="this.$store.state.filtro.modo !== 'proyecto'"
+    >
+      <div v-for="item in carbono" :key="item.name">
+        <QuantityText :name="item.name" :value="item.value" />
+      </div>
+    </div>
   </div>
 </template>
 <script>
+import QuantityText from "./QuantityText.vue";
 import StackedArea from "./StackedArea.vue";
 
 export default {
   name: "Carbono",
   components: {
+    QuantityText,
     StackedArea
   },
   data() {
@@ -44,18 +65,22 @@ export default {
   computed: {
     carbono() {
       return this.$store.getters.carbono;
+    },
+    carbonoProyecto() {
+      console.log(this.$store.getters.carbonoPorProyecto);
+      return this.$store.getters.carbonoPorProyecto;
     }
   },
   methods: {
-    changeField(field) {
-      this.$store.state.filtro.carbonoField = field;
-      this.selectedField = field;
-    },
     buttonClass(field) {
       return {
         selected: this.selectedField === field,
         unselected: this.selectedField !== field
       };
+    },
+    changeField(field) {
+      this.$store.dispatch("changeCarbonoField", field);
+      this.selectedField = field;
     }
   }
 };
@@ -86,6 +111,13 @@ export default {
         transform: translateY(-2px);
       }
     }
+  }
+
+  &__numbers {
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
   }
 }
 </style>

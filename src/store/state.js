@@ -40,8 +40,15 @@ export default {
         x: 3,
         y: 1
       },
-      colSpan: 2,
       content: "Participantes"
+    },
+    {
+      title: "Metas",
+      position: {
+        x: 3,
+        y: 2
+      },
+      content: ""
     },
     {
       title: "Donantes",
@@ -49,7 +56,7 @@ export default {
         x: 3,
         y: 3
       },
-      content: "ParticipantesOtros"
+      content: ""
     }
   ],
   biodiversidad: [],

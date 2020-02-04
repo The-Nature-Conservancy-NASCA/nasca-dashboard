@@ -12,13 +12,16 @@
 <style lang="scss" scoped>
 .graph__container {
   width: 90%;
-  height: 20rem;
+  height: 15rem;
+  margin-top: 30px;
+  margin-left: auto;
+  margin-right: auto;
 }
-.bar-chart {
-  align-items: center;
-  display: flex;
-  justify-content: center;
-}
+// .bar-chart {
+//   align-items: center;
+//   display: flex;
+//   justify-content: center;
+// }
 </style>
 <script>
 import * as d3 from "d3";
@@ -66,7 +69,7 @@ export default {
         return;
       }
 
-      this.margin = { top: 10, right: 10, bottom: 20, left: 75 };
+      this.margin = { top: 10, right: 10, bottom: 20, left: 10 };
       this.offset = { left: 10, bottom: 10 };
 
       // compute width and height based on parent div
@@ -77,8 +80,8 @@ export default {
         this.margin.top -
         this.margin.bottom;
 
-      this.color = "#6EA19F";
-      this.factor = 0.5;
+      this.color = "#4AA241";
+      this.factor = 0.6;
 
       this.title = "Área total por acción";
       this.ylabel = "Acción";
@@ -112,17 +115,19 @@ export default {
         var yAxis = d3
           .axisLeft()
           .scale(xScale)
-          .tickFormat((d, i) => this.graphData[i].name);
+          .tickValues([])
+          .tickSize(0);
+        // .tickFormat((d, i) => this.graphData[i].name);
         barGroup
           .selectAll("rect")
           .data(this.graphData)
           .enter()
           .append("rect")
           .on("mouseover", function(d) {
-            barGroup.selectAll("rect").attr("fill-opacity", 0.3);
+            barGroup.selectAll("rect").attr("fill-opacity", 0.2);
             d3.select(this)
               .attr("stroke", "black")
-              .attr("fill-opacity", 0.75);
+              .attr("fill-opacity", 1);
             const coordinates = [d3.event.pageX, d3.event.pageY];
             const tooltipContent = `
           <span class="tooltip__value">${Math.round(
@@ -143,7 +148,7 @@ export default {
               .style("top", `${coordinates[1] + 10}px`);
           })
           .on("mouseout", function() {
-            barGroup.selectAll("rect").attr("fill-opacity", 0.75);
+            barGroup.selectAll("rect").attr("fill-opacity", 1);
             d3.select(this).attr("stroke", "none");
             d3.select("#tooltip__barchart").style("display", "none");
           })
@@ -160,6 +165,27 @@ export default {
           .attr("fill", this.color)
           .transition()
           .attr("width", d => yScale(d.value));
+        barGroup
+          .selectAll("text")
+          .data(this.graphData)
+          .enter()
+          .append("text")
+          .attr("x", d => yScale(d.value) / 2 + this.margin.left + this.offset.left)
+          .attr(
+            "y",
+            (d, i) =>
+              xScale(i) -
+              this.margin.bottom -
+              this.offset.bottom +
+              xScale.bandwidth() / 2
+          )
+          .attr("text-anchor", "middle")
+          .attr("dominant-baseline", "middle")
+          .attr("font-size", 9)
+          .attr("font-weight", "bold")
+          .attr("fill", "white")
+          .attr("pointer-events", "none")
+          .text(d => d.name);
         barGroup
           .append("g")
           .attr("class", "y axis")
@@ -178,41 +204,31 @@ export default {
               this.margin.bottom})`
           )
           .call(xAxis);
-        barGroup
-          .append("text")
-          .attr("class", "title")
-          .attr("text-anchor", "middle")
-          .attr(
-            "x",
-            (this.width - this.margin.left - this.margin.right) / 2 +
-              this.margin.left -
-              this.margin.right
-          )
-          .attr("y", 0)
-          .text(this.title);
+        // barGroup
+        //   .append("text")
+        //   .attr("class", "title")
+        //   .attr("text-anchor", "middle")
+        //   .attr(
+        //     "x",
+        //     (this.width - this.margin.left - this.margin.right) / 2 +
+        //       this.margin.left -
+        //       this.margin.right
+        //   )
+        //   .attr("y", 0)
+        //   .text(this.title);
         barGroup
           .append("text")
           .attr("class", "x label")
-          .attr("text-anchor", "middle")
-          .attr(
-            "x",
-            (this.width - this.margin.left - this.margin.right) / 2 +
-              this.margin.left -
-              this.margin.right
-          )
-          .attr("y", this.height + this.margin.bottom - 2)
+          .attr("text-anchor", "end")
+          .attr("x", this.width + this.offset.left)
+          .attr("y", this.height + 15)
           .text(this.xlabel);
         barGroup
           .append("text")
-          .attr("text-anchor", "middle")
-          .attr("x", -(this.height / 2))
-          .attr("y", () => {
-            const yAxisWidth = d3
-              .select(".y.axis")
-              .node()
-              .getBBox().width;
-            return -(yAxisWidth + this.offset.left + 10);
-          })
+          .attr("class", "y label")
+          .attr("text-anchor", "end")
+          .attr("x", 0)
+          .attr("y", 0)
           .attr("transform", "rotate(-90)")
           .text(this.ylabel);
       } catch (error) {

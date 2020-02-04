@@ -50,6 +50,15 @@ export default {
       }
     }
   },
+  PONER_FILTRO_ESTRATEGIA(state, payload) {
+    state.filtro.modo = "estrategia";
+    state.filtro.valor = payload;
+    for (let key in state.filtro.year) {
+      if (state.filtro.year.hasOwnProperty(key)) {
+        state.filtro.year[key] = null;
+      }
+    }
+  },
   RESET_FILTRO(state) {
     state.filtro.modo = "colombia";
     state.filtro.value = null;
@@ -58,6 +67,9 @@ export default {
         state.filtro.year[key] = null;
       }
     }
+  },
+  CHANGE_CARBONO_FIELD(state, payload) {
+    state.filtro.carbonoField = payload;
   },
   CHANGE_CLASSIFICATION_SCHEME(state, payload) {
     state.filtro.classificationScheme = payload;

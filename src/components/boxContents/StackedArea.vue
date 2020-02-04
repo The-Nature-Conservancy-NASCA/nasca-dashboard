@@ -98,7 +98,7 @@ export default {
           .axisBottom()
           .scale(xScale)
           .tickFormat(d => parseInt(d))
-          .ticks(10);
+          .ticks(5);
         const yAxis = d3
           .axisLeft()
           .scale(yScale)
@@ -162,7 +162,7 @@ export default {
               .append("path")
               .attr("d", areaBeforeYear)
               .attr("fill", d => (d.key == label ? "none" : "white"))
-              .attr("fill-opacity", d => (d.key == label ? 1 : 0.4))
+              .attr("fill-opacity", d => (d.key == label ? 1 : 0.8))
               .attr("stroke", d => (d.key == label ? "black" : "none"))
               .attr("pointer-events", "none");
             areaGroup
@@ -174,7 +174,7 @@ export default {
               .append("path")
               .attr("d", areaAfterYear)
               .attr("fill", "white")
-              .attr("fill-opacity", 0.3)
+              .attr("fill-opacity", 0.8)
               .attr("pointer-events", "none");
             areaGroup
               .select(".vertical.helper__line")
@@ -190,6 +190,7 @@ export default {
               .attr("y2", yScale(accumulatedValue));
             areaGroup.selectAll(".helper__line").attr("visibility", "visible");
             areaGroup.selectAll(".helper__line").raise();
+            areaGroup.select(".year__division").raise();
             const coordinates = [d3.event.pageX, d3.event.pageY];
             const tooltipContent = `
             <span class="tooltip__title">${d.key}</span><br>
@@ -233,10 +234,9 @@ export default {
               .data(series)
               .enter()
               .append("path")
-
               .attr("d", areaBeforeYear)
               .attr("fill", d => (d.key == label ? "none" : "white"))
-              .attr("fill-opacity", d => (d.key == label ? 1 : 0.4))
+              .attr("fill-opacity", d => (d.key == label ? 1 : 0.8))
               .attr("stroke", d => (d.key == label ? "black" : "none"))
               .attr("pointer-events", "none");
             areaGroup
@@ -248,7 +248,7 @@ export default {
               .append("path")
               .attr("d", areaAfterYear)
               .attr("fill", "white")
-              .attr("fill-opacity", 0.3)
+              .attr("fill-opacity", 0.8)
               .attr("pointer-events", "none");
             d3.select(".vertical.helper__line")
               .attr("x1", xScale(year))
@@ -261,6 +261,7 @@ export default {
               .attr("y1", yScale(accumulatedValue))
               .attr("y2", yScale(accumulatedValue));
             d3.selectAll(".helper__line").raise();
+            d3.select(".year__division").raise();
             const coordinates = [d3.event.pageX, d3.event.pageY];
             const tooltipContent = `
             <span class="tooltip__title">${label}</span>
@@ -299,7 +300,11 @@ export default {
           .attr("class", "y axis")
           .attr("transform", `translate(${this.margin.left}, 0)`)
           .call(yAxis);
-        areaGroup
+        const yearDivision = areaGroup
+          .append("g")
+          .attr("class", "year__division")
+          .attr("pointer-events", "none");
+        yearDivision
           .append("line")
           .attr("x1", xScale(this.currentYear))
           .attr("x2", xScale(this.currentYear))
@@ -307,7 +312,7 @@ export default {
           .attr("y2", yScale.range()[1])
           .attr("pointer-events", "none")
           .attr("stroke", "red");
-        areaGroup
+        yearDivision
           .append("text")
           .attr("y", xScale(this.currentYear) - 5)
           .attr("x", yScale.range()[1] - this.margin.bottom)
@@ -315,16 +320,7 @@ export default {
           .attr("text-anchor", "end")
           .attr("font-size", 9)
           .attr("fill", "red")
-          .text("Observado");
-        areaGroup
-          .append("text")
-          .attr("y", xScale(this.currentYear) + 11)
-          .attr("x", yScale.range()[1] - this.margin.bottom)
-          .attr("transform", "rotate(-90)")
-          .attr("text-anchor", "end")
-          .attr("font-size", 9)
-          .attr("fill", "red")
-          .text("Proyectado");
+          .text("Cierre");
         areaGroup
           .append("text")
           .attr("class", "title")
