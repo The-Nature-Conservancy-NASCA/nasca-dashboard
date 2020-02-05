@@ -1,7 +1,6 @@
 <template>
   <section class="bar-chart">
     <div ref="graph" class="graph__container"></div>
-    <div id="tooltip__barchart" class="tooltip__graph"></div>
     <div>
       <button v-for="year in years" :key="year" @click="changeYear(year)">
         {{ year }}
@@ -87,6 +86,8 @@ export default {
       this.ylabel = "Acción";
       this.xlabel = "Área (ha)";
 
+      this.tooltipOffset = 15;
+
       const barGroup = this.el
         .append("svg")
         .attr("id", this.graphId)
@@ -111,13 +112,15 @@ export default {
         var xAxis = d3
           .axisBottom()
           .scale(yScale)
-          .ticks(5);
+          .tickSizeOuter(0)
+          .ticks(4);
         var yAxis = d3
           .axisLeft()
           .scale(xScale)
           .tickValues([])
           .tickSize(0);
         // .tickFormat((d, i) => this.graphData[i].name);
+        const that = this;
         barGroup
           .selectAll("rect")
           .data(this.graphData)
@@ -129,28 +132,31 @@ export default {
               .attr("stroke", "black")
               .attr("fill-opacity", 1);
             const coordinates = [d3.event.pageX, d3.event.pageY];
+            const value = new Number(Math.round(d.value)).toLocaleString("en");
             const tooltipContent = `
-          <span class="tooltip__value">${Math.round(
-            d.value
-          )}</span><span class="tooltip__subtitle"> ha</span>
-          `;
-            d3.select("#tooltip__barchart")
-              .style("left", `${coordinates[0] + 15}px`)
-              .style("top", `${coordinates[1] + 10}px`)
+              <span class="tooltip__title">${d.name}</span>
+              <hr>
+              <span class="tooltip__value">${value}</span><span class="tooltip__subtitle"> ha</span>
+            `;
+            d3.select("#tooltip__graph")
+              .style("left", `${coordinates[0] + that.tooltipOffset}px`)
+              .style("top", `${coordinates[1]}px`)
               .style("display", "block")
               .style("font-size", "11px")
               .html(tooltipContent);
           })
           .on("mousemove", function() {
             const coordinates = [d3.event.pageX, d3.event.pageY];
-            d3.select("#tooltip__barchart")
-              .style("left", `${coordinates[0] + 15}px`)
-              .style("top", `${coordinates[1] + 10}px`);
+            d3.select("#tooltip__graph")
+              .style("left", `${coordinates[0] + that.tooltipOffset}px`)
+              .style("top", `${coordinates[1]}px`);
           })
           .on("mouseout", function() {
             barGroup.selectAll("rect").attr("fill-opacity", 1);
             d3.select(this).attr("stroke", "none");
-            d3.select("#tooltip__barchart").style("display", "none");
+            d3.select("#tooltip__graph")
+              .html("")
+              .style("display", "none");
           })
           .attr(
             "y",
@@ -170,7 +176,10 @@ export default {
           .data(this.graphData)
           .enter()
           .append("text")
-          .attr("x", d => yScale(d.value) / 2 + this.margin.left + this.offset.left)
+          .attr(
+            "x",
+            d => yScale(d.value) / 2 + this.margin.left + this.offset.left
+          )
           .attr(
             "y",
             (d, i) =>
@@ -222,6 +231,8 @@ export default {
           .attr("text-anchor", "end")
           .attr("x", this.width + this.offset.left)
           .attr("y", this.height + 15)
+          .attr("font-size", 10)
+          .attr("font-weight", "bold")
           .text(this.xlabel);
         barGroup
           .append("text")
@@ -230,6 +241,8 @@ export default {
           .attr("x", 0)
           .attr("y", 0)
           .attr("transform", "rotate(-90)")
+          .attr("font-size", 10)
+          .attr("font-weight", "bold")
           .text(this.ylabel);
       } catch (error) {
         console.log(error);

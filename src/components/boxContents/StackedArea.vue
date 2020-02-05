@@ -1,7 +1,6 @@
 <template>
   <section class="stacked-area">
     <div ref="graph" class="graph__container"></div>
-    <div id="tooltip__stackedarea" class="tooltip__graph"></div>
   </section>
 </template>
 <style lang="scss" scoped>
@@ -200,7 +199,7 @@ export default {
               value
             )} MtCO2e</span>
             `;
-            d3.select("#tooltip__stackedarea")
+            d3.select("#tooltip__graph")
               .style("left", `${coordinates[0] + that.tooltipOffset}px`)
               .style("top", `${coordinates[1]}px`)
               .style("display", "block")
@@ -263,16 +262,13 @@ export default {
             d3.selectAll(".helper__line").raise();
             d3.select(".year__division").raise();
             const coordinates = [d3.event.pageX, d3.event.pageY];
+            const tooltipValue = Number(Math.round(value)).toLocaleString("en");
             const tooltipContent = `
-            <span class="tooltip__title">${label}</span>
-            <br>
-            <span class="tooltip__subtitle">Año: </span><span class="tooltip__value">${year}</span>
-            <br>
-            <span class="tooltip__subtitle">Valor: </span><span class="tooltip__value">${Math.round(
-              value
-            )} MtCO2e</span>
+            <span class="tooltip__title">${label} (${year})</span>
+            <hr>
+            <span class="tooltip__value">${tooltipValue} MtCO2e</span>
             `;
-            d3.select("#tooltip__stackedarea")
+            d3.select("#tooltip__graph")
               .style("left", `${coordinates[0] + that.tooltipOffset}px`)
               .style("top", `${coordinates[1]}px`)
               .html(tooltipContent);
@@ -281,8 +277,7 @@ export default {
             d3.selectAll(".area__before").remove();
             d3.selectAll(".area__after").remove();
             areaGroup.selectAll(".helper__line").attr("visibility", "hidden");
-            // d3.selectAll(".overlaid__area").remove();
-            d3.select("#tooltip__stackedarea").style("display", "none");
+            d3.select("#tooltip__graph").style("display", "none");
           })
           .attr("class", "area")
           .attr("d", area)

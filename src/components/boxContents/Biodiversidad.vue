@@ -7,6 +7,7 @@
         :group="group"
         :count="groupCount(group)"
         :graphId="`piechart__biodiversidad__${group}`"
+        :valueLabel="'especies'"
       />
     </div>
     <div class="biodiversidad__year-buttons" v-if="groups.length">

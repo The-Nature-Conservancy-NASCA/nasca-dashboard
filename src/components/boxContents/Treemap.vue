@@ -8,17 +8,7 @@
       <button @click="changeClassificationScheme('corine')">Corine</button>
     </div>
     <div ref="graph" class="graph__container"></div>
-    <div id="tooltip__treemap" class="tooltip__graph"></div>
-    <div class="treemap__year-buttons">
-      <button
-        v-for="year in years"
-        :key="year"
-        @click="changeYear(year)"
-        :class="buttonClass(year)"
-      >
-        {{ year }}
-      </button>
-    </div>
+    <!-- <div id="tooltip__treemap" class="tooltip__graph"></div> -->
   </section>
 </template>
 <style lang="scss" scoped>
@@ -158,21 +148,20 @@ export default {
           .enter()
           .append("rect")
           .on("mouseover", function(d) {
-            treemapGroup.selectAll("rect").attr("fill-opacity", 0.3);
+            treemapGroup.selectAll("rect").attr("fill-opacity", 0.2);
             d3.select(this)
               .attr("stroke", "black")
               .attr("stroke-width", 1)
-              .attr("fill-opacity", 0.75);
+              .attr("fill-opacity", 1);
             const coordinates = [d3.event.pageX, d3.event.pageY];
+            const value = Number(Math.round(d.data.value)).toLocaleString("en");
             const tooltipContent = `
                 <span class="tooltip__title">${d.parent.data.name}</span><br>
-                <span class="tooltip__subtitle">${
-                  d.data.name
-                }</span>: <span class="tooltip__value">${Math.round(
-              d.data.value
-            )} ha</span>
+                <span class="tooltip__subtitle">${d.data.name}</span>
+                <hr>
+                <span class="tooltip__value">${value} ha</span>
               `;
-            d3.select("#tooltip__treemap")
+            d3.select("#tooltip__graph")
               .style("left", `${coordinates[0] + that.tooltipOffset}px`)
               .style("top", `${coordinates[1]}px`)
               .style("display", "block")
@@ -181,21 +170,23 @@ export default {
           })
           .on("mousemove", function() {
             const coordinates = [d3.event.pageX, d3.event.pageY];
-            d3.select("#tooltip__treemap")
+            d3.select("#tooltip__graph")
               .style("left", `${coordinates[0] + that.tooltipOffset}px`)
               .style("top", `${coordinates[1]}px`);
           })
           .on("mouseout", function() {
             treemapGroup
               .selectAll("rect")
-              .attr("fill-opacity", 0.75)
+              .attr("fill-opacity", 1)
               .attr("stroke-width", 0.25)
               .attr("stroke", "gray");
-            d3.select("#tooltip__treemap").style("display", "none");
+            d3.select("#tooltip__graph")
+              .html("")
+              .style("display", "none");
           })
           .attr("x", d => d.x0)
           .attr("y", d => d.y0)
-          .attr("fill-opacity", 0.75)
+          .attr("fill-opacity", 1)
           .attr("fill", d => d.data.color)
           // .attr("fill", d => this.color(d.parent.data.name))
           .attr("stroke-width", 0.25)

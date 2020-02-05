@@ -6,6 +6,7 @@
         :graphId="'piechart__participantes__genero'"
         :group="'Participantes'"
         :count="count()"
+        :valueLabel="'individuos'"
       />
     </div>
     <div

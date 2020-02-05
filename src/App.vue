@@ -5,6 +5,7 @@
     <div class="loader" v-else>
       <img src="@/assets/images/loader.gif" alt="" />
     </div>
+    <div id="tooltip__graph"></div>
   </div>
 </template>
 
@@ -169,7 +170,7 @@ body {
   width: 100vw;
 }
 
-.tooltip__graph {
+#tooltip__graph {
   position: absolute;
   height: auto;
   padding: 5px;
@@ -182,6 +183,15 @@ body {
   .tooltip__title {
     font-weight: bold;
   }
+
+  hr {
+    margin: 5px 0;
+    border: 0;
+    height: 0;
+    border-top: 1px solid #4aa241;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
 }
 
 svg {

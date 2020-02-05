@@ -5,7 +5,6 @@
       <h5>{{ count }}</h5>
     </div>
     <div ref="graph" class="graph__container"></div>
-    <div id="tooltip__piechart" class="tooltip__graph"></div>
     <div v-if="icono">
       <img class="pie-chart__icon" :src="icono" alt="" />
     </div>
@@ -72,6 +71,10 @@ export default {
     icono: {
       type: String,
       required: false
+    },
+    valueLabel: {
+      type: String,
+      required: true
     }
   },
   data() {
@@ -126,13 +129,13 @@ export default {
               .attr("stroke", "black")
               .attr("fill-opacity", 0.75);
             const coordinates = [d3.event.pageX, d3.event.pageY];
+            const value = Number(Math.round(d.value)).toLocaleString("en");
             const tooltipContent = `
-            <span class="tooltip__title">${d.data.name}</span><br>
-            <span class="tooltip__value">${Math.round(
-              d.value
-            )}</span><span class="tooltip__subtitle"> especies</span>
+            <span class="tooltip__title">${d.data.name}</span>
+            <hr>
+            <span class="tooltip__value">${value}</span><span class="tooltip__subtitle"> ${that.valueLabel}</span>
             `;
-            d3.select("#tooltip__piechart")
+            d3.select("#tooltip__graph")
               .style("left", `${coordinates[0] + that.tooltipOffset}px`)
               .style("top", `${coordinates[1]}px`)
               .style("display", "block")
@@ -141,14 +144,14 @@ export default {
           })
           .on("mousemove", function() {
             const coordinates = [d3.event.pageX, d3.event.pageY];
-            d3.select("#tooltip__piechart")
+            d3.select("#tooltip__graph")
               .style("left", `${coordinates[0] + that.tooltipOffset}px`)
               .style("top", `${coordinates[1]}px`);
           })
           .on("mouseout", function() {
             svg.selectAll("g.arc path").attr("fill-opacity", 0.75);
             d3.select(this).attr("stroke", "none");
-            d3.select("#tooltip__piechart").style("display", "none");
+            d3.select("#tooltip__graph").style("display", "none");
           })
           .attr("fill", d => this.color(d.data.name))
           .attr("d", arc);
