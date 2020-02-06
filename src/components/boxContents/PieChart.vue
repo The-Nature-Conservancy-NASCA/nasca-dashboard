@@ -1,6 +1,6 @@
 <template>
   <section class="pie-chart">
-    <QuantityText :name="group" :value="count" :valueSize="quantityValueSize"/>
+    <QuantityText :name="group" :value="count" :valueSize="quantityValueSize" />
     <div ref="graph" class="graph__container"></div>
     <div v-if="icono">
       <img class="pie-chart__icon" :src="icono" alt="" />
@@ -106,7 +106,7 @@ export default {
     quantityValueSize: {
       type: String,
       required: false,
-      default: '3'
+      default: "3"
     }
   },
   data() {

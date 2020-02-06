@@ -112,7 +112,8 @@ export default {
     return state.estrategias.map(estrategia => {
       return {
         id: estrategia.ID_estrategia,
-        nombre: estrategia.nombre
+        nombre: estrategia.nombre,
+        color: estrategia.color
       };
     });
   },
@@ -127,7 +128,14 @@ export default {
   proyectosPorEstrategia: state => estrategia => {
     return state.proyectos
       .filter(proyecto => proyecto.ID_estrategia === estrategia)
-      .map(proyecto => proyecto.ID_proyecto);
+      .map(proyecto => {
+        return {
+          id: proyecto.ID_proyecto,
+          nombre: proyecto.nombre,
+          estrategia,
+          color: proyecto.color
+        };
+      });
   },
   predios: state => idsProyecto => {
     return idsProyecto

@@ -38,9 +38,7 @@ export default {
   },
   filters: {
     removeDecimal(value, decimalPoints) {
-      return typeof value == "number"
-        ? value.toFixed(decimalPoints)
-        : value;
+      return typeof value == "number" ? value.toFixed(decimalPoints) : value;
     }
   }
 };

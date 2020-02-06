@@ -2,22 +2,7 @@
   <div class="header">
     <img src="../assets/images/tnc-logo.svg" alt="logo" class="header__logo" />
     <div class="header__estrategias">
-      <select @change="cambiarEstrategia" v-model="estrategiaSelected">
-        <option
-          v-for="estrategia in estrategias"
-          :key="estrategia.id"
-          :value="estrategia.id"
-          >{{ estrategia.nombre }}</option
-        >
-      </select>
-      <select @change="cambiarProyecto" v-model="proyectoSelected">
-        <option
-          v-for="proyecto in proyectos"
-          :key="proyecto.id"
-          :value="proyecto.id"
-          >{{ proyecto.nombre }}</option
-        >
-      </select>
+      <FiltroEstrategia />
       <button @click="seleccionarTodo">Ver todo</button>
       <DownloadDataBtn />
       <DownloadImageBtn />
@@ -28,12 +13,14 @@
 <script>
 import DownloadDataBtn from "./DownloadDataBtn.vue";
 import DownloadImageBtn from "./DownloadImageBtn.vue";
+import FiltroEstrategia from "../components/FiltroEstrategia.vue";
 
 export default {
   name: "Header",
   components: {
     DownloadDataBtn,
-    DownloadImageBtn
+    DownloadImageBtn,
+    FiltroEstrategia
   },
   data() {
     return {
@@ -41,21 +28,7 @@ export default {
       proyectoSelected: ""
     };
   },
-  computed: {
-    estrategias() {
-      return this.$store.getters.estrategias;
-    },
-    proyectos() {
-      return this.$store.getters.proyectos;
-    }
-  },
   methods: {
-    cambiarEstrategia() {
-      this.$store.dispatch("cambiarEstrategia", this.estrategiaSelected);
-    },
-    cambiarProyecto() {
-      this.$store.dispatch("cambiarProyecto", this.proyectoSelected);
-    },
     seleccionarTodo() {
       this.$store.dispatch("verTodo");
     }
@@ -67,7 +40,7 @@ export default {
 .header {
   align-items: center;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   padding: 2rem;
 
   &__estrategias {
@@ -78,6 +51,7 @@ export default {
 
   &__logo {
     width: 20rem;
+    margin-right: 2rem;
   }
 
   button {
@@ -86,7 +60,7 @@ export default {
     color: #999;
     cursor: pointer;
     font-size: 1.6rem;
-    padding: 2rem 2rem 0 2rem;
+    padding: 2rem;
     transition: color 0.3s;
 
     &:hover {

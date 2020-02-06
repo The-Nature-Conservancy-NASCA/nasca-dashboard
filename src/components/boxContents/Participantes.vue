@@ -40,7 +40,7 @@ export default {
   },
   methods: {
     count() {
-      return this.participantes.reduce((a, b) => a.value + b.value);
+      return this.participantes.length > 0 ? this.participantes.reduce((a, b) => a.value + b.value) : 0;
     },
     countOtros(group) {
       return this.groups[group];
