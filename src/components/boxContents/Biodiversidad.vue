@@ -10,16 +10,6 @@
         :valueLabel="'especies'"
       />
     </div>
-    <div class="biodiversidad__year-buttons" v-if="groups.length">
-      <button
-        v-for="year in years"
-        :key="year"
-        @click="changeYear(year)"
-        :class="buttonClass(year)"
-      >
-        {{ year }}
-      </button>
-    </div>
   </div>
 </template>
 <script>
@@ -75,6 +65,7 @@ export default {
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
+  margin-top: 3rem;
 
   &__buttons {
     transform: translateY(-3.5rem);

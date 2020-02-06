@@ -35,5 +35,10 @@ export default {
       margin-bottom: 1rem;
     }
   }
+
+  @media screen and (max-height: 768px) {
+    grid-auto-rows: 27.8vh;
+    grid-gap: 1rem;
+  }
 }
 </style>

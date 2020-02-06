@@ -99,5 +99,9 @@ export default {
       width: 15rem;
     }
   }
+
+  @media screen and (max-height: 768px) {
+    padding: 1rem 2rem;
+  }
 }
 </style>

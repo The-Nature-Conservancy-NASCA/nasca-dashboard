@@ -13,7 +13,10 @@
   height: 12rem;
   margin: 2rem auto;
 
-  @media screen and (max-width: 900px) {
+  @media screen and (max-height: 768px) {
+    width: 8rem;
+    height: 8rem;
+    margin: 1rem auto;
   }
 
   @media screen and (min-width: 901px) and (max-width: 1280px) {
@@ -51,6 +54,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
   &__icon {
     left: 50%;
     position: absolute;
@@ -60,6 +64,10 @@
 
     @media screen and (min-width: 901px) and (max-width: 1280px) {
       width: 8rem;
+    }
+
+    @media screen and (max-height: 768px) {
+      width: 7rem;
     }
   }
 }
