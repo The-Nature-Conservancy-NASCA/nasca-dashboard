@@ -67,7 +67,6 @@ export default {
       return this.$store.getters.carbono;
     },
     carbonoProyecto() {
-      console.log(this.$store.getters.carbonoPorProyecto);
       return this.$store.getters.carbonoPorProyecto;
     }
   },

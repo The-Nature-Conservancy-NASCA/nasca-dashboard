@@ -148,7 +148,6 @@ export default {
   },
   carbonoPorProyecto: (state, getters) => {
     const idProyecto = state.filtro.valor;
-    console.log(idProyecto);
     if (idProyecto) {
       const regionesPorProyecto = getters
         .regionesProyecto(idProyecto)

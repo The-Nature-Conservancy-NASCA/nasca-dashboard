@@ -15,7 +15,6 @@ export default {
         x: 1,
         y: 3
       },
-      rowSpan: 2,
       content: "Biodiversidad"
     },
     {
@@ -37,13 +36,21 @@ export default {
     {
       title: "Participantes",
       position: {
-        x: 3,
-        y: 1
+        x: 2,
+        y: 3
       },
       content: "Participantes"
     },
     {
       title: "Metas",
+      position: {
+        x: 3,
+        y: 1
+      },
+      content: ""
+    },
+    {
+      title: "Donantes",
       position: {
         x: 3,
         y: 2

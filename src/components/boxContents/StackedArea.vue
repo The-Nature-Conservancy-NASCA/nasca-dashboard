@@ -96,11 +96,13 @@ export default {
         const xAxis = d3
           .axisBottom()
           .scale(xScale)
+          .tickSizeOuter(0)
           .tickFormat(d => parseInt(d))
           .ticks(5);
         const yAxis = d3
           .axisLeft()
           .scale(yScale)
+          .tickSizeOuter(0)
           .ticks(5);
         const keys = [];
         this.graphData.data.forEach(el => {
@@ -316,42 +318,34 @@ export default {
           .attr("font-size", 9)
           .attr("fill", "red")
           .text("Cierre");
-        areaGroup
-          .append("text")
-          .attr("class", "title")
-          .attr("text-anchor", "middle")
-          .attr(
-            "x",
-            (this.width - this.margin.left - this.margin.right) / 2 +
-              this.margin.left -
-              this.margin.right
-          )
-          .attr("y", 0)
-          .text(this.title);
+        // areaGroup
+        //   .append("text")
+        //   .attr("class", "title")
+        //   .attr("text-anchor", "middle")
+        //   .attr(
+        //     "x",
+        //     (this.width - this.margin.left - this.margin.right) / 2 +
+        //       this.margin.left -
+        //       this.margin.right
+        //   )
+        //   .attr("y", 0)
+        //   .text(this.title);
         areaGroup
           .append("text")
           .attr("class", "x label")
-          .attr("text-anchor", "middle")
-          .attr(
-            "x",
-            (this.width - this.margin.left - this.margin.right) / 2 +
-              this.margin.left -
-              this.margin.right
-          )
-          .attr("y", this.height + this.margin.bottom)
+          .attr("text-anchor", "end")
+          .attr("font-size", 10)
+          .attr("font-weight", "bold")
+          .attr("x", this.width - this.margin.right)
+          .attr("y", this.height + 15)
           .text(this.xlabel);
         areaGroup
           .append("text")
-          .attr("text-anchor", "middle")
-          .attr("x", -(this.height / 2))
-          .attr("y", () => {
-            const yAxisWidth = d3
-              .select(".y.axis")
-              .node()
-              .getBBox().width;
-            return this.margin.left - yAxisWidth - 10;
-          })
-          .attr("transform", "rotate(-90)")
+          .attr("text-anchor", "start")
+          .attr("font-size", 10)
+          .attr("font-weight", "bold")
+          .attr("x", this.margin.left)
+          .attr("y", 0)
           .text(this.ylabel);
 
         // areaGroup

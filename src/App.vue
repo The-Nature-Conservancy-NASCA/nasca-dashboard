@@ -188,14 +188,12 @@ body {
     margin: 5px 0;
     border: 0;
     height: 0;
-    border-top: 1px solid #4aa241;
+    border-top: 1px solid var(--color-green-tnc);
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
   }
-
 }
 
 svg {
-  path,
   rect {
     -moz-transition: all 0.25s;
     -o-transition: all 0.25s;
