@@ -149,8 +149,8 @@ html {
 }
 
 body {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  font-size: 1.4rem;
+  font-family: "Roboto", sans-serif;
+  font-size: 1.6rem;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

@@ -1,5 +1,6 @@
 <template>
   <section class="treemap">
+    <div ref="graph" class="graph__container"></div>
     <div
       v-if="this.$store.state.filtro.modo == 'proyecto'"
       class="treemap__buttons"
@@ -7,7 +8,6 @@
       <button @click="changeClassificationScheme('project')">Proyecto</button>
       <button @click="changeClassificationScheme('corine')">Corine</button>
     </div>
-    <div ref="graph" class="graph__container"></div>
     <!-- <div id="tooltip__treemap" class="tooltip__graph"></div> -->
   </section>
 </template>

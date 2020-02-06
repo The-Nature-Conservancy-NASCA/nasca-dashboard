@@ -7,7 +7,11 @@
 .graph__container {
   width: 90%;
   height: 15rem;
-  margin-top: 2rem;
+  margin-top: 1rem;
+
+  @media screen and (min-height: 900px) {
+    height: 18rem;
+  }
 }
 .stacked-area {
   align-items: center;

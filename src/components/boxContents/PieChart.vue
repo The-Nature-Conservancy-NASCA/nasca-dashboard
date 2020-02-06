@@ -1,9 +1,6 @@
 <template>
   <section class="pie-chart">
-    <div class="graph__header">
-      <h4>{{ group }}</h4>
-      <h5>{{ count }}</h5>
-    </div>
+    <QuantityText :name="group" :value="count" :valueSize="quantityValueSize"/>
     <div ref="graph" class="graph__container"></div>
     <div v-if="icono">
       <img class="pie-chart__icon" :src="icono" alt="" />
@@ -15,6 +12,15 @@
   width: 12rem;
   height: 12rem;
   margin: 2rem auto;
+
+  @media screen and (max-width: 900px) {
+  }
+
+  @media screen and (min-width: 901px) and (max-width: 1280px) {
+    width: 10rem;
+    height: 10rem;
+    margin: 1rem auto;
+  }
 }
 
 .graph__header {
@@ -24,10 +30,18 @@
     color: #666;
     font-size: 1.8rem;
     text-transform: uppercase;
+
+    @media screen and (min-width: 901px) and (max-width: 1280px) {
+      font-size: 1.6rem;
+    }
   }
 
   h5 {
     font-size: 1.6rem;
+
+    @media screen and (min-width: 901px) and (max-width: 1280px) {
+      font-size: 1.4rem;
+    }
   }
 }
 
@@ -41,12 +55,17 @@
     left: 50%;
     position: absolute;
     top: 50%;
-    transform: translate(-50%, calc(-50% + 24px));
-    width: 100px;
+    transform: translate(-50%, calc(-50% + 27px));
+    width: 10rem;
+
+    @media screen and (min-width: 901px) and (max-width: 1280px) {
+      width: 8rem;
+    }
   }
 }
 </style>
 <script>
+import QuantityText from "./QuantityText.vue";
 import * as d3 from "d3";
 
 export default {
@@ -75,6 +94,11 @@ export default {
     valueLabel: {
       type: String,
       required: true
+    },
+    quantityValueSize: {
+      type: String,
+      required: false,
+      default: '3'
     }
   },
   data() {
@@ -85,6 +109,9 @@ export default {
       height: 0,
       color: null
     };
+  },
+  components: {
+    QuantityText
   },
   watch: {
     graphData() {

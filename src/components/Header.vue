@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <img src="../assets/images/tnc-logo.svg" alt="logo" width="200" />
+    <img src="../assets/images/tnc-logo.svg" alt="logo" class="header__logo" />
     <div class="header__estrategias">
       <select @change="cambiarEstrategia" v-model="estrategiaSelected">
         <option
@@ -68,12 +68,16 @@ export default {
   align-items: center;
   display: flex;
   justify-content: space-between;
-  padding: 1rem;
+  padding: 2rem;
 
   &__estrategias {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+  }
+
+  &__logo {
+    width: 20rem;
   }
 
   button {
@@ -82,11 +86,17 @@ export default {
     color: #999;
     cursor: pointer;
     font-size: 1.6rem;
-    padding: 1rem;
+    padding: 2rem 2rem 0 2rem;
     transition: color 0.3s;
 
     &:hover {
       color: #666;
+    }
+  }
+
+  @media screen and (min-width: 901px) and (max-width: 1280px) {
+    &__logo {
+      width: 15rem;
     }
   }
 }

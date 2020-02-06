@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="participantes">
     <div>
       <PieChart
         :graphData="participantes"
@@ -7,25 +7,28 @@
         :group="'Participantes'"
         :count="count()"
         :valueLabel="'individuos'"
+        quantityValueSize="2"
       />
     </div>
-    <div
-      class="other-participantes"
-      v-for="group in Object.keys(groups)"
-      :key="group"
-    >
-      <h4>{{ group }}</h4>
-      <h5>{{ countOtros(group) }}</h5>
+    <div class="participantes__otros">
+      <QuantityText
+        v-for="group in Object.keys(groups)"
+        :key="group"
+        :name="group"
+        :value="countOtros(group)"
+      />
     </div>
   </div>
 </template>
 <script>
 import PieChart from "./PieChart.vue";
+import QuantityText from "./QuantityText.vue";
 
 export default {
   name: "Participantes",
   components: {
-    PieChart
+    PieChart,
+    QuantityText
   },
   computed: {
     groups() {
@@ -46,25 +49,19 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.container {
+.participantes {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
   justify-content: space-evenly;
-}
+  margin-top: 4rem;
 
-.other-participantes {
-  text-align: center;
-
-  h4 {
-    color: #666;
-    font-size: 1.8rem;
-    text-transform: uppercase;
-  }
-
-  h5 {
-    font-size: 1.6rem;
+  &__otros {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 40%;
   }
 }
 </style>

@@ -7,6 +7,19 @@
     "
     class="carbono"
   >
+    <StackedArea
+      v-if="this.$store.state.filtro.modo === 'proyecto'"
+      :graphData="carbonoProyecto"
+      :graphId="'areachart__carbono'"
+    />
+    <div
+      class="carbono__numbers"
+      v-if="this.$store.state.filtro.modo !== 'proyecto'"
+    >
+      <div v-for="item in carbono" :key="item.name">
+        <QuantityText :name="`${item.name}`" :value="item.value" />
+      </div>
+    </div>
     <div class="carbono__ctas">
       <button :class="buttonClass(null)" @click="changeField(null)">
         Total
@@ -31,19 +44,6 @@
       >
         SNC
       </button>
-    </div>
-    <StackedArea
-      v-if="this.$store.state.filtro.modo === 'proyecto'"
-      :graphData="carbonoProyecto"
-      :graphId="'areachart__carbono'"
-    />
-    <div
-      class="carbono__numbers"
-      v-if="this.$store.state.filtro.modo !== 'proyecto'"
-    >
-      <div v-for="item in carbono" :key="item.name">
-        <QuantityText :name="item.name" :value="item.value" />
-      </div>
     </div>
   </div>
 </template>
@@ -90,14 +90,15 @@ export default {
     align-items: center;
     display: flex;
     justify-content: space-evenly;
-    width: 100%;
+    margin: 0 auto;
+    width: 75%;
 
     button {
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
       background-color: #ddd;
       cursor: pointer;
       border: none;
-      padding: 1rem;
+      padding: 0.5rem;
       transition: all 0.2s;
 
       &.selected {
@@ -114,6 +115,7 @@ export default {
 
   &__numbers {
     margin: auto;
+    margin-bottom: 4rem;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;

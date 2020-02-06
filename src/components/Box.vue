@@ -47,9 +47,11 @@ export default {
   position: relative;
 
   &__header {
-    font-size: 2rem;
+    color: #666;
+    font-size: 1.6rem;
     font-weight: 700;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
   }
 
   &__content {
@@ -59,6 +61,5 @@ export default {
     transform: translate(-50%, -50%);
     width: 100%;
   }
-
 }
 </style>
