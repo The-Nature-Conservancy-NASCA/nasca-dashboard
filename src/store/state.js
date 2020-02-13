@@ -50,12 +50,12 @@ export default {
       content: "Metas"
     },
     {
-      title: "Donantes",
+      title: "Contribuciones",
       position: {
         x: 3,
         y: 2
       },
-      content: ""
+      content: "Contribuciones"
     },
     {
       title: "Donantes",

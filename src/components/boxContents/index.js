@@ -5,3 +5,4 @@ export { default as Biodiversidad } from "./Biodiversidad.vue";
 export { default as Participantes } from "./Participantes.vue";
 export { default as QuantityText } from "./QuantityText.vue";
 export { default as Metas } from "./Metas.vue";
+export { default as Contribuciones } from "./Contribuciones.vue";

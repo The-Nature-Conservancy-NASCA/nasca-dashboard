@@ -550,8 +550,11 @@ export default {
     const header = Object.keys(data[0]);
     return { data: data, header: header };
   },
+  contribuciones: state => {
+    console.log(state.contribuciones);
+    return state.contribuciones;
+  },
   metas: state => {
-    console.log(state.metas);
     return state.metas;
   }
 };

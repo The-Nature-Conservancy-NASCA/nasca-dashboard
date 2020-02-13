@@ -15,6 +15,7 @@
     "save-svg-as-png": "^1.4.14",
     "swipejs": "^2.2.14",
     "vue": "^2.6.10",
+    "vue-carousel": "^0.18.0",
     "vuex": "^3.1.2"
   },
   "devDependencies": {
