@@ -17,7 +17,7 @@
       v-if="this.$store.state.filtro.modo !== 'proyecto'"
     >
       <div v-for="item in carbono" :key="item.name">
-        <QuantityText :name="`${item.name}`" :value="item.value" />
+        <QuantityText :name="item.name" :value="item.value" :unit="'GtCO2e'" />
       </div>
     </div>
     <div class="carbono__ctas">

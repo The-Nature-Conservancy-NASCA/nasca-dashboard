@@ -549,5 +549,9 @@ export default {
     });
     const header = Object.keys(data[0]);
     return { data: data, header: header };
+  },
+  metas: state => {
+    console.log(state.metas);
+    return state.metas;
   }
 };

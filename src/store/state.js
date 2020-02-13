@@ -47,7 +47,7 @@ export default {
         x: 3,
         y: 1
       },
-      content: ""
+      content: "Metas"
     },
     {
       title: "Donantes",

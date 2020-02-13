@@ -1,8 +1,28 @@
 <template>
   <div class="quantity-text">
-    <h4 class="quantity-text__value" :style="`font-size: ${valueSize}rem;`">
-      {{ value | removeDecimal(decimalPoints) }}
-    </h4>
+    <div>
+      <span
+        v-if="removeDecimals"
+        class="quantity-text__value"
+        :style="`font-size: ${valueSize}rem;`"
+      >
+        {{ value | removeDecimal(decimalPoints) }}
+      </span>
+      <span
+        v-else
+        class="quantity-text__value"
+        :style="`font-size: ${valueSize}rem;`"
+      >
+        {{ value.toLocaleString("en") }}
+      </span>
+      <span
+        v-if="unit"
+        class="quantity-text__unit"
+        :style="`font-size: ${unitSize}rem;`"
+      >
+        {{ unit }}
+      </span>
+    </div>
     <h4 class="quantity-text__text" :style="`font-size: ${textSize}rem;`">
       {{ name }}
     </h4>
@@ -20,6 +40,10 @@ export default {
       type: Number,
       required: true
     },
+    unit: {
+      type: String,
+      required: false
+    },
     textSize: {
       type: String,
       required: false,
@@ -30,15 +54,25 @@ export default {
       required: false,
       default: "3"
     },
+    unitSize: {
+      type: String,
+      required: false,
+      default: "1.2"
+    },
     decimalPoints: {
       type: Number,
       required: false,
       default: 0
+    },
+    removeDecimals: {
+      type: Boolean,
+      required: false,
+      default: true
     }
   },
   filters: {
     removeDecimal(value, decimalPoints) {
-      return typeof value == "number" ? value.toFixed(decimalPoints) : value;
+      return Number(value.toFixed(decimalPoints)).toLocaleString("en");
     }
   }
 };
@@ -55,7 +89,12 @@ export default {
 
   &__value {
     color: var(--color-green-tnc);
-    //font-size: 3rem;
+    font-weight: 300;
+  }
+
+  &__unit {
+    color: var(--color-green-tnc);
+    font-weight: 700;
   }
 }
 </style>
