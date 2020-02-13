@@ -29,7 +29,7 @@ export default {
   },
   mounted() {
     const tooltipOffset = 15;
-    const imgs = d3.selectAll(".VueCarousel img")
+    const imgs = d3.selectAll(".VueCarousel img");
     imgs
       .data(this.contribuciones)
       .on("mouseover", function(d) {
@@ -63,23 +63,23 @@ export default {
 .VueCarousel {
   width: 90%;
   margin: auto;
-}
 
-img {
-  width: 45px;
-  margin: auto;
-  -moz-transition: all 0.25s;
-  -o-transition: all 0.25s;
-  -webkit-transition: all 0.25s;
-  transition: all 0.25s;
-  opacity: 1;
-}
+  img {
+    width: 45px;
+    margin: auto;
+    -moz-transition: all 0.25s;
+    -o-transition: all 0.25s;
+    -webkit-transition: all 0.25s;
+    transition: all 0.25s;
+    opacity: 1;
+  }
 
-.VueCarousel-navigation-button {
-  font-size: 20px;
-}
+  .VueCarousel-navigation-button {
+    font-size: 20px;
+  }
 
-.VueCarousel-slide {
-  text-align: center;
+  .VueCarousel-slide {
+    text-align: center;
+  }
 }
 </style>
