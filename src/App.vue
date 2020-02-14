@@ -155,6 +155,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+a, a:visited, a:link, a:focus {
+   text-decoration: none;
+}
+
 #app {
   background-color: rgb(228, 228, 228);
   height: 100vh;
