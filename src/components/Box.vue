@@ -47,9 +47,9 @@ export default {
   position: relative;
 
   &__header {
-    color: #666;
+    color: black;
     font-size: 1.6rem;
-    font-weight: 700;
+    font-weight: 400;
     margin-bottom: 0.5rem;
     text-transform: uppercase;
   }

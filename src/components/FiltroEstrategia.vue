@@ -7,7 +7,7 @@
         v-for="estrategia in estrategias"
         :key="estrategia.id"
         :style="`border-left: 3px solid ${estrategia.color}`"
-        @click="cambiarEstrategia(estrategia.id)"
+        @click.stop="cambiarEstrategia(estrategia.id)"
       >
         {{ estrategia.nombre }}
         <ul class="filtro__proyectos">
@@ -16,7 +16,7 @@
             v-for="proyecto in proyectosPorEstrategia(estrategia.id)"
             :key="proyecto.id"
             :style="`border-left: 3px solid ${proyecto.color}`"
-            @click="cambiarProyecto(proyecto.id)"
+            @click.stop="cambiarProyecto(proyecto.id)"
           >
             {{ proyecto.nombre }}
           </li>

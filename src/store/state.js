@@ -1,7 +1,7 @@
 export default {
   boxes: [
     {
-      title: "Cobertura",
+      title: "Coberturas",
       position: {
         x: 1,
         y: 1
@@ -58,7 +58,7 @@ export default {
       content: "Contribuciones"
     },
     {
-      title: "Donantes",
+      title: "Aliados",
       position: {
         x: 3,
         y: 3
