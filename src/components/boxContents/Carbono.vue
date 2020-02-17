@@ -21,35 +21,36 @@
       </div>
     </div>
     <div class="carbono__ctas">
-      <button :class="buttonClass(null)" @click="changeField(null)">
-        Total
-      </button>
       <button
+        data-tippy-content="Fijación total"
+        :class="buttonClass(null)"
+        @click="changeField(null)"
+      ></button>
+      <button
+        data-tippy-content="Fijación por compartimiento"
         :class="buttonClass('compartimiento')"
         @click="changeField('compartimiento')"
-      >
-        Compartimiento
-      </button>
+      ></button>
       <button
+        data-tippy-content="Fijación por cobertura"
         :class="buttonClass('cobertura')"
-        v-if="this.$store.getters.filtro.modo === 'proyecto'"
+        v-show="this.$store.getters.filtro.modo === 'proyecto'"
         @click="changeField('cobertura')"
-      >
-        Cobertura
-      </button>
+      ></button>
       <button
+        data-tippy-content="Fijación por Solución Natural de Clima"
         :class="buttonClass('snc')"
-        v-if="this.$store.getters.filtro.modo !== 'proyecto'"
+        v-show="this.$store.getters.filtro.modo !== 'proyecto'"
         @click="changeField('snc')"
-      >
-        SNC
-      </button>
+      ></button>
     </div>
   </div>
 </template>
 <script>
 import QuantityText from "./QuantityText.vue";
 import StackedArea from "./StackedArea.vue";
+import tippy from "tippy.js";
+import "tippy.js/dist/tippy.css";
 
 export default {
   name: "Carbono",
@@ -81,6 +82,11 @@ export default {
       this.$store.dispatch("changeCarbonoField", field);
       this.selectedField = field;
     }
+  },
+  mounted() {
+    tippy("[data-tippy-content]", {
+      placement: "bottom"
+    });
   }
 };
 </script>
@@ -91,13 +97,14 @@ export default {
     display: flex;
     justify-content: space-evenly;
     margin: 0 auto;
-    width: 75%;
+    width: 30%;
 
     button {
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
       background-color: #ddd;
       cursor: pointer;
       border: none;
+      border-radius: 50%;
       padding: 0.5rem;
       transition: all 0.2s;
 
@@ -109,6 +116,10 @@ export default {
       &:hover {
         box-shadow: 0 5px 8px rgba(0, 0, 0, 0.4);
         transform: translateY(-2px);
+      }
+
+      &:focus {
+        outline: none;
       }
     }
   }

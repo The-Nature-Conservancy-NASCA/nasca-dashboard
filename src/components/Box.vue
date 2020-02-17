@@ -1,6 +1,8 @@
 <template>
   <section class="box" :style="gridStyle">
-    <header class="box__header">{{ box.title }}</header>
+    <header class="box__header">
+      {{ box.title }}
+    </header>
     <div class="box__content">
       <component :is="box.content" />
     </div>

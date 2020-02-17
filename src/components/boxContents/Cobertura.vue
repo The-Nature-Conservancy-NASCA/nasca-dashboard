@@ -5,10 +5,27 @@
       :graphId="'treemap__coberturas'"
       :component="'coberturas'"
     />
+    <div
+      v-show="this.$store.state.filtro.modo == 'proyecto'"
+      class="cobertura__ctas"
+    >
+      <button
+        data-tippy-content="Clasificación CORINE"
+        :class="buttonClass('corine')"
+        @click="changeClassificationScheme('corine')"
+      ></button>
+      <button
+        data-tippy-content="Clasificación proyecto"
+        :class="buttonClass('project')"
+        @click="changeClassificationScheme('project')"
+      ></button>
+    </div>
   </div>
 </template>
 <script>
 import Treemap from "./Treemap.vue";
+import tippy from "tippy.js";
+import "tippy.js/dist/tippy.css";
 
 export default {
   name: "Cobertura",
@@ -19,6 +36,64 @@ export default {
     cobertura() {
       return this.$store.getters.coberturas;
     }
+  },
+  data() {
+    return {
+      selectedScheme: "corine"
+    };
+  },
+  methods: {
+    buttonClass(schemeName) {
+      return {
+        selected: this.selectedScheme === schemeName,
+        unselected: this.selectedScheme !== schemeName
+      };
+    },
+    changeClassificationScheme(schemeName) {
+      this.$store.dispatch("changeClassificationScheme", schemeName);
+      this.selectedScheme = schemeName;
+    }
+  },
+  mounted() {
+    tippy("[data-tippy-content]", {
+      placement: "bottom",
+      theme: 'light'
+    });
   }
 };
 </script>
+<style lang="scss" scoped>
+.cobertura {
+  &__ctas {
+    align-items: center;
+    display: flex;
+    justify-content: space-evenly;
+    margin: 0 auto;
+    width: 33%;
+
+    button {
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+      background-color: #ddd;
+      cursor: pointer;
+      border: none;
+      border-radius: 50%;
+      padding: 0.5rem;
+      transition: all 0.2s;
+
+      &.selected {
+        background-color: var(--color-green-tnc);
+        color: #fff;
+      }
+
+      &:hover {
+        box-shadow: 0 5px 8px rgba(0, 0, 0, 0.4);
+        transform: translateY(-2px);
+      }
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+}
+</style>
