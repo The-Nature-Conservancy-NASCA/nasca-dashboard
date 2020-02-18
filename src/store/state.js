@@ -2,6 +2,7 @@ export default {
   boxes: [
     {
       title: "Coberturas",
+      subtitle: "",
       position: {
         x: 1,
         y: 1
@@ -11,6 +12,7 @@ export default {
     },
     {
       title: "Biodiversidad",
+      subtitle: "",
       position: {
         x: 1,
         y: 3
@@ -19,6 +21,7 @@ export default {
     },
     {
       title: "Carbono",
+      subtitle: "",
       position: {
         x: 1,
         y: 2
@@ -27,6 +30,7 @@ export default {
     },
     {
       title: "Implementaciones",
+      subtitle: "",
       position: {
         x: 2,
         y: 2
@@ -35,6 +39,7 @@ export default {
     },
     {
       title: "Participantes",
+      subtitle: "",
       position: {
         x: 2,
         y: 3
@@ -43,6 +48,7 @@ export default {
     },
     {
       title: "Metas",
+      subtitle: "",
       position: {
         x: 3,
         y: 1
@@ -51,6 +57,7 @@ export default {
     },
     {
       title: "Contribuciones",
+      subtitle: "",
       position: {
         x: 3,
         y: 2
@@ -59,6 +66,7 @@ export default {
     },
     {
       title: "Aliados",
+      subtitle: "",
       position: {
         x: 3,
         y: 3

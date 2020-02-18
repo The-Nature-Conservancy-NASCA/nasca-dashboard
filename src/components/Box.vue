@@ -1,7 +1,10 @@
 <template>
   <section class="box" :style="gridStyle">
     <header class="box__header">
-      {{ box.title }}
+      <span class="box__title"> {{ box.title }}</span>
+      <span v-show="box.subtitle" class="box__subtitle">
+        {{ box.subtitle }}</span
+      >
     </header>
     <div class="box__content">
       <component :is="box.content" />
@@ -49,11 +52,22 @@ export default {
   position: relative;
 
   &__header {
+    margin-bottom: 0.5rem;
+  }
+
+  &__title {
     color: black;
     font-size: 1.6rem;
     font-weight: 400;
-    margin-bottom: 0.5rem;
     text-transform: uppercase;
+  }
+
+  &__subtitle {
+    font-size: 1.2rem;
+    margin-left: 7px;
+    padding-left: 7px;
+    font-weight: 300;
+    border-left: 1px solid black;
   }
 
   &__content {

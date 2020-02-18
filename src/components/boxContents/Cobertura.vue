@@ -12,12 +12,12 @@
       <button
         data-tippy-content="Clasificación CORINE"
         :class="buttonClass('corine')"
-        @click="changeClassificationScheme('corine')"
+        @click="changeClassificationScheme('corine', $event)"
       ></button>
       <button
         data-tippy-content="Clasificación proyecto"
         :class="buttonClass('project')"
-        @click="changeClassificationScheme('project')"
+        @click="changeClassificationScheme('project', $event)"
       ></button>
     </div>
   </div>
@@ -49,15 +49,26 @@ export default {
         unselected: this.selectedScheme !== schemeName
       };
     },
-    changeClassificationScheme(schemeName) {
+    changeBoxSubtitle() {
+      this.boxTitle = this.$parent.box.title;
+      this.boxSubtitle = this.btn.getAttribute("data-tippy-content");
+      this.$store.dispatch("changeBoxSubtitle", {
+        title: this.boxTitle,
+        subtitle: this.boxSubtitle
+      });
+    },
+    changeClassificationScheme(schemeName, event) {
       this.$store.dispatch("changeClassificationScheme", schemeName);
       this.selectedScheme = schemeName;
+      this.btn = event.target;
+      this.changeBoxSubtitle();
     }
   },
   mounted() {
+    this.btn = this.$el.querySelector(".cobertura__ctas button.selected");
+    this.changeBoxSubtitle();
     tippy("[data-tippy-content]", {
-      placement: "bottom",
-      theme: 'light'
+      placement: "bottom"
     });
   }
 };

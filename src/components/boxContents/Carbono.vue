@@ -24,24 +24,24 @@
       <button
         data-tippy-content="Fijación total"
         :class="buttonClass(null)"
-        @click="changeField(null)"
+        @click="changeField(null, $event)"
       ></button>
       <button
         data-tippy-content="Fijación por compartimiento"
         :class="buttonClass('compartimiento')"
-        @click="changeField('compartimiento')"
+        @click="changeField('compartimiento', $event)"
       ></button>
       <button
         data-tippy-content="Fijación por cobertura"
         :class="buttonClass('cobertura')"
         v-show="this.$store.getters.filtro.modo === 'proyecto'"
-        @click="changeField('cobertura')"
+        @click="changeField('cobertura', $event)"
       ></button>
       <button
         data-tippy-content="Fijación por Solución Natural de Clima"
         :class="buttonClass('snc')"
         v-show="this.$store.getters.filtro.modo !== 'proyecto'"
-        @click="changeField('snc')"
+        @click="changeField('snc', $event)"
       ></button>
     </div>
   </div>
@@ -78,12 +78,24 @@ export default {
         unselected: this.selectedField !== field
       };
     },
-    changeField(field) {
+    changeBoxSubtitle() {
+      this.boxTitle = this.$parent.box.title;
+      this.boxSubtitle = this.btn.getAttribute("data-tippy-content");
+      this.$store.dispatch("changeBoxSubtitle", {
+        title: this.boxTitle,
+        subtitle: this.boxSubtitle
+      });
+    },
+    changeField(field, event) {
       this.$store.dispatch("changeCarbonoField", field);
       this.selectedField = field;
+      this.btn = event.target;
+      this.changeBoxSubtitle();
     }
   },
   mounted() {
+    this.btn = this.$el.querySelector(".carbono__ctas button.selected");
+    this.changeBoxSubtitle();
     tippy("[data-tippy-content]", {
       placement: "bottom"
     });

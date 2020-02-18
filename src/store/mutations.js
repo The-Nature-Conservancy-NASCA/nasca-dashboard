@@ -76,5 +76,9 @@ export default {
   },
   CHANGE_YEAR(state, payload) {
     state.filtro.year[payload.component] = payload.year;
+  },
+  CHANGE_BOX_SUBTITLE(state, payload) {
+    state.boxes.find(box => box.title === payload.title).subtitle =
+      payload.subtitle;
   }
 };
