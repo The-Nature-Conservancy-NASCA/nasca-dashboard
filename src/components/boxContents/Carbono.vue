@@ -69,6 +69,9 @@ export default {
     },
     carbonoProyecto() {
       return this.$store.getters.carbonoPorProyecto;
+    },
+    mode() {
+      return this.$store.getters.filtro.modo;
     }
   },
   methods: {
@@ -91,6 +94,12 @@ export default {
       this.selectedField = field;
       this.btn = event.target;
       this.changeBoxSubtitle();
+    },
+    resetFieldAndBoxSubtitle() {
+      this.$store.dispatch("changeCarbonoField", null);
+      this.selectedField = null;
+      this.btn = this.$el.querySelector(".carbono__ctas button");
+      this.changeBoxSubtitle();
     }
   },
   mounted() {
@@ -99,6 +108,11 @@ export default {
     tippy("[data-tippy-content]", {
       placement: "bottom"
     });
+  },
+  watch: {
+    mode() {
+      this.resetFieldAndBoxSubtitle();
+    }
   }
 };
 </script>
