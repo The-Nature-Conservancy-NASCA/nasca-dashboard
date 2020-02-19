@@ -1,25 +1,6 @@
 <template>
-  <section class="stacked-area">
-    <div ref="graph" class="graph__container"></div>
-  </section>
+  <div ref="graph" class="graph__container"></div>
 </template>
-<style lang="scss" scoped>
-.graph__container {
-  width: 90%;
-  height: 15rem;
-  margin-top: 1rem;
-
-  @media screen and (min-height: 900px) {
-    height: 18rem;
-  }
-}
-.stacked-area {
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-}
-</style>
 <script>
 import * as d3 from "d3";
 
@@ -57,9 +38,20 @@ export default {
         return;
       }
       this.color = d3.scaleOrdinal(d3.schemeCategory10);
+      this.colors = {
+        Total: "#49A942",
+        Biomasa: "#49A942",
+        Suelos: "#ffa600",
+        "Madera muerta": "#003f5c",
+        "Cercas vivas": "#ef5675",
+        "Árboles dispersos en potreros": "#ffa600",
+        Bosque: "#49A942",
+        "Bosque secundario": "#4F7942",
+        "Sistemas silvopastoriles intensivos": "#7a5195"
+      };
       this.currentYear = new Date().getFullYear();
-      this.margin = { top: 10, right: 10, bottom: 20, left: 30 };
-      this.tooltipOffset = 15;
+      this.margin = { top: 20, right: 25, bottom: 20, left: 25 };
+      this.tooltipOffset = 20;
       this.width =
         parseInt(this.el.style("width")) - this.margin.left - this.margin.right;
       this.height =
@@ -101,13 +93,15 @@ export default {
           .axisBottom()
           .scale(xScale)
           .tickSizeOuter(0)
+          .tickSize(3)
           .tickFormat(d => parseInt(d))
           .ticks(5);
         const yAxis = d3
           .axisLeft()
           .scale(yScale)
           .tickSizeOuter(0)
-          .ticks(5);
+          .tickSize(0)
+          .ticks(3);
         const keys = [];
         this.graphData.data.forEach(el => {
           const elKeys = Object.keys(el).filter(item => item !== "year");
@@ -133,6 +127,22 @@ export default {
           .x(d => xScale(d.data.year))
           .y0(d => yScale(d[0]))
           .y1(d => yScale(d[1]));
+        const line = d3
+          .line()
+          .x(d => xScale(d.data.year))
+          .y(d => yScale(d[1]));
+        areaGroup
+          .append("g")
+          .selectAll("line")
+          .data(yScale.ticks(3))
+          .enter()
+          .append("line")
+          .attr("x1", this.margin.left)
+          .attr("x2", xScale(xScale.domain()[1]))
+          .attr("y1", d => yScale(d))
+          .attr("y2", d => yScale(d))
+          .attr("stroke-width", 0.5)
+          .attr("stroke", "LightGray");
         const that = this;
         areaGroup
           .append("g")
@@ -140,65 +150,38 @@ export default {
           .data(series)
           .enter()
           .append("path")
+          .attr("class", "area")
           .on("mouseover", function(d) {
             const label = d.key;
             const svgCoordinates = d3.mouse(this);
             const year = Math.ceil(xScale.invert(svgCoordinates[0]));
             const accumulatedValue = d.find(item => item.data.year == year)[1];
             const value = d.find(item => item.data.year == year).data[label];
-            const areaBeforeYear = d3
-              .area()
-              .defined(d => d.data.year <= year)
-              .x(d => xScale(d.data.year))
-              .y0(d => yScale(d[0]))
-              .y1(d => yScale(d[1]));
-            const areaAfterYear = d3
-              .area()
-              .defined(d => d.data.year >= year)
-              .x(d => xScale(d.data.year))
-              .y0(d => yScale(d[0]))
-              .y1(d => yScale(d[1]));
             areaGroup
-              .append("g")
-              .attr("class", "area__before")
-              .selectAll("path")
-              .data(series)
-              .enter()
-              .append("path")
-              .attr("d", areaBeforeYear)
-              .attr("fill", d => (d.key == label ? "none" : "white"))
-              .attr("fill-opacity", d => (d.key == label ? 1 : 0.8))
-              .attr("stroke", d => (d.key == label ? "black" : "none"))
-              .attr("pointer-events", "none");
+              .selectAll("path.area")
+              .attr("fill-opacity", d => (d.key == label ? 0.5 : 0.1));
             areaGroup
-              .append("g")
-              .attr("class", "area__after")
-              .selectAll("path")
-              .data(series)
-              .enter()
-              .append("path")
-              .attr("d", areaAfterYear)
-              .attr("fill", "white")
-              .attr("fill-opacity", 0.8)
-              .attr("pointer-events", "none");
+              .selectAll("path.line")
+              .attr("stroke-opacity", d => (d.key == label ? 1 : 0.3));
             areaGroup
               .select(".vertical.helper__line")
+              .attr("visibility", "visible")
               .attr("x1", xScale(year))
               .attr("x2", xScale(year))
               .attr("y1", yScale.range()[0])
-              .attr("y2", yScale(accumulatedValue));
+              .attr("y2", yScale.range()[1]);
             areaGroup
-              .select(".horizontal.helper__line")
-              .attr("x1", xScale.range()[0])
-              .attr("x2", xScale(year))
-              .attr("y1", yScale(accumulatedValue))
-              .attr("y2", yScale(accumulatedValue));
-            areaGroup.selectAll(".helper__line").attr("visibility", "visible");
+              .select(".helper__dot")
+              .attr("visibility", "visible")
+              .attr("fill", that.colors[label])
+              .attr("cx", xScale(year))
+              .attr("cy", yScale(accumulatedValue));
             areaGroup.selectAll(".helper__line").raise();
             areaGroup.select(".year__division").raise();
+            areaGroup.select(".helper__dot").raise();
             const coordinates = [d3.event.pageX, d3.event.pageY];
             const tooltipContent = `
-            <span class="tooltip__title">${d.key}</span><br>
+            <span class="tooltip__title">${label}</span><br>
             <span class="tooltip__subtitle">Año: </span><span class="tooltip__value">${year}</span>
             <br>
             <span class="tooltip__subtitle">Valor: </span><span class="tooltip__value">${Math.round(
@@ -218,55 +201,26 @@ export default {
             const year = Math.ceil(xScale.invert(svgCoordinates[0]));
             const accumulatedValue = d.find(item => item.data.year == year)[1];
             const value = d.find(item => item.data.year == year).data[label];
-            const areaBeforeYear = d3
-              .area()
-              .defined(d => d.data.year <= year)
-              .x(d => xScale(d.data.year))
-              .y0(d => yScale(d[0]))
-              .y1(d => yScale(d[1]));
-            const areaAfterYear = d3
-              .area()
-              .defined(d => d.data.year >= year)
-              .x(d => xScale(d.data.year))
-              .y0(d => yScale(d[0]))
-              .y1(d => yScale(d[1]));
-            d3.selectAll(".area__before").remove();
-            d3.selectAll(".area__after").remove();
             areaGroup
-              .append("g")
-              .attr("class", "area__before")
-              .selectAll("path")
-              .data(series)
-              .enter()
-              .append("path")
-              .attr("d", areaBeforeYear)
-              .attr("fill", d => (d.key == label ? "none" : "white"))
-              .attr("fill-opacity", d => (d.key == label ? 1 : 0.8))
-              .attr("stroke", d => (d.key == label ? "black" : "none"))
-              .attr("pointer-events", "none");
+              .selectAll("path.area")
+              .attr("fill-opacity", d => (d.key == label ? 0.5 : 0.1));
             areaGroup
-              .append("g")
-              .attr("class", "area__after")
-              .selectAll("path")
-              .data(series)
-              .enter()
-              .append("path")
-              .attr("d", areaAfterYear)
-              .attr("fill", "white")
-              .attr("fill-opacity", 0.8)
-              .attr("pointer-events", "none");
-            d3.select(".vertical.helper__line")
+              .selectAll("path.line")
+              .attr("stroke-opacity", d => (d.key == label ? 1 : 0.3));
+            areaGroup
+              .select(".vertical.helper__line")
               .attr("x1", xScale(year))
               .attr("x2", xScale(year))
               .attr("y1", yScale.range()[0])
-              .attr("y2", yScale(accumulatedValue));
-            d3.select(".horizontal.helper__line")
-              .attr("x1", xScale.range()[0])
-              .attr("x2", xScale(year))
-              .attr("y1", yScale(accumulatedValue))
-              .attr("y2", yScale(accumulatedValue));
-            d3.selectAll(".helper__line").raise();
-            d3.select(".year__division").raise();
+              .attr("y2", yScale.range()[1]);
+            areaGroup
+              .select(".helper__dot")
+              .attr("fill", that.colors[label])
+              .attr("cx", xScale(year))
+              .attr("cy", yScale(accumulatedValue));
+            areaGroup.selectAll(".helper__line").raise();
+            areaGroup.select(".year__division").raise();
+            areaGroup.select(".helper__dot").raise();
             const coordinates = [d3.event.pageX, d3.event.pageY];
             const tooltipValue = Number(Math.round(value)).toLocaleString("en");
             const tooltipContent = `
@@ -280,14 +234,28 @@ export default {
               .html(tooltipContent);
           })
           .on("mouseout", function() {
-            d3.selectAll(".area__before").remove();
-            d3.selectAll(".area__after").remove();
-            areaGroup.selectAll(".helper__line").attr("visibility", "hidden");
+            areaGroup.selectAll("path.area").attr("fill-opacity", 0.3);
+            areaGroup.selectAll("path.line").attr("stroke-opacity", 1);
+            areaGroup.select(".helper__line").attr("visibility", "hidden");
+            areaGroup.select(".helper__dot").attr("visibility", "hidden");
             d3.select("#tooltip__graph").style("display", "none");
           })
           .attr("class", "area")
           .attr("d", area)
-          .attr("fill", d => this.color(d.key));
+          .attr("fill", d => this.colors[d.key])
+          .attr("fill-opacity", 0.3);
+        areaGroup
+          .append("g")
+          .selectAll("path")
+          .data(series)
+          .enter()
+          .append("path")
+          .attr("class", "line")
+          .attr("d", line)
+          .attr("pointer-events", "none")
+          .attr("fill", "none")
+          .attr("stroke", d => this.colors[d.key])
+          .attr("stroke-width", 1);
         areaGroup
           .append("g")
           .attr("class", "x axis")
@@ -301,6 +269,10 @@ export default {
           .attr("class", "y axis")
           .attr("transform", `translate(${this.margin.left}, 0)`)
           .call(yAxis);
+        areaGroup
+          .selectAll(".x.axis .domain, .axis .tick line")
+          .attr("stroke", "LightGray");
+        areaGroup.select(".y.axis .domain").attr("stroke", "none");
         const yearDivision = areaGroup
           .append("g")
           .attr("class", "year__division")
@@ -312,7 +284,8 @@ export default {
           .attr("y1", yScale.range()[0])
           .attr("y2", yScale.range()[1])
           .attr("pointer-events", "none")
-          .attr("stroke", "red");
+          .attr("stroke", "black")
+          .attr("stroke-width", 0.75);
         yearDivision
           .append("text")
           .attr("y", xScale(this.currentYear) - 5)
@@ -320,20 +293,8 @@ export default {
           .attr("transform", "rotate(-90)")
           .attr("text-anchor", "end")
           .attr("font-size", 9)
-          .attr("fill", "red")
+          .attr("fill", "black")
           .text("Cierre");
-        // areaGroup
-        //   .append("text")
-        //   .attr("class", "title")
-        //   .attr("text-anchor", "middle")
-        //   .attr(
-        //     "x",
-        //     (this.width - this.margin.left - this.margin.right) / 2 +
-        //       this.margin.left -
-        //       this.margin.right
-        //   )
-        //   .attr("y", 0)
-        //   .text(this.title);
         areaGroup
           .append("text")
           .attr("class", "x label")
@@ -351,25 +312,21 @@ export default {
           .attr("x", this.margin.left)
           .attr("y", 0)
           .text(this.ylabel);
-
-        // areaGroup
-        //   .append("g")
-        //   .selectAll("path")
-        //   .data(series)
-        //   .enter()
-        //   .append("path")
-        //   .attr("class", "area__before")
-        //   .attr("pointer-events", "none");
-
-        areaGroup.append("line").attr("class", "vertical helper__line");
-        areaGroup.append("line").attr("class", "horizontal helper__line");
         areaGroup
-          .selectAll(".helper__line")
+          .append("line")
+          .attr("class", "vertical helper__line")
           .attr("visibility", "hidden")
           .attr("pointer-events", "none")
           .attr("stroke", "black")
-          .attr("stroke-width", 1)
-          .attr("stroke-dasharray", "3");
+          .attr("stroke-dasharray", "3")
+          .attr("stroke-width", 0.5);
+        areaGroup
+          .append("circle")
+          .attr("class", "helper__dot")
+          .attr("visibility", "hidden")
+          .attr("stroke", "white")
+          .attr("r", 3)
+          .attr("pointer-events", "none");
       } catch (error) {
         console.log(error);
       }
@@ -380,3 +337,14 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.graph__container {
+  width: 100%;
+  height: 150px;
+  margin-top: 1rem;
+
+  @media screen and (min-height: 900px) {
+    height: 18rem;
+  }
+}
+</style>
