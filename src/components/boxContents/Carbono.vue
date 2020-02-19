@@ -39,9 +39,9 @@
       ></button>
       <button
         data-tippy-content="Fijación por Solución Natural de Clima"
-        :class="buttonClass('snc')"
+        :class="buttonClass('SNC')"
         v-show="this.$store.getters.filtro.modo !== 'proyecto'"
-        @click="changeField('snc', $event)"
+        @click="changeField('SNC', $event)"
       ></button>
     </div>
   </div>

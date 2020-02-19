@@ -267,11 +267,13 @@ export default {
           key = feat[field];
         }
       }
-      const obj = data.find(item => item.name == key);
-      if (obj) {
-        obj.value += feat[yearField];
-      } else {
-        data.push({ name: key, value: feat[yearField] });
+      if (key) {
+        const obj = data.find(item => item.name == key);
+        if (obj) {
+          obj.value += feat[yearField];
+        } else {
+          data.push({ name: key, value: feat[yearField] });
+        }
       }
     });
     return data;
@@ -302,8 +304,6 @@ export default {
         : state.filtro.modo === "proyecto"
         ? getters.coberturasPorProyectos([state.filtro.valor])
         : state.coberturas;
-
-    console.log(features);
 
     const constants = {
       NAME: "coberturas",
