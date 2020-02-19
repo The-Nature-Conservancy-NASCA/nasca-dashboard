@@ -2,6 +2,14 @@ export default {
   filtro(state) {
     return state.filtro;
   },
+  selectedProjectClosingYear(state) {
+    if (state.filtro.modo === "proyecto") {
+      const ts = state.proyectos.find(
+        project => project.ID_proyecto === state.filtro.valor
+      ).fecha_cierre;
+      return new Date(ts).getFullYear();
+    }
+  },
   biodiversidadPorProyectos: state => idsProyecto => {
     if (idsProyecto) {
       return state.biodiversidad.filter(item =>
@@ -12,7 +20,9 @@ export default {
   biodiversidadPorEstrategia: (state, getters) => idEstrategia => {
     if (idEstrategia) {
       const proyectos = getters.proyectosPorEstrategia(idEstrategia);
-      return getters.biodiversidadPorProyectos(proyectos.map(proyecto => proyecto.id));
+      return getters.biodiversidadPorProyectos(
+        proyectos.map(proyecto => proyecto.id)
+      );
     }
   },
   biodiversidad: (state, getters) => group => {
@@ -225,7 +235,9 @@ export default {
   carbonoPorEstrategia: (state, getters) => idEstrategia => {
     if (idEstrategia) {
       const proyectos = getters.proyectosPorEstrategia(idEstrategia);
-      return getters.carbonoPorProyectos(proyectos.map(proyecto => proyecto.id));
+      return getters.carbonoPorProyectos(
+        proyectos.map(proyecto => proyecto.id)
+      );
     }
   },
   carbono: (state, getters) => {
@@ -278,7 +290,9 @@ export default {
   coberturasPorEstrategia: (state, getters) => idEstrategia => {
     if (idEstrategia) {
       const proyectos = getters.proyectosPorEstrategia(idEstrategia);
-      return getters.coberturasPorProyectos(proyectos.map(proyecto => proyecto.id));
+      return getters.coberturasPorProyectos(
+        proyectos.map(proyecto => proyecto.id)
+      );
     }
   },
   coberturas: (state, getters) => {
@@ -380,7 +394,9 @@ export default {
   implementacionesPorEstrategia: (state, getters) => idEstrategia => {
     if (idEstrategia) {
       const proyectos = getters.proyectosPorEstrategia(idEstrategia);
-      return getters.implementacionesPorProyectos(proyectos.map(proyecto => proyecto.id));
+      return getters.implementacionesPorProyectos(
+        proyectos.map(proyecto => proyecto.id)
+      );
     }
   },
   implementaciones: (state, getters) => {
@@ -440,7 +456,9 @@ export default {
   participantesPorEstrategia: (state, getters) => idEstrategia => {
     if (idEstrategia) {
       const proyectos = getters.proyectosPorEstrategia(idEstrategia);
-      return getters.participantesPorProyectos(proyectos.map(proyecto => proyecto.id));
+      return getters.participantesPorProyectos(
+        proyectos.map(proyecto => proyecto.id)
+      );
     }
   },
   participantes: (state, getters) => {

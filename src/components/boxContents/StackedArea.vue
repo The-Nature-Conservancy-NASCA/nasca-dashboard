@@ -49,7 +49,7 @@ export default {
         "Bosque secundario": "#4F7942",
         "Sistemas silvopastoriles intensivos": "#7a5195"
       };
-      this.currentYear = new Date().getFullYear();
+      this.closingYear = this.$store.getters.selectedProjectClosingYear;
       this.margin = { top: 20, right: 25, bottom: 20, left: 25 };
       this.tooltipOffset = 20;
       this.width =
@@ -279,8 +279,8 @@ export default {
           .attr("pointer-events", "none");
         yearDivision
           .append("line")
-          .attr("x1", xScale(this.currentYear))
-          .attr("x2", xScale(this.currentYear))
+          .attr("x1", xScale(this.closingYear))
+          .attr("x2", xScale(this.closingYear))
           .attr("y1", yScale.range()[0])
           .attr("y2", yScale.range()[1])
           .attr("pointer-events", "none")
@@ -288,7 +288,7 @@ export default {
           .attr("stroke-width", 0.75);
         yearDivision
           .append("text")
-          .attr("y", xScale(this.currentYear) - 5)
+          .attr("y", xScale(this.closingYear) - 5)
           .attr("x", yScale.range()[1] - this.margin.bottom)
           .attr("transform", "rotate(-90)")
           .attr("text-anchor", "end")
