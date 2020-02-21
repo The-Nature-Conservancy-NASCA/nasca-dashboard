@@ -155,8 +155,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-a, a:visited, a:link, a:focus {
-   text-decoration: none;
+a,
+a:visited,
+a:link,
+a:focus {
+  text-decoration: none;
 }
 
 #app {
