@@ -280,6 +280,10 @@ export default {
 .graph__container {
   width: 90%;
   height: 30rem;
+
+  @media screen and (min-height: 800px) {
+    height: 40rem;
+  }
 }
 
 .treemap {
@@ -287,6 +291,7 @@ export default {
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  flex: 1;
 
   &__buttons {
     transform: translateY(-3.5rem);

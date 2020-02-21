@@ -52,6 +52,10 @@ export default {
 
   &__header {
     padding: 0.5rem;
+
+    @media screen and (min-width: 1440px) {
+      padding: 1rem;
+    }
   }
 
   &__title {
@@ -59,6 +63,10 @@ export default {
     font-size: 1.6rem;
     font-weight: 400;
     text-transform: uppercase;
+
+    @media screen and (min-width: 1440px) {
+      font-size: 2rem;
+    }
   }
 
   &__subtitle {
@@ -75,6 +83,10 @@ export default {
     justify-content: center;
     height: calc(100% - 3rem);
     width: 100%;
+
+    @media screen and (min-width: 1440px) {
+      height: calc(100% - 5rem);
+    }    
   }
 }
 </style>

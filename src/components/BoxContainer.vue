@@ -23,7 +23,7 @@ export default {
   display: grid;
   grid-gap: 1.5rem;
   grid-template-columns: 31.5vw 31.5vw 31.5vw;
-  grid-auto-rows: 27.5vh;
+  grid-auto-rows: 28.4vh;
   margin: 0 2rem 2rem 2rem;
 
   @media screen and (max-width: 900px) {

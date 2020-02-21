@@ -13,12 +13,13 @@
   width: 90%;
   height: 15rem;
   margin: 0 auto;
+  flex: 1;
+
+  @media screen and (min-height: 800px) {
+    height: 24rem;
+  }
 }
-// .bar-chart {
-//   align-items: center;
-//   display: flex;
-//   justify-content: center;
-// }
+
 </style>
 <script>
 import * as d3 from "d3";

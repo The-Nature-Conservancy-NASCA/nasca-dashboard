@@ -13,7 +13,7 @@
   height: 12rem;
   margin: 2rem auto;
 
-  @media screen and (max-height: 768px) {
+  @media screen and (max-height: 799px) {
     width: 8rem !important;
     height: 8rem !important;
     margin: 1rem auto;
@@ -24,6 +24,7 @@
     height: 10rem;
     margin: 1rem auto;
   }
+
 }
 
 .graph__header {
@@ -59,7 +60,7 @@
     left: 50%;
     position: absolute;
     top: 50%;
-    transform: translate(-50%, calc(-50% + 27px));
+    transform: translate(-50%, calc(-50% + 24px));
     width: 10rem;
 
     @media screen and (min-width: 901px) and (max-width: 1280px) {
