@@ -75,6 +75,10 @@ export default {
     padding-left: 7px;
     font-weight: 300;
     border-left: 1px solid black;
+
+    @media screen and (min-width: 1440px) {
+      font-size: 1.5rem;
+    }
   }
 
   &__content {
