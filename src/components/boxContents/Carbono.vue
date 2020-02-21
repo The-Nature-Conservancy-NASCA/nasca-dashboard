@@ -127,12 +127,19 @@ export default {
 </script>
 <style lang="scss" scoped>
 .carbono {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+  width: 100%;
+  padding-bottom: 1rem;
+
   &__ctas {
     align-items: center;
     display: flex;
-    justify-content: space-evenly;
-    margin: 0 auto;
-    width: 30%;
+    justify-content: space-between;
+    width: 15%;
 
     button {
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
@@ -160,11 +167,13 @@ export default {
   }
 
   &__numbers {
-    margin: auto;
-    margin-bottom: 4rem;
+    margin-top: 3rem;
     display: flex;
     flex-direction: row;
+    flex: 1;
     justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
   }
 }
 

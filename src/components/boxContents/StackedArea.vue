@@ -341,7 +341,7 @@ export default {
 .graph__container {
   width: 100%;
   height: 150px;
-  margin-top: 1rem;
+  flex: 1;
 
   @media screen and (min-height: 900px) {
     height: 18rem;

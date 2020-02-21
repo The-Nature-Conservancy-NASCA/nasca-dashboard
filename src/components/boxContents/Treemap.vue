@@ -280,7 +280,6 @@ export default {
 .graph__container {
   width: 90%;
   height: 30rem;
-  margin-top: -1.5rem;
 }
 
 .treemap {

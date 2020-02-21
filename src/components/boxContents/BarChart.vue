@@ -12,9 +12,7 @@
 .graph__container {
   width: 90%;
   height: 15rem;
-  margin-top: 30px;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto;
 }
 // .bar-chart {
 //   align-items: center;
@@ -230,7 +228,7 @@ export default {
           .attr("class", "x label")
           .attr("text-anchor", "end")
           .attr("x", this.width + this.offset.left)
-          .attr("y", this.height + 15)
+          .attr("y", this.height + 10)
           .attr("font-size", 10)
           .attr("font-weight", "bold")
           .text(this.xlabel);

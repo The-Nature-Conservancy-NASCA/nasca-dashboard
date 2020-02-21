@@ -30,4 +30,11 @@ export default {
   text-align: center;
   font-size: 14px;
 }
+.implementaciones {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+  width: 100%;
+}
 </style>

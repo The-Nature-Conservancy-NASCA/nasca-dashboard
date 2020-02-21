@@ -66,7 +66,6 @@ export default {
   flex-wrap: wrap;
   width: 100%;
   justify-content: space-evenly;
-  margin-top: 4rem;
 
   &__otros {
     display: flex;

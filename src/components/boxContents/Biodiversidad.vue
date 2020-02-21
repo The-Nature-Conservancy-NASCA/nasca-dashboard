@@ -65,7 +65,7 @@ export default {
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
-  margin-top: 3rem;
+  width: 100%;
 
   &__buttons {
     transform: translateY(-3.5rem);

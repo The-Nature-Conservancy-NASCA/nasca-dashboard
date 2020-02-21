@@ -69,6 +69,7 @@ export default {
     max-height: 0;
     position: absolute;
     opacity: 0;
+    overflow: hidden;
     transition: all 0.3s ease-in-out;
     transform-origin: top;
     z-index: 2;

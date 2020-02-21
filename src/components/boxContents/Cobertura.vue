@@ -80,6 +80,13 @@ export default {
 </script>
 <style lang="scss" scoped>
 .cobertura {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+  width: 100%;
+  padding-bottom: 1rem;
+
   &__ctas {
     align-items: center;
     display: flex;

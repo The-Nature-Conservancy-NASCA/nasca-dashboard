@@ -22,7 +22,7 @@ export default {
 .box-container {
   display: grid;
   grid-gap: 1.5rem;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 31.5vw 31.5vw 31.5vw;
   grid-auto-rows: 27.5vh;
   margin: 0 2rem 2rem 2rem;
 
@@ -37,7 +37,7 @@ export default {
   }
 
   @media screen and (max-height: 768px) {
-    grid-auto-rows: 27.8vh;
+    grid-auto-rows: 27vh !important;
     grid-gap: 1rem;
   }
 }

@@ -48,11 +48,10 @@ export default {
   background-color: #fff;
   border-top: 3px solid var(--color-green-tnc);
   box-shadow: 0 3px 5px rgba(black, 0.4);
-  padding: 1rem;
-  position: relative;
+  overflow: hidden;
 
   &__header {
-    margin-bottom: 0.5rem;
+    padding: 0.5rem;
   }
 
   &__title {
@@ -71,10 +70,10 @@ export default {
   }
 
   &__content {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    height: calc(100% - 3rem);
     width: 100%;
   }
 }
