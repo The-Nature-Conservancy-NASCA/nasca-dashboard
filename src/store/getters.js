@@ -570,8 +570,30 @@ export default {
     const header = Object.keys(data[0]);
     return { data: data, header: header };
   },
-  contribuciones: state => {
-    return state.contribuciones;
+  contribucionesPorProyectos: state => idsProyecto => {
+    if (idsProyecto) {
+      return state.contribuciones.filter(item =>
+        idsProyecto.includes(item.ID_proyecto)
+      );
+    }
+  },
+  contribucionesPorEstrategia: (state, getters) => idEstrategia => {
+    if (idEstrategia) {
+      const proyectos = getters.proyectosPorEstrategia(idEstrategia);
+      return getters.contribucionesPorProyectos(
+        proyectos.map(proyecto => proyecto.id)
+      );
+    }
+  },
+  contribuciones: (state, getters) => {
+    const features =
+      state.filtro.modo === "estrategia"
+        ? getters.contribucionesPorEstrategia(state.filtro.valor)
+        : state.filtro.modo === "proyecto"
+        ? getters.contribucionesPorProyectos([state.filtro.valor])
+        : state.contribuciones;
+
+    return features;
   },
   metas: state => {
     return state.metas;

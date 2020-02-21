@@ -74,6 +74,9 @@ export default {
   CHANGE_CLASSIFICATION_SCHEME(state, payload) {
     state.filtro.classificationScheme = payload;
   },
+  CHANGE_CONTRIBUTION_TYPE(state, payload) {
+    state.filtro.contributionType = payload;
+  },
   CHANGE_YEAR(state, payload) {
     state.filtro.year[payload.component] = payload.year;
   },

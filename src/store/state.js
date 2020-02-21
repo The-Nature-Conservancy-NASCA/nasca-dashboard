@@ -96,6 +96,7 @@ export default {
       coberturas: null
     },
     carbonoField: null,
-    classificationScheme: null
+    classificationScheme: null,
+    contributionType: "0"
   }
 };

@@ -14,6 +14,9 @@ export default {
   changeCarbonoField({ commit }, field) {
     commit("CHANGE_CARBONO_FIELD", field);
   },
+  changeContributionType({ commit }, type) {
+    commit("CHANGE_CONTRIBUTION_TYPE", type);
+  },
   changeYear({ commit }, yearInfo) {
     commit("CHANGE_YEAR", yearInfo);
   },
