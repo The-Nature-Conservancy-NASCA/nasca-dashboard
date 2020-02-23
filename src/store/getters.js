@@ -595,6 +595,31 @@ export default {
 
     return features;
   },
+  aliadosPorProyectos: state => idsProyecto => {
+    if (idsProyecto) {
+      return state.aliados.filter(item =>
+        idsProyecto.includes(item.ID_proyecto)
+      );
+    }
+  },
+  aliadosPorEstrategia: (state, getters) => idEstrategia => {
+    if (idEstrategia) {
+      const proyectos = getters.proyectosPorEstrategia(idEstrategia);
+      return getters.aliadosPorProyectos(
+        proyectos.map(proyecto => proyecto.id)
+      );
+    }
+  },
+  aliados: (state, getters) => {
+    const features =
+      state.filtro.modo === "estrategia"
+        ? getters.aliadosPorEstrategia(state.filtro.valor)
+        : state.filtro.modo === "proyecto"
+        ? getters.aliadosPorProyectos([state.filtro.valor])
+        : state.aliados;
+
+    return features;
+  },
   metas: state => {
     return state.metas;
   }

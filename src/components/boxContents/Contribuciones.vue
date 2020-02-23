@@ -3,13 +3,7 @@
     <carousel
       class="shared__conservation__agenda"
       v-show="this.$store.state.filtro.contributionType == '0'"
-      :perPage="4"
-      :scrollPerPage="false"
-      :paginationEnabled="false"
-      :navigationEnabled="true"
-      :navigationClickTargetSize="5"
-      :navigationPrevLabel="'&#8249;'"
-      :navigationNextLabel="'&#8250;'"
+      v-bind="carouselSettings"
     >
       <slide
         v-for="contribution in SCAContributions"
@@ -23,12 +17,7 @@
     <carousel
       class="otras__contribuciones"
       v-show="this.$store.state.filtro.contributionType == '1'"
-      :perPage="4"
-      :paginationEnabled="false"
-      :navigationEnabled="true"
-      :navigationClickTargetSize="5"
-      :navigationPrevLabel="'&#8249;'"
-      :navigationNextLabel="'&#8250;'"
+      v-bind="carouselSettings"
     >
       <slide
         v-for="contribution in otherContributions"
@@ -70,19 +59,30 @@ export default {
       return this.$store.getters.filtro.contributionType;
     },
     SCAContributions() {
-      return this.$store.getters.contribuciones.filter(
+      const arr = this.$store.getters.contribuciones.filter(
         contribution => contribution.tipo == "0"
       );
+      return this.removeDuplicates(arr, "nombre");
     },
     otherContributions() {
-      return this.$store.getters.contribuciones.filter(
+      const arr = this.$store.getters.contribuciones.filter(
         contribution => contribution.tipo == "1"
       );
+      return this.removeDuplicates(arr, "nombre");
     }
   },
   data() {
     return {
-      selectedType: "0"
+      selectedType: "0",
+      carouselSettings: {
+        perPage: 3,
+        scrollPerPage: false,
+        paginationEnabled: false,
+        navigationEnabled: true,
+        navigationClickTargetSize: 15,
+        navigationPrevLabel: "&#8249;",
+        navigationNextLabel: "&#8250;"
+      }
     };
   },
   methods: {
@@ -105,6 +105,28 @@ export default {
       this.selectedType = type;
       this.btn = event.target;
       this.changeBoxSubtitle();
+      this.fixCarouselOverflow(type);
+    },
+    fixCarouselOverflow(type) {
+      let carouselClass;
+      if (type === "0") {
+        carouselClass = "shared__conservation__agenda";
+      } else if (type === "1") {
+        carouselClass = "otras__contribuciones";
+      }
+      const carousel = this.$el.querySelector(`.VueCarousel.${carouselClass}`);
+      if (carousel.querySelector(".VueCarousel-navigation")) {
+        carousel.querySelector(".VueCarousel-inner").style["justify-content"] =
+          "normal";
+      } else {
+        carousel.querySelector(".VueCarousel-inner").style["justify-content"] =
+          "space-evenly";
+      }
+    },
+    removeDuplicates(myArr, prop) {
+      return myArr.filter((obj, pos, arr) => {
+        return arr.map(mapObj => mapObj[prop]).indexOf(obj[prop]) === pos;
+      });
     },
     setImgsTooltip(selector, data) {
       const tooltipOffset = 15;
@@ -140,6 +162,7 @@ export default {
   mounted() {
     this.btn = this.$el.querySelector(".contribuciones__ctas button.selected");
     this.changeBoxSubtitle();
+    this.fixCarouselOverflow("0");
     tippy("[data-tippy-content]", {
       placement: "bottom"
     });
@@ -154,10 +177,10 @@ export default {
   }
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .contribuciones {
   .VueCarousel {
-    width: 90%;
+    width: 80%;
     margin: auto;
 
     &-inner {
@@ -166,17 +189,8 @@ export default {
       justify-content: space-evenly;
     }
 
-    .label {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-
     img {
-      width: 50px;
-      max-width: 50px;
-      // margin: auto;
+      height: 50px;
       -moz-transition: all 0.25s;
       -o-transition: all 0.25s;
       -webkit-transition: all 0.25s;

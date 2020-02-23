@@ -71,7 +71,7 @@ export default {
         x: 3,
         y: 3
       },
-      content: ""
+      content: "Aliados"
     }
   ],
   biodiversidad: [],
@@ -97,6 +97,7 @@ export default {
     },
     carbonoField: null,
     classificationScheme: null,
-    contributionType: "0"
+    contributionType: "0",
+    allyType: "0"
   }
 };

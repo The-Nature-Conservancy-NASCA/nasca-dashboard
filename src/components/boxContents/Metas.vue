@@ -1,63 +1,53 @@
 <template>
   <div class="metas">
-    <div ref="slider" class="swipe">
-      <div class="swipe-wrap">
-        <div v-for="meta in metas" :key="meta.OBJECTID">
-          <QuantityText
-            :name="meta.meta"
-            :value="meta.valor"
-            :unit="meta.unidad"
-            :removeDecimals="false"
-          />
-        </div>
-      </div>
-    </div>
+    <carousel
+      :perPage="1"
+      :scrollPerPage="false"
+      :paginationEnabled="false"
+      :navigationEnabled="true"
+      :navigationClickTargetSize="3"
+      :navigationPrevLabel="'&#8249;'"
+      :navigationNextLabel="'&#8250;'"
+    >
+      <slide v-for="meta in metas" :key="meta.OBJECTID">
+        <QuantityText
+          :name="meta.meta"
+          :value="meta.valor"
+          :unit="meta.unidad"
+          :removeDecimals="false"
+        />
+      </slide>
+    </carousel>
   </div>
 </template>
 <script>
 import QuantityText from "./QuantityText.vue";
-import * as Swipe from "swipejs";
+import { Carousel, Slide } from "vue-carousel";
 
 export default {
   name: "Metas",
   components: {
-    QuantityText
+    Carousel,
+    QuantityText,
+    Slide
   },
   computed: {
     metas() {
       return this.$store.getters.metas;
     }
   },
-  methods: {},
-  mounted() {
-    const element = this.$refs["slider"];
-    window.mySwipe = new Swipe(element, {
-      startSlide: 0,
-      auto: 3000,
-      draggable: false,
-      autoRestart: false,
-      continuous: true,
-      disableScroll: true,
-      stopPropagation: true
-    });
-  }
+  methods: {}
 };
 </script>
 <style lang="scss" scoped>
-.swipe {
-  overflow: hidden;
-  visibility: hidden;
-  position: relative;
+.metas {
+  .VueCarousel {
+    width: 80%;
+    margin: auto;
 
-  &-wrap {
-    overflow: hidden;
-    position: relative;
-  }
-
-  &-wrap > div {
-    float: left;
-    width: 100%;
-    position: relative;
+    &-navigation-button {
+      font-size: 20px;
+    }
   }
 }
 </style>

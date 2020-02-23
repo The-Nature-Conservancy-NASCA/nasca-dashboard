@@ -74,6 +74,9 @@ export default {
   CHANGE_CLASSIFICATION_SCHEME(state, payload) {
     state.filtro.classificationScheme = payload;
   },
+  CHANGE_ALLY_TYPE(state, payload) {
+    state.filtro.allyType = payload;
+  },
   CHANGE_CONTRIBUTION_TYPE(state, payload) {
     state.filtro.contributionType = payload;
   },

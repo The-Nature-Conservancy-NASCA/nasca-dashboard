@@ -14,6 +14,9 @@ export default {
   changeCarbonoField({ commit }, field) {
     commit("CHANGE_CARBONO_FIELD", field);
   },
+  changeAllyType({ commit }, type) {
+    commit("CHANGE_ALLY_TYPE", type);
+  },
   changeContributionType({ commit }, type) {
     commit("CHANGE_CONTRIBUTION_TYPE", type);
   },

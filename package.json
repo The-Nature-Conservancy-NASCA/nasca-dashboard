@@ -13,7 +13,6 @@
     "file-saver": "^2.0.2",
     "jszip": "^3.2.2",
     "save-svg-as-png": "^1.4.14",
-    "swipejs": "^2.2.14",
     "tippy.js": "^5.2.1",
     "vue": "^2.6.10",
     "vue-carousel": "^0.18.0",
