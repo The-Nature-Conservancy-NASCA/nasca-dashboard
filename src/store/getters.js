@@ -386,16 +386,40 @@ export default {
     });
     return data;
   },
-  implementacionesPorProyectos: (state, getters) => idsProyecto => {
-    if (idsProyecto) {
-      const prediosPorProyecto = getters
-        .predios(idsProyecto)
+  implementacionesPorProyectos: (state, getters) => idsProyectos => {
+    const implementaciones = [];
+    idsProyectos.forEach(idProyecto => {
+      let moment;
+      if (state.filtro.moment === "99") {
+        moment = getters.mostRecentMoment(idProyecto);
+      } else {
+        moment = state.filtro.moment;
+      }
+      const predios = getters
+        .predios(idProyecto)
         .map(predio => predio.ID_predio);
-
-      return state.implementaciones.filter(item =>
-        prediosPorProyecto.includes(item.ID_predio)
+      const implementacionesProyecto = state.implementaciones.filter(
+        implementacion => {
+          return (
+            predios.includes(implementacion.ID_predio) &&
+            implementacion.momento === moment
+          );
+        }
       );
-    }
+      implementaciones.push(...implementacionesProyecto);
+    });
+
+    return implementaciones;
+
+    // if (idsProyecto) {
+    //   const prediosPorProyecto = getters
+    //     .predios(idsProyecto)
+    //     .map(predio => predio.ID_predio);
+
+    //   return state.implementaciones.filter(item =>
+    //     prediosPorProyecto.includes(item.ID_predio)
+    //   );
+    // }
   },
   implementacionesPorEstrategia: (state, getters) => idEstrategia => {
     if (idEstrategia) {
@@ -411,7 +435,7 @@ export default {
         ? getters.implementacionesPorEstrategia(state.filtro.valor)
         : state.filtro.modo === "proyecto"
         ? getters.implementacionesPorProyectos([state.filtro.valor])
-        : state.implementaciones;
+        : getters.implementacionesPorProyectos(getters.proyectosId);
 
     const actions = {
       "Manejo sostenible": "area_manejo_sostenible",
@@ -419,6 +443,8 @@ export default {
       Restauración: "area_restauracion",
       "Producción sostenible": "areas_p_sostenibles"
     };
+
+    console.log(features);
 
     const data = [];
     features.forEach(feat => {

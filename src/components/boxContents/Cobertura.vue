@@ -1,24 +1,29 @@
 <template>
-  <div class="cobertura" v-if="cobertura.children.length">
-    <Treemap
-      :graphData="cobertura"
-      :graphId="'treemap__coberturas'"
-      :component="'coberturas'"
-    />
-    <div
-      v-show="this.$store.state.filtro.modo == 'proyecto'"
-      class="cobertura__ctas"
-    >
-      <button
-        data-tippy-content="Clasificación CORINE"
-        :class="buttonClass('corine')"
-        @click="changeClassificationScheme('corine', $event)"
-      ></button>
-      <button
-        data-tippy-content="Clasificación proyecto"
-        :class="buttonClass('project')"
-        @click="changeClassificationScheme('project', $event)"
-      ></button>
+  <div>
+    <div class="cobertura" v-if="cobertura.children.length">
+      <Treemap
+        :graphData="cobertura"
+        :graphId="'treemap__coberturas'"
+        :component="'coberturas'"
+      />
+      <div
+        v-show="this.$store.state.filtro.modo == 'proyecto'"
+        class="cobertura__ctas"
+      >
+        <button
+          data-tippy-content="Clasificación CORINE"
+          :class="buttonClass('corine')"
+          @click="changeClassificationScheme('corine', $event)"
+        ></button>
+        <button
+          data-tippy-content="Clasificación proyecto"
+          :class="buttonClass('project')"
+          @click="changeClassificationScheme('project', $event)"
+        ></button>
+      </div>
+    </div>
+    <div v-else class="no__data__warning">
+      <p>Todavía no hay datos :(</p>
     </div>
   </div>
 </template>
@@ -106,5 +111,10 @@ export default {
       }
     }
   }
+}
+
+.no__data__warning > p {
+  text-align: center;
+  font-size: 14px;
 }
 </style>

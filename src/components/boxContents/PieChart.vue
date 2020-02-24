@@ -7,71 +7,6 @@
     </div>
   </section>
 </template>
-<style lang="scss" scoped>
-.graph__container {
-  width: 12rem;
-  height: 12rem;
-  margin: 2rem auto;
-
-  @media screen and (max-height: 768px) {
-    width: 8rem;
-    height: 8rem;
-    margin: 1rem auto;
-  }
-
-  @media screen and (min-width: 901px) and (max-width: 1280px) {
-    width: 10rem;
-    height: 10rem;
-    margin: 1rem auto;
-  }
-}
-
-.graph__header {
-  text-align: center;
-
-  h4 {
-    color: #666;
-    font-size: 1.8rem;
-    text-transform: uppercase;
-
-    @media screen and (min-width: 901px) and (max-width: 1280px) {
-      font-size: 1.6rem;
-    }
-  }
-
-  h5 {
-    font-size: 1.6rem;
-
-    @media screen and (min-width: 901px) and (max-width: 1280px) {
-      font-size: 1.4rem;
-    }
-  }
-}
-
-.pie-chart {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  &__icon {
-    left: 50%;
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%, calc(-50% + 27px));
-    width: 10rem;
-
-    @media screen and (min-width: 901px) and (max-width: 1280px) {
-      width: 8rem;
-    }
-
-    @media screen and (max-height: 768px) {
-      width: 7rem;
-    }
-  }
-}
-</style>
 <script>
 import QuantityText from "./QuantityText.vue";
 import * as d3 from "d3";
@@ -79,6 +14,10 @@ import * as d3 from "d3";
 export default {
   name: "PieChart",
   props: {
+    colors: {
+      type: Object,
+      required: false
+    },
     count: {
       type: Number,
       required: false
@@ -148,7 +87,10 @@ export default {
           .arc()
           .innerRadius(innerRadius)
           .outerRadius(outerRadius);
-        const pie = d3.pie().value(d => d.value);
+        const pie = d3
+          .pie()
+          .value(d => d.value)
+          .padAngle(0.05);
         const arcs = svg
           .selectAll("g.arc")
           .data(pie(this.graphData))
@@ -159,10 +101,12 @@ export default {
         arcs
           .append("path")
           .on("mouseover", function(d) {
-            svg.selectAll("g.arc path").attr("fill-opacity", 0.3);
+            svg.selectAll("g.arc path")
+              .attr("fill-opacity", 0.3)
+              .attr("stroke-opacity", 0.5);
             d3.select(this)
-              .attr("stroke", "black")
-              .attr("fill-opacity", 0.75);
+              .attr("fill-opacity", 0.8)
+              .attr("stroke-opacity", 1);
             const coordinates = [d3.event.pageX, d3.event.pageY];
             const value = Number(Math.round(d.value)).toLocaleString("en");
             const tooltipContent = `
@@ -184,11 +128,20 @@ export default {
               .style("top", `${coordinates[1]}px`);
           })
           .on("mouseout", function() {
-            svg.selectAll("g.arc path").attr("fill-opacity", 0.75);
-            d3.select(this).attr("stroke", "none");
+            svg
+              .selectAll("g.arc path")
+              .attr("fill-opacity", 0.6)
+              .attr("stroke-opacity", 0.75);
             d3.select("#tooltip__graph").style("display", "none");
           })
-          .attr("fill", d => this.color(d.data.name))
+          .attr("fill", d =>
+            this.colors ? this.colors[d.data.name] : this.color(d.data.name)
+          )
+          .attr("stroke", d =>
+            this.colors ? this.colors[d.data.name] : this.color(d.data.name)
+          )
+          .attr("fill-opacity", 0.6)
+          .attr("stroke-opacity", 0.75)
           .attr("d", arc);
       } catch (error) {
         console.log(error);
@@ -200,3 +153,68 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.graph__container {
+  width: 12rem;
+  height: 12rem;
+  margin: 2rem auto;
+
+  @media screen and (max-height: 768px) {
+    width: 8rem;
+    height: 8rem;
+    margin: 1rem auto;
+  }
+
+  @media screen and (min-width: 901px) and (max-width: 1280px) {
+    width: 10rem;
+    height: 10rem;
+    margin: 1rem auto;
+  }
+}
+
+.graph__header {
+  text-align: center;
+
+  h4 {
+    color: #666;
+    font-size: 1.8rem;
+    text-transform: uppercase;
+
+    @media screen and (min-width: 901px) and (max-width: 1280px) {
+      font-size: 1.6rem;
+    }
+  }
+
+  h5 {
+    font-size: 1.6rem;
+
+    @media screen and (min-width: 901px) and (max-width: 1280px) {
+      font-size: 1.4rem;
+    }
+  }
+}
+
+.pie-chart {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  &__icon {
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, calc(-50% + 27px));
+    width: 10rem;
+
+    @media screen and (min-width: 901px) and (max-width: 1280px) {
+      width: 8rem;
+    }
+
+    @media screen and (max-height: 768px) {
+      width: 7rem;
+    }
+  }
+}
+</style>

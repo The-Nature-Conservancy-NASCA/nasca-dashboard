@@ -1,9 +1,14 @@
 <template>
-  <div v-if="implementaciones.length">
-    <BarChart
-      :graphData="implementaciones"
-      :graphId="'barchart__implementaciones'"
-    />
+  <div>
+    <div class="implementaciones" v-if="implementaciones.length">
+      <BarChart
+        :graphData="implementaciones"
+        :graphId="'barchart__implementaciones'"
+      />
+    </div>
+    <div v-else class="no__data__warning">
+      <p>Todavía no hay datos :(</p>
+    </div>
   </div>
 </template>
 <script>
@@ -20,3 +25,9 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.no__data__warning > p {
+  text-align: center;
+  font-size: 14px;
+}
+</style>

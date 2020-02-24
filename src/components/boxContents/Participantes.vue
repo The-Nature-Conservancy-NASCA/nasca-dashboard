@@ -7,6 +7,7 @@
         :group="'Participantes'"
         :count="count()"
         :valueLabel="'individuos'"
+        :colors="colors"
         quantityValueSize="2"
       />
     </div>
@@ -38,9 +39,19 @@ export default {
       return this.$store.getters.participantes;
     }
   },
+  data() {
+    return {
+      colors: {
+        Hombres: "#1e88e5",
+        Mujeres: "#d81b60"
+      }
+    };
+  },
   methods: {
     count() {
-      return this.participantes.length > 0 ? this.participantes.reduce((a, b) => a.value + b.value) : 0;
+      return this.participantes.length > 0
+        ? this.participantes.reduce((a, b) => a.value + b.value)
+        : 0;
     },
     countOtros(group) {
       return this.groups[group];
