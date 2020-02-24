@@ -135,6 +135,9 @@ export default {
       };
     });
   },
+  proyectosId(state) {
+    return state.proyectos.map(proyecto => proyecto.ID_proyecto);
+  },
   proyectosPorEstrategia: state => estrategia => {
     return state.proyectos
       .filter(proyecto => proyecto.ID_estrategia === estrategia)
@@ -278,16 +281,37 @@ export default {
     });
     return data;
   },
-  coberturasPorProyectos: (state, getters) => idsProyecto => {
-    if (idsProyecto) {
-      const prediosPorProyecto = getters
-        .predios(idsProyecto)
+  coberturasPorProyectos: (state, getters) => idsProyectos => {
+    const coberturas = [];
+    idsProyectos.forEach(idProyecto => {
+      let moment;
+      if (state.filtro.moment === "99") {
+        moment = getters.mostRecentMoment(idProyecto);
+      } else {
+        moment = state.filtro.moment;
+      }
+      const predios = getters
+        .predios(idProyecto)
         .map(predio => predio.ID_predio);
+      const coberturasProyecto = state.coberturas.filter(cobertura => {
+        return (
+          predios.includes(cobertura.ID_predio) && cobertura.momento === moment
+        );
+      });
+      coberturas.push(...coberturasProyecto);
+    });
 
-      return state.coberturas.filter(cobertura =>
-        prediosPorProyecto.includes(cobertura.ID_predio)
-      );
-    }
+    return coberturas;
+
+    // if (idsProyectos) {
+    //   const prediosPorProyecto = getters
+    //     .predios(idsProyectos)
+    //     .map(predio => predio.ID_predio);
+
+    //   return state.coberturas.filter(cobertura =>
+    //     prediosPorProyecto.includes(cobertura.ID_predio)
+    //   );
+    // }
   },
   coberturasPorEstrategia: (state, getters) => idEstrategia => {
     if (idEstrategia) {
@@ -303,14 +327,14 @@ export default {
         ? getters.coberturasPorEstrategia(state.filtro.valor)
         : state.filtro.modo === "proyecto"
         ? getters.coberturasPorProyectos([state.filtro.valor])
-        : state.coberturas;
+        : getters.coberturasPorProyectos(getters.proyectosId);
 
     const constants = {
       NAME: "coberturas",
       PARENT_LABEL:
         state.filtro.classificationScheme === "project"
           ? "cobertura_proyecto"
-          : "corine1",
+          : "cobertura_comun",
       CHILD_LABEL:
         state.filtro.classificationScheme === "project"
           ? "subcobertura_proyecto"
@@ -319,65 +343,47 @@ export default {
       ID_FIELD: "ID_cobertura"
     };
 
-    const years = [
-      ...new Set(
-        features
-          .filter(item => item.fecha_visita !== null)
-          .map(item => new Date(item.fecha_visita).getFullYear())
-      )
-    ];
-    let year;
-    if (state.filtro.year.coberturas) {
-      year = state.filtro.year.coberturas;
-    } else {
-      year = years.slice(-1)[0];
-      state.filtro.year.coberturas = year;
-    }
-
-    const data = { name: constants.NAME, children: [], years: years };
-    features
-      .filter(feature => new Date(feature.fecha_visita).getFullYear() == year)
-      .forEach(feat => {
-        // features.forEach(feat => {
-        const parentExists = !!data.children.filter(
+    const data = { name: constants.NAME, children: [] };
+    features.forEach(feat => {
+      const parentExists = !!data.children.filter(
+        child => child.name === feat[constants.PARENT_LABEL]
+      ).length;
+      if (parentExists) {
+        const parent = data.children.filter(
           child => child.name === feat[constants.PARENT_LABEL]
+        )[0];
+        const childrenExists = !!parent.children.filter(
+          child => child.name === feat[constants.CHILD_LABEL]
         ).length;
-        if (parentExists) {
-          const parent = data.children.filter(
-            child => child.name === feat[constants.PARENT_LABEL]
-          )[0];
-          const childrenExists = !!parent.children.filter(
+        if (childrenExists) {
+          const childEl = parent.children.filter(
             child => child.name === feat[constants.CHILD_LABEL]
-          ).length;
-          if (childrenExists) {
-            const childEl = parent.children.filter(
-              child => child.name === feat[constants.CHILD_LABEL]
-            )[0];
-            childEl.value += feat[constants.VALUE_FIELD];
-          } else {
-            const obj = {
+          )[0];
+          childEl.value += feat[constants.VALUE_FIELD];
+        } else {
+          const obj = {
+            name: feat[constants.CHILD_LABEL],
+            id: feat[constants.ID_FIELD],
+            value: feat[constants.VALUE_FIELD],
+            color: getters.colorPorCobertura(feat[constants.ID_FIELD])
+          };
+          parent.children.push(obj);
+        }
+      } else {
+        const obj = {
+          name: feat[constants.PARENT_LABEL],
+          children: [
+            {
               name: feat[constants.CHILD_LABEL],
               id: feat[constants.ID_FIELD],
               value: feat[constants.VALUE_FIELD],
               color: getters.colorPorCobertura(feat[constants.ID_FIELD])
-            };
-            parent.children.push(obj);
-          }
-        } else {
-          const obj = {
-            name: feat[constants.PARENT_LABEL],
-            children: [
-              {
-                name: feat[constants.CHILD_LABEL],
-                id: feat[constants.ID_FIELD],
-                value: feat[constants.VALUE_FIELD],
-                color: getters.colorPorCobertura(feat[constants.ID_FIELD])
-              }
-            ]
-          };
-          data.children.push(obj);
-        }
-      });
+            }
+          ]
+        };
+        data.children.push(obj);
+      }
+    });
     return data;
   },
   implementacionesPorProyectos: (state, getters) => idsProyecto => {
@@ -406,15 +412,6 @@ export default {
         : state.filtro.modo === "proyecto"
         ? getters.implementacionesPorProyectos([state.filtro.valor])
         : state.implementaciones;
-    // const year = state.filtro.year;
-
-    // const years = [
-    //   ...new Set(
-    //     features
-    //       .filter(item => item.fecha_visita !== null)
-    //       .map(item => new Date(item.fecha_visita).getFullYear())
-    //   )
-    // ];
 
     const actions = {
       "Manejo sostenible": "area_manejo_sostenible",
@@ -622,5 +619,45 @@ export default {
   },
   metas: state => {
     return state.metas;
+  },
+  momentos: state => projectId => {
+    const availableMoments = [
+      {
+        name: "Línea base",
+        value: 0,
+        field: "fecha_linea_base"
+      },
+      {
+        name: "Primer seguimiento",
+        value: 1,
+        field: "fecha_seguimiento1"
+      },
+      {
+        name: "Segundo seguimiento",
+        value: 2,
+        field: "fecha_seguimiento2"
+      },
+      {
+        name: "Cierre",
+        value: 3,
+        field: "fecha_cierre"
+      }
+    ];
+    const project = state.proyectos.find(
+      project => project.ID_proyecto === projectId
+    );
+    const moments = [];
+    availableMoments.forEach(moment => {
+      if (project[moment.field]) {
+        moments.push(moment);
+      }
+    });
+    return moments;
+  },
+  mostRecentMoment: (state, getters) => projectId => {
+    const moment = Math.max(
+      ...getters.momentos(projectId).map(moment => moment.value)
+    );
+    return moment.toString();
   }
 };

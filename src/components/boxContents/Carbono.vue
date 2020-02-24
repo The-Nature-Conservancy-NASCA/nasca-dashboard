@@ -1,48 +1,57 @@
 <template>
-  <div
-    v-if="
-      this.$store.state.filtro.modo === 'proyecto'
-        ? carbonoProyecto.data.length
-        : carbono.length
-    "
-    class="carbono"
-  >
-    <StackedArea
-      v-if="this.$store.state.filtro.modo === 'proyecto'"
-      :graphData="carbonoProyecto"
-      :graphId="'areachart__carbono'"
-    />
+  <div>
     <div
-      class="carbono__numbers"
-      v-if="this.$store.state.filtro.modo !== 'proyecto'"
+      v-if="
+        this.$store.state.filtro.modo === 'proyecto'
+          ? carbonoProyecto.data.length
+          : carbono.length
+      "
+      class="carbono"
     >
-      <div v-for="item in carbono" :key="item.name">
-        <QuantityText :name="item.name" :value="item.value" :unit="'GtCO2e'" />
+      <StackedArea
+        v-if="this.$store.state.filtro.modo === 'proyecto'"
+        :graphData="carbonoProyecto"
+        :graphId="'areachart__carbono'"
+      />
+      <div
+        class="carbono__numbers"
+        v-if="this.$store.state.filtro.modo !== 'proyecto'"
+      >
+        <div v-for="item in carbono" :key="item.name">
+          <QuantityText
+            :name="item.name"
+            :value="item.value"
+            :unit="'GtCO2e'"
+          />
+        </div>
+      </div>
+      <div class="carbono__ctas">
+        <button
+          data-tippy-content="Fijación total"
+          :class="buttonClass(null)"
+          @click="changeField(null, $event)"
+        ></button>
+        <button
+          data-tippy-content="Fijación por compartimiento"
+          :class="buttonClass('compartimiento')"
+          @click="changeField('compartimiento', $event)"
+        ></button>
+        <button
+          data-tippy-content="Fijación por cobertura"
+          :class="buttonClass('cobertura')"
+          v-show="this.$store.getters.filtro.modo === 'proyecto'"
+          @click="changeField('cobertura', $event)"
+        ></button>
+        <button
+          data-tippy-content="Fijación por Solución Natural de Clima"
+          :class="buttonClass('SNC')"
+          v-show="this.$store.getters.filtro.modo !== 'proyecto'"
+          @click="changeField('SNC', $event)"
+        ></button>
       </div>
     </div>
-    <div class="carbono__ctas">
-      <button
-        data-tippy-content="Fijación total"
-        :class="buttonClass(null)"
-        @click="changeField(null, $event)"
-      ></button>
-      <button
-        data-tippy-content="Fijación por compartimiento"
-        :class="buttonClass('compartimiento')"
-        @click="changeField('compartimiento', $event)"
-      ></button>
-      <button
-        data-tippy-content="Fijación por cobertura"
-        :class="buttonClass('cobertura')"
-        v-show="this.$store.getters.filtro.modo === 'proyecto'"
-        @click="changeField('cobertura', $event)"
-      ></button>
-      <button
-        data-tippy-content="Fijación por Solución Natural de Clima"
-        :class="buttonClass('SNC')"
-        v-show="this.$store.getters.filtro.modo !== 'proyecto'"
-        @click="changeField('SNC', $event)"
-      ></button>
+    <div class="no__data__warning" v-else>
+      <p>Todavía no hay datos :(</p>
     </div>
   </div>
 </template>
@@ -157,5 +166,10 @@ export default {
     flex-direction: row;
     justify-content: space-evenly;
   }
+}
+
+.no__data__warning > p {
+  text-align: center;
+  font-size: 14px;
 }
 </style>

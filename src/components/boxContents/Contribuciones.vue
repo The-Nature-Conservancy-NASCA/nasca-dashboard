@@ -162,7 +162,6 @@ export default {
   mounted() {
     this.btn = this.$el.querySelector(".contribuciones__ctas button.selected");
     this.changeBoxSubtitle();
-    this.fixCarouselOverflow("0");
     tippy("[data-tippy-content]", {
       placement: "bottom"
     });

@@ -23,9 +23,6 @@ export default {
     }
   },
   computed: {
-    years() {
-      return this.graphData.years;
-    },
     selectedYear() {
       return this.$store.getters.filtro.year[this.component];
     }
@@ -97,7 +94,7 @@ export default {
           .enter()
           .append("rect")
           .attr("class", d =>
-            d.parent.data.name.toLowerCase().replace(/ /g, "_")
+            d.parent.data.name.toLowerCase().replace(/[^A-Z0-9]/gi, "_")
           )
           .on("mouseover", function(d) {
             treemapGroup.selectAll("rect").attr("fill-opacity", 0.2);
@@ -160,7 +157,9 @@ export default {
           .attr("x", d => {
             const center = that.computeElementsCenter(
               d3
-                .selectAll(`.${d.name.toLowerCase().replace(/ /g, "_")}`)
+                .selectAll(
+                  `.${d.name.toLowerCase().replace(/[^A-Z0-9]/gi, "_")}`
+                )
                 .nodes()
             );
             return center.x;
@@ -168,7 +167,9 @@ export default {
           .attr("y", d => {
             const center = that.computeElementsCenter(
               d3
-                .selectAll(`.${d.name.toLowerCase().replace(/ /g, "_")}`)
+                .selectAll(
+                  `.${d.name.toLowerCase().replace(/[^A-Z0-9]/gi, "_")}`
+                )
                 .nodes()
             );
             return center.y;
@@ -179,7 +180,7 @@ export default {
           .selectAll("text.parent__label")
           .filter(function(d) {
             const selection = d3
-              .selectAll(`.${d.name.toLowerCase().replace(/ /g, "_")}`)
+              .selectAll(`.${d.name.toLowerCase().replace(/[^A-Z0-9]/gi, "_")}`)
               .nodes();
             const boxesBBox = that.computeElementsBBox(selection);
             const textBBox = that.computeElementsBBox([d3.select(this).node()]);
@@ -229,7 +230,7 @@ export default {
     },
     wrap(d, i) {
       const selection = d3
-        .selectAll(`.${d.name.toLowerCase().replace(/ /g, "_")}`)
+        .selectAll(`.${d.name.toLowerCase().replace(/[^A-Z0-9]/gi, "_")}`)
         .nodes();
       const bbox = this.computeElementsBBox(selection);
       const width = bbox.xmax - bbox.xmin;

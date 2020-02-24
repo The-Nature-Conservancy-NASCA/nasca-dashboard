@@ -95,6 +95,7 @@ export default {
       biodiversidad: null,
       coberturas: null
     },
+    moment: "0",
     carbonoField: null,
     classificationScheme: null,
     contributionType: "0",

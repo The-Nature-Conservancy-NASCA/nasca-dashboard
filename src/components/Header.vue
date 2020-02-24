@@ -1,7 +1,32 @@
 <template>
   <div class="header">
-    <img src="../assets/images/tnc-logo-light.png" alt="logo" class="header__logo" />
+    <img
+      src="../assets/images/tnc-logo-light.png"
+      alt="logo"
+      class="header__logo"
+    />
     <div class="header__estrategias">
+      <select
+        class="select colombia___or__strategy"
+        @change="changeMoment($event)"
+        v-if="this.$store.state.filtro.modo !== 'proyecto'"
+      >
+        <option value="0" selected>Línea base</option>
+        <option value="99">Progreso</option>
+      </select>
+      <select
+        class="select project"
+        @change="changeMoment($event)"
+        v-if="this.$store.state.filtro.modo === 'proyecto'"
+      >
+        <option
+          v-for="moment in getProjectMoments(this.$store.state.filtro.valor)"
+          :key="moment.name"
+          :value="moment.value"
+        >
+          {{ moment.name }}
+        </option>
+      </select>
       <FiltroEstrategia />
       <button @click="seleccionarTodo">Ver todo</button>
       <DownloadDataBtn />
@@ -35,6 +60,12 @@ export default {
     };
   },
   methods: {
+    changeMoment(event) {
+      this.$store.dispatch("changeMoment", event.target.value);
+    },
+    getProjectMoments(projectId) {
+      return this.$store.getters.momentos(projectId);
+    },
     seleccionarTodo() {
       this.$store.dispatch("verTodo");
     }
@@ -47,7 +78,7 @@ $font-gray: #999;
 $font-dark: #333;
 
 @mixin dark-hover {
-  transition: color .3s;
+  transition: color 0.3s;
 
   &:hover {
     color: $font-dark;

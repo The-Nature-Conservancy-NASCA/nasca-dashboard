@@ -20,6 +20,9 @@ export default {
   changeContributionType({ commit }, type) {
     commit("CHANGE_CONTRIBUTION_TYPE", type);
   },
+  changeMoment({ commit }, moment) {
+    commit("CHANGE_MOMENT", moment);
+  },
   changeYear({ commit }, yearInfo) {
     commit("CHANGE_YEAR", yearInfo);
   },

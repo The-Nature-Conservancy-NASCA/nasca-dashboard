@@ -41,7 +41,7 @@ export default {
       fetch(
         `${BASE_DATA_URL}13/${buildQuery({
           outFields:
-            "ID_predio%2C+ID_cobertura%2C+corine1%2C+corine2%2C+cobertura_proyecto%2C+verificacion%2C+fecha_visita%2C+carbono_biomasa%2C+carbono_suelos%2C+carbono_madera%2C+subcobertura_proyecto%2C+area"
+            "ID_predio%2C+ID_cobertura%2C+corine1%2C+corine2%2C+cobertura_proyecto%2C+cobertura_comun%2C+momento%2C+subcobertura_proyecto%2C+area"
         })}`
       )
     ); // Coberturas
