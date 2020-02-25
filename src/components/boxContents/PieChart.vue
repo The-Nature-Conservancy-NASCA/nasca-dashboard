@@ -24,7 +24,6 @@
     height: 10rem;
     margin: 1rem auto;
   }
-
 }
 
 .graph__header {
@@ -70,6 +69,11 @@
     @media screen and (max-height: 768px) {
       transform: translate(-50%, calc(-50% + 24px));
       width: 6.5rem !important;
+    }
+
+    @media screen and (min-height: 769px) {
+      transform: translate(-50%, calc(-50% + 24px));
+      width: 10rem !important;
     }
   }
 }
@@ -216,68 +220,3 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
-.graph__container {
-  width: 12rem;
-  height: 12rem;
-  margin: 2rem auto;
-
-  @media screen and (max-height: 768px) {
-    width: 8rem;
-    height: 8rem;
-    margin: 1rem auto;
-  }
-
-  @media screen and (min-width: 901px) and (max-width: 1280px) {
-    width: 10rem;
-    height: 10rem;
-    margin: 1rem auto;
-  }
-}
-
-.graph__header {
-  text-align: center;
-
-  h4 {
-    color: #666;
-    font-size: 1.8rem;
-    text-transform: uppercase;
-
-    @media screen and (min-width: 901px) and (max-width: 1280px) {
-      font-size: 1.6rem;
-    }
-  }
-
-  h5 {
-    font-size: 1.6rem;
-
-    @media screen and (min-width: 901px) and (max-width: 1280px) {
-      font-size: 1.4rem;
-    }
-  }
-}
-
-.pie-chart {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  &__icon {
-    left: 50%;
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%, calc(-50% + 27px));
-    width: 10rem;
-
-    @media screen and (min-width: 901px) and (max-width: 1280px) {
-      width: 8rem;
-    }
-
-    @media screen and (max-height: 768px) {
-      width: 7rem;
-    }
-  }
-}
-</style>

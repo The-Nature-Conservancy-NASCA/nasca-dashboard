@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="width-100">
     <div
       v-if="
         this.$store.state.filtro.modo === 'proyecto'

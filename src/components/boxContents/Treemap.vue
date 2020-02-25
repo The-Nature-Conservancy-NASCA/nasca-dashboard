@@ -192,7 +192,7 @@ export default {
           })
           .remove();
       } catch (error) {
-        console.error(error);
+        //console.error(error);
       }
     },
     buttonClass(year) {

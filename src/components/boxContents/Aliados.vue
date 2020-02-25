@@ -1,5 +1,5 @@
 <template>
-  <div class="aliados">
+  <div class="aliados width-100">
     <carousel
       class="donantes"
       v-show="this.$store.state.filtro.allyType == '0'"
@@ -224,6 +224,10 @@ export default {
 </script>
 <style lang="scss" scoped>
 .aliados {
+  .donantes {
+    height: 90%;
+  }
+
   .VueCarousel {
     width: 80%;
     margin: auto;
@@ -231,7 +235,7 @@ export default {
     &-inner {
       display: flex;
       flex-direction: row;
-      justify-content: space-evenly;
+      justify-content: center;
     }
 
     &-navigation-button {
@@ -244,7 +248,7 @@ export default {
 
     img {
       // height: 100px;
-      width: 90px;
+      width: 120px;
       position: relative;
       top: 50%;
       transform: translateY(-50%);

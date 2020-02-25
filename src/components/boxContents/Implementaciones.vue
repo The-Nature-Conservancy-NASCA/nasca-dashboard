@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="width-100">
     <div class="implementaciones" v-if="implementaciones.length">
       <BarChart
         :graphData="implementaciones"
