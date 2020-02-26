@@ -38,6 +38,24 @@ export default {
       );
     }
   },
+  aliadosPorEstrategia: (state, getters) => idEstrategia => {
+    if (idEstrategia) {
+      const proyectos = getters.proyectosPorEstrategia(idEstrategia);
+      return getters.aliadosPorProyectos(
+        proyectos.map(proyecto => proyecto.id)
+      );
+    }
+  },
+  aliados: (state, getters) => {
+    const features =
+      state.filtro.modo === "estrategia"
+        ? getters.aliadosPorEstrategia(state.filtro.valor)
+        : state.filtro.modo === "proyecto"
+        ? getters.aliadosPorProyectos([state.filtro.valor])
+        : state.aliados;
+
+    return features;
+  },
   biodiversidadPorProyectos: (state, getters) => idsProyectos => {
     const biodiversidad = [];
     idsProyectos.forEach(idProyecto => {
