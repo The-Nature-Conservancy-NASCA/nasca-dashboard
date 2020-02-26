@@ -1,12 +1,12 @@
 <template>
   <div class="biodiversidad">
-    <div v-for="group in groups" :key="group">
+    <div v-for="group in biodiversidad" :key="group.name">
       <PieChart
-        :graphData="biodiversidad(group)"
-        :icono="icono(group)"
-        :group="group"
-        :count="groupCount(group)"
-        :graphId="`piechart__biodiversidad__${group}`"
+        :graphData="group.data"
+        :icono="icono(group.name)"
+        :group="group.name"
+        :count="group.data.reduce((a, b) => +a + +b.value, 0)"
+        :graphId="`piechart__biodiversidad__${group.name}`"
         :valueLabel="'especies'"
       />
     </div>
@@ -21,20 +21,11 @@ export default {
     PieChart
   },
   computed: {
-    groups() {
-      return this.$store.getters.gruposBiodiversidad;
-    },
-    selectedYear() {
-      return this.$store.getters.filtro.year.biodiversidad;
-    },
-    years() {
-      return this.$store.getters.yearsBiodiversidad;
+    biodiversidad() {
+      return this.$store.getters.biodiversidad;
     }
   },
   methods: {
-    biodiversidad(group) {
-      return this.$store.getters.biodiversidad(group);
-    },
     buttonClass(year) {
       return {
         selected: this.selectedYear === year,
@@ -46,9 +37,6 @@ export default {
         year: year,
         component: "biodiversidad"
       });
-    },
-    groupCount(group) {
-      return this.$store.getters.biodiversityGroupCount(group);
     },
     icono(group) {
       return this.$store.getters.biodiversityIcon(group);

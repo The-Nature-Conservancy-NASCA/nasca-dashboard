@@ -270,6 +270,7 @@ export default {
     top: 50%;
     transform: translate(-50%, calc(-50% + 27px));
     width: 10rem;
+    pointer-events: none;
 
     @media screen and (min-width: 901px) and (max-width: 1280px) {
       width: 8rem;

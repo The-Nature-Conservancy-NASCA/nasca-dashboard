@@ -10,12 +10,22 @@ export default {
       return new Date(ts).getFullYear();
     }
   },
-  biodiversidadPorProyectos: state => idsProyecto => {
-    if (idsProyecto) {
-      return state.biodiversidad.filter(item =>
-        idsProyecto.includes(item.ID_proyecto)
-      );
-    }
+  biodiversidadPorProyectos: (state, getters) => idsProyectos => {
+    const biodiversidad = [];
+    idsProyectos.forEach(idProyecto => {
+      let moment;
+      if (state.filtro.moment === "99") {
+        moment = getters.mostRecentMoment(idProyecto);
+      } else {
+        moment = state.filtro.moment;
+      }
+      const biodiversidadProyecto = state.biodiversidad.filter(item => {
+        return item.ID_proyecto === idProyecto && item.momento === moment;
+      });
+      biodiversidad.push(...biodiversidadProyecto);
+    });
+
+    return biodiversidad;
   },
   biodiversidadPorEstrategia: (state, getters) => idEstrategia => {
     if (idEstrategia) {
@@ -25,95 +35,49 @@ export default {
       );
     }
   },
-  biodiversidad: (state, getters) => group => {
-    const year = state.filtro.year.biodiversidad;
-    let features =
-      state.filtro.modo === "estrategia"
-        ? getters.biodiversidadPorEstrategia(state.filtro.valor)
-        : state.filtro.modo === "proyecto"
-        ? getters.biodiversidadPorProyectos([state.filtro.valor])
-        : state.biodiversidad;
-    features = features.filter(item => {
-      return (
-        item.grupo_tnc === group &&
-        new Date(item.fecha_identificacion).getFullYear() <= year &&
-        item.fecha_identificacion !== null
-      );
-    });
-    const covers = [...new Set(features.map(item => item.cobertura))];
-    const data = [];
-    covers.forEach(cover => {
-      const count = [
-        ...new Set(
-          features
-            .filter(item => item.cobertura === cover)
-            .map(item => item.especie)
-        )
-      ].length;
-      data.push({ name: cover, value: count });
-    });
-    console.log(data);
-    return data;
-  },
-  biodiversityGroupCount: (state, getters) => group => {
-    const year = state.filtro.year.biodiversidad;
-    let features =
-      state.filtro.modo === "estrategia"
-        ? getters.biodiversidadPorEstrategia(state.filtro.valor)
-        : state.filtro.modo === "proyecto"
-        ? getters.biodiversidadPorProyectos([state.filtro.valor])
-        : state.biodiversidad;
-    features = state.biodiversidad.filter(item => {
-      return (
-        item.grupo_tnc === group &&
-        new Date(item.fecha_identificacion).getFullYear() <= year &&
-        item.fecha_identificacion !== null
-      );
-    });
-    //console.log([...new Set(features.map(item => item.especie))].length);
-    return [...new Set(features.map(item => item.especie))].length;
-  },
-  biodiversityIcon: state => group => {
-    const icono = state.iconos.find(item => item.grupo_tnc === group);
-    return icono ? icono.url : null;
-  },
-  gruposBiodiversidad(state, getters) {
-    if (!state.filtro.year.biodiversidad) {
-      getters.yearsBiodiversidad;
-    }
-    const year = state.filtro.year.biodiversidad;
-    let features =
-      state.filtro.modo === "estrategia"
-        ? getters.biodiversidadPorEstrategia(state.filtro.valor)
-        : state.filtro.modo === "proyecto"
-        ? getters.biodiversidadPorProyectos([state.filtro.valor])
-        : state.biodiversidad;
-    features = state.biodiversidad.filter(item => {
-      return (
-        new Date(item.fecha_identificacion).getFullYear() <= year &&
-        item.fecha_identificacion !== null
-      );
-    });
-    return [...new Set(features.map(item => item.grupo_tnc))];
-  },
-  yearsBiodiversidad(state, getters) {
+  biodiversidad: (state, getters) => {
     const features =
       state.filtro.modo === "estrategia"
         ? getters.biodiversidadPorEstrategia(state.filtro.valor)
         : state.filtro.modo === "proyecto"
         ? getters.biodiversidadPorProyectos([state.filtro.valor])
-        : state.biodiversidad;
-    const years = [
-      ...new Set(
-        features
-          .filter(item => item.fecha_identificacion !== null)
-          .map(item => new Date(item.fecha_identificacion).getFullYear())
-      )
-    ].sort();
-    if (!state.filtro.year.biodiversidad) {
-      state.filtro.year.biodiversidad = years.slice(-1)[0];
-    }
-    return years;
+        : getters.biodiversidadPorProyectos(getters.proyectosId);
+
+    const data = [];
+    features.forEach(item => {
+      let group = data.find(group => group.name === item.grupo_tnc);
+      if (!group) {
+        group = { name: item.grupo_tnc, data: [] };
+        group.data.push({
+          name: item.cobertura,
+          unique_species: [item.especie]
+        });
+        data.push(group);
+      } else {
+        let landcover = group.data.find(
+          landcover => landcover.name === item.cobertura
+        );
+        if (!landcover) {
+          landcover = { name: item.cobertura, unique_species: [item.especie] };
+          group.data.push(landcover);
+        } else {
+          if (!landcover.unique_species.includes(item.especie)) {
+            landcover.unique_species.push(item.especie);
+          }
+        }
+      }
+    });
+    data.forEach(group => {
+      group.data.forEach(landcover => {
+        landcover.value = landcover.unique_species.length;
+        delete landcover.unique_species;
+      });
+    });
+    return data;
+  },
+  biodiversityIcon: state => group => {
+    const icono = state.iconos.find(item => item.grupo_tnc === group);
+    return icono ? icono.url : null;
   },
   colorPorCobertura: state => idCobertura => {
     return state.colores.find(color => color.ID_cobertura === idCobertura)
