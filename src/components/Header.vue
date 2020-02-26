@@ -13,7 +13,7 @@
         v-if="this.$store.state.filtro.modo !== 'proyecto'"
       >
         <option value="0" selected>Línea base</option>
-        <option value="99">Progreso</option>
+        <option value="99">Estado actual</option>
       </select>
       <select
         class="select project"
