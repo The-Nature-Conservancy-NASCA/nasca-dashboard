@@ -6,6 +6,7 @@
       class="header__logo"
     />
     <div class="header__estrategias">
+      <span>{{ currentLevel }}</span>
       <select
         class="select colombia___or__strategy"
         @change="changeMoment($event)"
@@ -52,6 +53,11 @@ export default {
     DownloadDataBtn,
     DownloadImageBtn,
     FiltroEstrategia
+  },
+  computed: {
+    currentLevel() {
+      return this.$store.getters.currentLevel;
+    }
   },
   data() {
     return {

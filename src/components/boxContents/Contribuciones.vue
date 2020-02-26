@@ -1,5 +1,5 @@
 <template>
-  <div class="contribuciones">
+  <div class="contribuciones w-100">
     <carousel
       class="shared__conservation__agenda"
       v-show="this.$store.state.filtro.contributionType == '0'"
@@ -177,6 +177,10 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.w-100 {
+  width: 100%
+}
+
 .contribuciones {
   .VueCarousel {
     width: 80%;

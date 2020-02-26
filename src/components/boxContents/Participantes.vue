@@ -54,7 +54,12 @@ export default {
         : 0;
     },
     countOtros(group) {
-      return this.groups[group];
+      const value = this.groups[group]
+      if (value === 0) {
+        return "-";
+      } else {
+        return value;
+      }
     }
   }
 };

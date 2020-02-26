@@ -1,5 +1,5 @@
 <template>
-  <div class="aliados">
+  <div class="aliados w-100">
     <carousel
       class="donantes"
       v-show="this.$store.state.filtro.allyType == '0'"
@@ -223,6 +223,10 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.w-100 {
+  width: 100%;
+}
+
 .aliados {
   .VueCarousel {
     width: 80%;

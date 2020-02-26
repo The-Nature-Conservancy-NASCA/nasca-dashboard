@@ -52,6 +52,7 @@ export default {
       ].length;
       data.push({ name: cover, value: count });
     });
+    console.log(data);
     return data;
   },
   biodiversityGroupCount: (state, getters) => group => {
@@ -410,16 +411,6 @@ export default {
     });
 
     return implementaciones;
-
-    // if (idsProyecto) {
-    //   const prediosPorProyecto = getters
-    //     .predios(idsProyecto)
-    //     .map(predio => predio.ID_predio);
-
-    //   return state.implementaciones.filter(item =>
-    //     prediosPorProyecto.includes(item.ID_predio)
-    //   );
-    // }
   },
   implementacionesPorEstrategia: (state, getters) => idEstrategia => {
     if (idEstrategia) {
@@ -444,8 +435,6 @@ export default {
       "Producción sostenible": "areas_p_sostenibles"
     };
 
-    console.log(features);
-
     const data = [];
     features.forEach(feat => {
       for (let action in actions) {
@@ -469,12 +458,28 @@ export default {
 
     return data;
   },
-  participantesPorProyectos: state => idsProyecto => {
-    if (idsProyecto) {
-      return state.participantes.filter(item =>
-        idsProyecto.includes(item.ID_proyecto)
-      );
-    }
+  participantesPorProyectos: (state, getters) => idsProyectos => {
+    const participantes = [];
+    idsProyectos.forEach(idProyecto => {
+      let moment;
+      if (state.filtro.moment === "99") {
+        moment = getters.mostRecentMoment(idProyecto);
+      } else {
+        moment = state.filtro.moment;
+      }
+      const participantesProyecto = state.participantes.filter(item => {
+        return item.ID_proyecto === idProyecto && item.momento === moment;
+      });
+      participantes.push(...participantesProyecto);
+    });
+
+    return participantes;
+
+    // if (idsProyecto) {
+    //   return state.participantes.filter(item =>
+    //     idsProyecto.includes(item.ID_proyecto)
+    //   );
+    // }
   },
   participantesPorEstrategia: (state, getters) => idEstrategia => {
     if (idEstrategia) {
@@ -490,7 +495,7 @@ export default {
         ? getters.participantesPorEstrategia(state.filtro.valor)
         : state.filtro.modo === "proyecto"
         ? getters.participantesPorProyectos([state.filtro.valor])
-        : state.participantes;
+        : getters.participantesPorProyectos(getters.proyectosId);
     const genders = {
       Hombres: "numero_hombres",
       Mujeres: "numero_mujeres"
@@ -523,7 +528,7 @@ export default {
         ? getters.participantesPorEstrategia(state.filtro.valor)
         : state.filtro.modo === "proyecto"
         ? getters.participantesPorProyectos([state.filtro.valor])
-        : state.participantes;
+        : getters.participantesPorProyectos(getters.proyectosId);
 
     const groups = {
       Indígenas: "numero_indigenas",
@@ -536,7 +541,7 @@ export default {
           continue;
         }
         const count = feat[groups[group]];
-        if (count) {
+        if (count !== null) {
           if (group in counts) {
             counts[group] += count;
           } else {
@@ -685,5 +690,26 @@ export default {
       ...getters.momentos(projectId).map(moment => moment.value)
     );
     return moment.toString();
+  },
+  currentLevel: state => {
+    const modo = state.filtro.modo;
+    const valor = state.filtro.valor;
+    let level;
+    if (modo === "proyecto") {
+      const project = state.proyectos.find(
+        proyecto => proyecto.ID_proyecto === valor
+      );
+      const strategyName = state.estrategias.find(
+        estrategia => estrategia.ID_estrategia === project.ID_estrategia
+      ).nombre;
+      level = `${strategyName}: ${project.nombre}`;
+    } else if (modo === "estrategia") {
+      level = state.estrategias.find(
+        estrategia => estrategia.ID_estrategia === valor
+      ).nombre;
+    } else {
+      level = "Colombia";
+    }
+    return level;
   }
 };

@@ -19,7 +19,6 @@
     height: 24rem;
   }
 }
-
 </style>
 <script>
 import * as d3 from "d3";
@@ -62,31 +61,23 @@ export default {
     render() {
       this.el = d3.select(this.$refs["graph"]);
       this.el.html("");
-
       if (!this.graphData.length) {
         return;
       }
-
       this.margin = { top: 10, right: 10, bottom: 20, left: 10 };
       this.offset = { left: 10, bottom: 10 };
-
-      // compute width and height based on parent div
       this.width =
         parseInt(this.el.style("width")) - this.margin.left - this.margin.right;
       this.height =
         parseInt(this.el.style("height")) -
         this.margin.top -
         this.margin.bottom;
-
       this.color = "#4AA241";
       this.factor = 0.6;
-
       this.title = "Área total por acción";
       this.ylabel = "Acción";
       this.xlabel = "Área (ha)";
-
       this.tooltipOffset = 15;
-
       const barGroup = this.el
         .append("svg")
         .attr("id", this.graphId)
@@ -99,26 +90,25 @@ export default {
           `translate(${this.margin.left}, ${this.margin.top})`
         );
       try {
-        const xScale = d3
+        this.xScale = d3
           .scaleBand()
           .domain(d3.range(this.graphData.length))
           .range([this.margin.bottom + this.offset.bottom, this.height])
           .paddingInner(0.05);
-        const yScale = d3
+        this.yScale = d3
           .scaleLinear()
           .domain([0, d3.max(this.graphData, d => d.value)])
           .range([0, this.width - this.margin.left - this.offset.left]);
         var xAxis = d3
           .axisBottom()
-          .scale(yScale)
+          .scale(this.yScale)
           .tickSizeOuter(0)
           .ticks(4);
         var yAxis = d3
           .axisLeft()
-          .scale(xScale)
+          .scale(this.xScale)
           .tickValues([])
           .tickSize(0);
-        // .tickFormat((d, i) => this.graphData[i].name);
         const that = this;
         barGroup
           .selectAll("rect")
@@ -160,16 +150,16 @@ export default {
           .attr(
             "y",
             (d, i) =>
-              xScale(i) -
+              this.xScale(i) -
               this.margin.bottom -
               this.offset.bottom +
-              (xScale.bandwidth() * (1 - this.factor)) / 2
+              (this.xScale.bandwidth() * (1 - this.factor)) / 2
           )
           .attr("x", () => this.margin.left + this.offset.left)
-          .attr("height", xScale.bandwidth() * this.factor)
+          .attr("height", this.xScale.bandwidth() * this.factor)
           .attr("fill", this.color)
           .transition()
-          .attr("width", d => yScale(d.value));
+          .attr("width", d => this.yScale(d.value));
         barGroup
           .selectAll("text")
           .data(this.graphData)
@@ -177,15 +167,15 @@ export default {
           .append("text")
           .attr(
             "x",
-            d => yScale(d.value) / 2 + this.margin.left + this.offset.left
+            d => this.yScale(d.value) / 2 + this.margin.left + this.offset.left
           )
           .attr(
             "y",
             (d, i) =>
-              xScale(i) -
+              this.xScale(i) -
               this.margin.bottom -
               this.offset.bottom +
-              xScale.bandwidth() / 2
+              this.xScale.bandwidth() / 2
           )
           .attr("text-anchor", "middle")
           .attr("dominant-baseline", "middle")
@@ -193,7 +183,8 @@ export default {
           .attr("font-weight", "bold")
           .attr("fill", "white")
           .attr("pointer-events", "none")
-          .text(d => d.name);
+          .text(d => d.name)
+          .each(this.wrap);
         barGroup
           .append("g")
           .attr("class", "y axis")
@@ -212,18 +203,6 @@ export default {
               this.margin.bottom})`
           )
           .call(xAxis);
-        // barGroup
-        //   .append("text")
-        //   .attr("class", "title")
-        //   .attr("text-anchor", "middle")
-        //   .attr(
-        //     "x",
-        //     (this.width - this.margin.left - this.margin.right) / 2 +
-        //       this.margin.left -
-        //       this.margin.right
-        //   )
-        //   .attr("y", 0)
-        //   .text(this.title);
         barGroup
           .append("text")
           .attr("class", "x label")
@@ -245,6 +224,18 @@ export default {
           .text(this.ylabel);
       } catch (error) {
         console.log(error);
+      }
+    },
+    wrap(d, i, n) {
+      const self = d3.select(n[i]);
+      let textLength = self.node().getComputedTextLength();
+      let text = self.text();
+      const width = this.yScale(d.value);
+      const padding = 5;
+      while (textLength > width - 2 * padding && text.length > 0) {
+        text = text.slice(0, -1);
+        self.text(text + "...");
+        textLength = self.node().getComputedTextLength();
       }
     }
   },

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="w-100">
     <div class="cobertura" v-if="cobertura.children.length">
       <Treemap
         :graphData="cobertura"
@@ -79,6 +79,10 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.w-100 {
+  width: 100%;
+}
+
 .cobertura {
   display: flex;
   flex-direction: column;

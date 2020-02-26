@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="w-100">
     <div class="implementaciones" v-if="implementaciones.length">
       <BarChart
         :graphData="implementaciones"
@@ -26,6 +26,10 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.w-100 {
+  width: 100%;
+}
+
 .no__data__warning > p {
   text-align: center;
   font-size: 14px;

@@ -37,7 +37,7 @@ export default {
       required: true
     },
     value: {
-      type: Number,
+      type: [Number, String],
       required: true
     },
     unit: {
@@ -72,7 +72,11 @@ export default {
   },
   filters: {
     removeDecimal(value, decimalPoints) {
-      return Number(value.toFixed(decimalPoints)).toLocaleString("en");
+      if (typeof value === "number") {
+        return Number(value.toFixed(decimalPoints)).toLocaleString("en");
+      } else {
+        return value;
+      }
     }
   }
 };

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="w-100">
     <div
       v-if="
         this.$store.state.filtro.modo === 'proyecto'
@@ -126,6 +126,10 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.w-100 {
+  width: 100%;
+}
+
 .carbono {
   align-items: center;
   display: flex;
@@ -157,7 +161,6 @@ export default {
 
       &:hover {
         box-shadow: 0 5px 8px rgba(0, 0, 0, 0.4);
-        transform: translateY(-2px);
       }
 
       &:focus {
