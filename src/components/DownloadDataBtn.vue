@@ -1,5 +1,5 @@
 <template>
-  <a @click="downloadData()" title="Descargar datos">
+  <a @click="downloadData()" :title="strings.descargarDatos">
     <i class="material-icons">
       assignment_returned
     </i>
@@ -15,6 +15,9 @@ export default {
   computed: {
     cobertura() {
       return this.$store.getters.cob;
+    },
+    strings() {
+      return this.$store.getters.strings;
     }
   },
   methods: {

@@ -26,6 +26,9 @@ export default {
   changeYear({ commit }, yearInfo) {
     commit("CHANGE_YEAR", yearInfo);
   },
+  cambiarIdioma({ commit }, idioma) {
+    commit("CHANGE_LANGUAGE", idioma);
+  },
   changeBoxSubtitle({ commit }, boxInfo) {
     commit("CHANGE_BOX_SUBTITLE", boxInfo);
   }

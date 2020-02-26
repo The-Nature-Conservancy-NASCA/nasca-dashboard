@@ -30,12 +30,12 @@
     </carousel>
     <div class="contribuciones__ctas">
       <button
-        data-tippy-content="Shared Conservation Agenda"
+        :title="strings.contribucionesShared"
         :class="buttonClass('0')"
         @click="changeType('0', $event)"
       ></button>
       <button
-        data-tippy-content="Otras contribuciones"
+        :title="strings.contribucionesOtras"
         :class="buttonClass('1')"
         @click="changeType('1', $event)"
       ></button>
@@ -69,6 +69,9 @@ export default {
         contribution => contribution.tipo == "1"
       );
       return this.removeDuplicates(arr, "nombre");
+    },
+    strings() {
+      return this.$store.getters.strings;
     }
   },
   data() {
@@ -82,6 +85,10 @@ export default {
         navigationClickTargetSize: 15,
         navigationPrevLabel: "&#8249;",
         navigationNextLabel: "&#8250;"
+      },
+      subtitles: {
+        "0": "contribucionesShared",
+        "1": "contribucionesOtras"
       }
     };
   },
@@ -94,7 +101,7 @@ export default {
     },
     changeBoxSubtitle() {
       this.boxTitle = this.$parent.box.title;
-      this.boxSubtitle = this.btn.getAttribute("data-tippy-content");
+      this.boxSubtitle = this.strings[this.subtitles[this.selectedType]];
       this.$store.dispatch("changeBoxSubtitle", {
         title: this.boxTitle,
         subtitle: this.boxSubtitle
@@ -173,6 +180,11 @@ export default {
       ".VueCarousel.otras__contribuciones img",
       this.otherContributions
     );
+  },
+  watch: {
+    strings() {
+      this.changeBoxSubtitle();
+    }
   }
 };
 </script>

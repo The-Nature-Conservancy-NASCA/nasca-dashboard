@@ -1,6 +1,6 @@
 <template>
   <div class="filtro">
-    <a class="toggle" href="#">Estrategias</a>
+    <a class="toggle" href="#">{{ strings.estrategias }}</a>
     <ul class="filtro__estrategias">
       <li
         class="filtro__estrategia-item selector"
@@ -31,6 +31,9 @@ export default {
   computed: {
     estrategias() {
       return this.$store.getters.estrategias;
+    },
+    strings() {
+      return this.$store.getters.strings;
     }
   },
   methods: {

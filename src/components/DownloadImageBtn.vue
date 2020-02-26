@@ -1,5 +1,5 @@
 <template>
-  <a @click="downloadImages()" title="Descargar imagenes">
+  <a @click="downloadImages()" :title="strings.descargarImagenes">
     <i class="material-icons">
       image
     </i>
@@ -13,7 +13,11 @@ import { svgAsPngUri } from "save-svg-as-png";
 export default {
   name: "DownloadImageBtn",
   components: {},
-  computed: {},
+  computed: {
+    strings() {
+      return this.$store.getters.strings;
+    }
+  },
   methods: {
     downloadImages() {
       const options = { backgroundColor: "white" };

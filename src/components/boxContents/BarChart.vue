@@ -16,6 +16,10 @@
   flex: 1;
 
   @media screen and (min-height: 800px) {
+    height: 20rem;
+  }
+
+  @media screen and (min-height: 1000px) {
     height: 24rem;
   }
 }
