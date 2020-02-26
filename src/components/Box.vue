@@ -90,7 +90,7 @@ export default {
 
     @media screen and (min-width: 1440px) {
       height: calc(100% - 5rem);
-    }    
+    }
   }
 }
 </style>

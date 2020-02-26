@@ -27,23 +27,23 @@
       </div>
       <div class="carbono__ctas">
         <button
-          data-tippy-content="Fijación total"
-          :class="buttonClass(null)"
-          @click="changeField(null, $event)"
+          :title="strings.fijacionTotal"
+          :class="buttonClass('total')"
+          @click="changeField('total', $event)"
         ></button>
         <button
-          data-tippy-content="Fijación por compartimiento"
+          :title="strings.fijacionCompartimiento"
           :class="buttonClass('compartimiento')"
           @click="changeField('compartimiento', $event)"
         ></button>
         <button
-          data-tippy-content="Fijación por cobertura"
+          :title="strings.fijacionCobertura"
           :class="buttonClass('cobertura')"
           v-show="this.$store.getters.filtro.modo === 'proyecto'"
           @click="changeField('cobertura', $event)"
         ></button>
         <button
-          data-tippy-content="Fijación por Solución Natural de Clima"
+          :title="strings.fijacionSolucion"
           :class="buttonClass('SNC')"
           v-show="this.$store.getters.filtro.modo !== 'proyecto'"
           @click="changeField('SNC', $event)"
@@ -69,7 +69,13 @@ export default {
   },
   data() {
     return {
-      selectedField: null
+      selectedField: "total",
+      subtitles: {
+        total: "fijacionTotal",
+        compartimiento: "fijacionCompartimiento",
+        cobertura: "fijacionCobertura",
+        SNC: "fijacionSolucion"
+      }
     };
   },
   computed: {
@@ -81,6 +87,9 @@ export default {
     },
     mode() {
       return this.$store.getters.filtro.modo;
+    },
+    strings() {
+      return this.$store.getters.strings;
     }
   },
   methods: {
@@ -92,7 +101,7 @@ export default {
     },
     changeBoxSubtitle() {
       this.boxTitle = this.$parent.box.title;
-      this.boxSubtitle = this.btn.getAttribute("data-tippy-content");
+      this.boxSubtitle = this.strings[this.subtitles[this.selectedField]];
       this.$store.dispatch("changeBoxSubtitle", {
         title: this.boxTitle,
         subtitle: this.boxSubtitle
@@ -121,6 +130,9 @@ export default {
   watch: {
     mode() {
       this.resetFieldAndBoxSubtitle();
+    },
+    strings() {
+      this.changeBoxSubtitle();
     }
   }
 };

@@ -11,8 +11,8 @@
         @change="changeMoment($event)"
         v-if="this.$store.state.filtro.modo !== 'proyecto'"
       >
-        <option value="0" selected>Línea base</option>
-        <option value="99">Progreso</option>
+        <option value="0" selected>{{ strings.lineaBase }}</option>
+        <option value="99">{{ strings.progreso }}</option>
       </select>
       <select
         class="select project"
@@ -28,14 +28,26 @@
         </option>
       </select>
       <FiltroEstrategia />
-      <button @click="seleccionarTodo">Ver todo</button>
+      <button @click="seleccionarTodo">{{ strings.verTodo }}</button>
       <DownloadDataBtn />
       <DownloadImageBtn />
       <div class="divider"></div>
       <div class="header__options">
         <i class="options__icon esri-icon-description js-show-general-info"></i>
-        <a href="#"><span class="options__language selected">ES</span></a>
-        <a href="./en/visor.html"><span class="options__language">EN</span></a>
+        <span
+          @click="cambiarIdioma('es')"
+          class="options__language"
+          :class="{ selected: idiomaSelected === 'es' }"
+        >
+          ES
+        </span>
+        <span
+          @click="cambiarIdioma('en')"
+          class="options__language"
+          :class="{ selected: idiomaSelected === 'en' }"
+        >
+          EN
+        </span>
       </div>
     </div>
   </div>
@@ -56,8 +68,14 @@ export default {
   data() {
     return {
       estrategiaSelected: "",
-      proyectoSelected: ""
+      proyectoSelected: "",
+      idiomaSelected: "es"
     };
+  },
+  computed: {
+    strings() {
+      return this.$store.getters.strings;
+    }
   },
   methods: {
     changeMoment(event) {
@@ -68,6 +86,10 @@ export default {
     },
     seleccionarTodo() {
       this.$store.dispatch("verTodo");
+    },
+    cambiarIdioma(nuevoIdioma) {
+      this.idiomaSelected = nuevoIdioma;
+      this.$store.dispatch("cambiarIdioma", nuevoIdioma);
     }
   }
 };

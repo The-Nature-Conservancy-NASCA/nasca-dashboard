@@ -11,19 +11,19 @@
         class="cobertura__ctas"
       >
         <button
-          data-tippy-content="Clasificación CORINE"
+          :title="strings.clasificacionCorine"
           :class="buttonClass('corine')"
           @click="changeClassificationScheme('corine', $event)"
         ></button>
         <button
-          data-tippy-content="Clasificación proyecto"
+          :title="strings.clasificacionProyecto"
           :class="buttonClass('project')"
           @click="changeClassificationScheme('project', $event)"
         ></button>
       </div>
     </div>
     <div v-else class="no__data__warning">
-      <p>Todavía no hay datos :(</p>
+      <p>{{ strings.noHayDatos }}</p>
     </div>
   </div>
 </template>
@@ -40,11 +40,18 @@ export default {
   computed: {
     cobertura() {
       return this.$store.getters.coberturas;
+    },
+    strings() {
+      return this.$store.getters.strings;
     }
   },
   data() {
     return {
-      selectedScheme: "corine"
+      selectedScheme: "corine",
+      subtitle: {
+        corine: "clasificacionCorine",
+        proyecto: "clasificacionProyecto"
+      }
     };
   },
   methods: {
@@ -56,7 +63,7 @@ export default {
     },
     changeBoxSubtitle() {
       this.boxTitle = this.$parent.box.title;
-      this.boxSubtitle = this.btn.getAttribute("data-tippy-content");
+      this.boxSubtitle = this.strings[this.subtitle[this.selectedScheme]];
       this.$store.dispatch("changeBoxSubtitle", {
         title: this.boxTitle,
         subtitle: this.boxSubtitle
@@ -66,6 +73,11 @@ export default {
       this.$store.dispatch("changeClassificationScheme", schemeName);
       this.selectedScheme = schemeName;
       this.btn = event.target;
+      this.changeBoxSubtitle();
+    }
+  },
+  watch: {
+    strings() {
       this.changeBoxSubtitle();
     }
   },

@@ -50,25 +50,25 @@
     <div class="aliados__ctas">
       <button
         v-show="donantes.length"
-        data-tippy-content="Donantes"
+        :title="strings.donantes"
         :class="buttonClass('0')"
         @click="changeType('0', $event)"
       ></button>
       <button
         v-show="socios.length"
-        data-tippy-content="Socios"
+        :title="strings.socios"
         :class="buttonClass('1')"
         @click="changeType('1', $event)"
       ></button>
       <button
         v-show="institucionesImplementadoras.length"
-        data-tippy-content="Instituciones implementadoras"
+        :title="strings.institucionesImplementadoras"
         :class="buttonClass('2')"
         @click="changeType('2', $event)"
       ></button>
       <button
         v-show="organizacionesLocales.length"
-        data-tippy-content="Organizaciones locales"
+        :title="strings.organizacionesLocales"
         :class="buttonClass('3')"
         @click="changeType('3', $event)"
       ></button>
@@ -108,6 +108,9 @@ export default {
         aliado => aliado.tipo == "3"
       );
       return this.removeDuplicates(arr, "nombre");
+    },
+    strings() {
+      return this.$store.getters.strings;
     }
   },
   data() {
@@ -121,6 +124,12 @@ export default {
         navigationClickTargetSize: 15,
         navigationPrevLabel: "&#8249;",
         navigationNextLabel: "&#8250;"
+      },
+      subtitles: {
+        "0": "donantes",
+        "1": "socios",
+        "2": "institucionesImplementadoras",
+        "3": "organizacionesLocales"
       }
     };
   },
@@ -133,7 +142,7 @@ export default {
     },
     changeBoxSubtitle() {
       this.boxTitle = this.$parent.box.title;
-      this.boxSubtitle = this.btn.getAttribute("data-tippy-content");
+      this.boxSubtitle = this.strings[this.subtitles[this.selectedType]];
       this.$store.dispatch("changeBoxSubtitle", {
         title: this.boxTitle,
         subtitle: this.boxSubtitle
@@ -219,6 +228,11 @@ export default {
       ".VueCarousel.organizaciones__locales img",
       this.organizacionesLocales
     );
+  },
+  watch: {
+    strings() {
+      this.changeBoxSubtitle();
+    }
   }
 };
 </script>

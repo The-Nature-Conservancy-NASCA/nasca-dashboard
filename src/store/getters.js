@@ -1,14 +1,138 @@
 export default {
-  filtro(state) {
-    return state.filtro;
-  },
-  selectedProjectClosingYear(state) {
-    if (state.filtro.modo === "proyecto") {
-      const ts = state.proyectos.find(
-        project => project.ID_proyecto === state.filtro.valor
-      ).fecha_cierre;
-      return new Date(ts).getFullYear();
+  participantesPorProyectos: state => idsProyecto => {
+    if (idsProyecto) {
+      return state.participantes.filter(item =>
+        idsProyecto.includes(item.ID_proyecto)
+      );
     }
+  },
+  participantesPorEstrategia: (state, getters) => idEstrategia => {
+    if (idEstrategia) {
+      const proyectos = getters.proyectosPorEstrategia(idEstrategia);
+      return getters.participantesPorProyectos(
+        proyectos.map(proyecto => proyecto.id)
+      );
+    }
+  },
+  participantes: (state, getters) => {
+    const features =
+      state.filtro.modo === "estrategia"
+        ? getters.participantesPorEstrategia(state.filtro.valor)
+        : state.filtro.modo === "proyecto"
+        ? getters.participantesPorProyectos([state.filtro.valor])
+        : state.participantes;
+    const genders = {
+      Hombres: "numero_hombres",
+      Mujeres: "numero_mujeres"
+    };
+    const data = [];
+    features.forEach(feat => {
+      for (let gender in genders) {
+        if (!genders.hasOwnProperty(gender)) {
+          continue;
+        }
+        let obj;
+        const count = feat[genders[gender]];
+        obj = data.find(item => item.name === gender);
+        if (obj) {
+          obj.value += count;
+        } else {
+          obj = {
+            name: gender,
+            value: count
+          };
+          data.push(obj);
+        }
+      }
+    });
+    return data;
+  },
+  gruposParticipantes: (state, getters) => {
+    const features =
+      state.filtro.modo === "estrategia"
+        ? getters.participantesPorEstrategia(state.filtro.valor)
+        : state.filtro.modo === "proyecto"
+        ? getters.participantesPorProyectos([state.filtro.valor])
+        : state.participantes;
+
+    const groups = {
+      Indígenas: "numero_indigenas",
+      Campesinos: "numero_campesinos"
+    };
+    const counts = {};
+    features.forEach(feat => {
+      for (let group in groups) {
+        if (!groups.hasOwnProperty(group)) {
+          continue;
+        }
+        const count = feat[groups[group]];
+        if (count) {
+          if (group in counts) {
+            counts[group] += count;
+          } else {
+            counts[group] = count;
+          }
+        }
+      }
+    });
+    return counts;
+  },
+  participantesExport: (state, getters) => {
+    const data = getters.participantes.map(item => {
+      return { genero: item.name, total: item.value };
+    });
+    const header = Object.keys(data[0]);
+    return { data: data, header: header };
+  },
+  contribucionesPorProyectos: state => idsProyecto => {
+    if (idsProyecto) {
+      return state.contribuciones.filter(item =>
+        idsProyecto.includes(item.ID_proyecto)
+      );
+    }
+  },
+  contribucionesPorEstrategia: (state, getters) => idEstrategia => {
+    if (idEstrategia) {
+      const proyectos = getters.proyectosPorEstrategia(idEstrategia);
+      return getters.contribucionesPorProyectos(
+        proyectos.map(proyecto => proyecto.id)
+      );
+    }
+  },
+  contribuciones: (state, getters) => {
+    const features =
+      state.filtro.modo === "estrategia"
+        ? getters.contribucionesPorEstrategia(state.filtro.valor)
+        : state.filtro.modo === "proyecto"
+        ? getters.contribucionesPorProyectos([state.filtro.valor])
+        : state.contribuciones;
+
+    return features;
+  },
+  aliadosPorProyectos: state => idsProyecto => {
+    if (idsProyecto) {
+      return state.aliados.filter(item =>
+        idsProyecto.includes(item.ID_proyecto)
+      );
+    }
+  },
+  aliadosPorEstrategia: (state, getters) => idEstrategia => {
+    if (idEstrategia) {
+      const proyectos = getters.proyectosPorEstrategia(idEstrategia);
+      return getters.aliadosPorProyectos(
+        proyectos.map(proyecto => proyecto.id)
+      );
+    }
+  },
+  aliados: (state, getters, rootState) => {
+    const features =
+      rootState.filtro.modo === "estrategia"
+        ? getters.aliadosPorEstrategia(rootState.filtro.valor)
+        : rootState.filtro.modo === "proyecto"
+        ? getters.aliadosPorProyectos([rootState.filtro.valor])
+        : rootState.aliados;
+
+    return features;
   },
   biodiversidadPorProyectos: state => idsProyecto => {
     if (idsProyecto) {
@@ -114,58 +238,12 @@ export default {
     }
     return years;
   },
-  colorPorCobertura: state => idCobertura => {
-    return state.colores.find(color => color.ID_cobertura === idCobertura)
-      .color;
-  },
-  estrategias(state) {
-    return state.estrategias.map(estrategia => {
-      return {
-        id: estrategia.ID_estrategia,
-        nombre: estrategia.nombre,
-        color: estrategia.color
-      };
+  biodiversidadExport: (state, getters) => group => {
+    const data = getters.biodiversidad(group).map(item => {
+      return { cobertura: item.name, especies: item.value };
     });
-  },
-  proyectos(state) {
-    return state.proyectos.map(proyecto => {
-      return {
-        id: proyecto.ID_proyecto,
-        nombre: proyecto.nombre
-      };
-    });
-  },
-  proyectosId(state) {
-    return state.proyectos.map(proyecto => proyecto.ID_proyecto);
-  },
-  proyectosPorEstrategia: state => estrategia => {
-    return state.proyectos
-      .filter(proyecto => proyecto.ID_estrategia === estrategia)
-      .map(proyecto => {
-        return {
-          id: proyecto.ID_proyecto,
-          nombre: proyecto.nombre,
-          estrategia,
-          color: proyecto.color
-        };
-      });
-  },
-  predios: state => idsProyecto => {
-    return idsProyecto
-      ? state.predios.filter(predio => idsProyecto.includes(predio.ID_proyecto))
-      : state.predios;
-  },
-  regionesProyecto: state => idProyecto => {
-    return idProyecto
-      ? state.regiones.filter(region => idProyecto == region.ID_proyecto)
-      : state.regiones;
-  },
-  regionesEstrategia: state => idsProyecto => {
-    return idsProyecto
-      ? state.regiones.filter(region =>
-          idsProyecto.includes(region.ID_proyecto)
-        )
-      : state.regiones;
+    const header = ["cobertura", "especies"];
+    return { data: data, header: header };
   },
   carbonoPorProyecto: (state, getters) => {
     const idProyecto = state.filtro.valor;
@@ -281,6 +359,16 @@ export default {
     });
     return data;
   },
+  carbonoExport: (state, getters) => {
+    const data = [];
+    getters.carbono.data.forEach(item => {
+      const obj = {};
+      delete Object.assign(obj, item, { ["año"]: item["year"] })["year"];
+      data.push(obj);
+    });
+    const header = Object.keys(data[0]);
+    return { data: data, header: header };
+  },
   coberturasPorProyectos: (state, getters) => idsProyectos => {
     const coberturas = [];
     idsProyectos.forEach(idProyecto => {
@@ -386,6 +474,38 @@ export default {
     });
     return data;
   },
+  coberturasExport: (state, getters) => {
+    const data = [];
+    getters.coberturas.children.forEach(parent => {
+      parent.children.forEach(child => {
+        const obj = {
+          nivel_1: parent.name,
+          nivel_2: child.name ? child.name.replace(/, |,/g, "|") : "",
+          area: child.value
+        };
+        data.push(obj);
+      });
+    });
+    const header = ["nivel_1", "nivel_2", "area"];
+    return { data, header };
+  },
+  boxConfiguration(state, getters) {
+    return state.boxes.map(box => {
+      const title = getters.strings[box.titleStr];
+      box.title = title;
+      return box;
+    });
+  },
+  strings(state, getters) {
+    const idioma = getters.idiomaActual;
+    return state.strings[idioma];
+  },
+  filtro(state) {
+    return state.filtro;
+  },
+  idiomaActual(state) {
+    return state.filtro.language;
+  },
   implementacionesPorProyectos: (state, getters) => idsProyectos => {
     const implementaciones = [];
     idsProyectos.forEach(idProyecto => {
@@ -444,8 +564,6 @@ export default {
       "Producción sostenible": "areas_p_sostenibles"
     };
 
-    console.log(features);
-
     const data = [];
     features.forEach(feat => {
       for (let action in actions) {
@@ -469,116 +587,6 @@ export default {
 
     return data;
   },
-  participantesPorProyectos: state => idsProyecto => {
-    if (idsProyecto) {
-      return state.participantes.filter(item =>
-        idsProyecto.includes(item.ID_proyecto)
-      );
-    }
-  },
-  participantesPorEstrategia: (state, getters) => idEstrategia => {
-    if (idEstrategia) {
-      const proyectos = getters.proyectosPorEstrategia(idEstrategia);
-      return getters.participantesPorProyectos(
-        proyectos.map(proyecto => proyecto.id)
-      );
-    }
-  },
-  participantes: (state, getters) => {
-    const features =
-      state.filtro.modo === "estrategia"
-        ? getters.participantesPorEstrategia(state.filtro.valor)
-        : state.filtro.modo === "proyecto"
-        ? getters.participantesPorProyectos([state.filtro.valor])
-        : state.participantes;
-    const genders = {
-      Hombres: "numero_hombres",
-      Mujeres: "numero_mujeres"
-    };
-    const data = [];
-    features.forEach(feat => {
-      for (let gender in genders) {
-        if (!genders.hasOwnProperty(gender)) {
-          continue;
-        }
-        let obj;
-        const count = feat[genders[gender]];
-        obj = data.find(item => item.name === gender);
-        if (obj) {
-          obj.value += count;
-        } else {
-          obj = {
-            name: gender,
-            value: count
-          };
-          data.push(obj);
-        }
-      }
-    });
-    return data;
-  },
-  gruposParticipantes: (state, getters) => {
-    const features =
-      state.filtro.modo === "estrategia"
-        ? getters.participantesPorEstrategia(state.filtro.valor)
-        : state.filtro.modo === "proyecto"
-        ? getters.participantesPorProyectos([state.filtro.valor])
-        : state.participantes;
-
-    const groups = {
-      Indígenas: "numero_indigenas",
-      Campesinos: "numero_campesinos"
-    };
-    const counts = {};
-    features.forEach(feat => {
-      for (let group in groups) {
-        if (!groups.hasOwnProperty(group)) {
-          continue;
-        }
-        const count = feat[groups[group]];
-        if (count) {
-          if (group in counts) {
-            counts[group] += count;
-          } else {
-            counts[group] = count;
-          }
-        }
-      }
-    });
-    return counts;
-  },
-  biodiversidadExport: (state, getters) => group => {
-    const data = getters.biodiversidad(group).map(item => {
-      return { cobertura: item.name, especies: item.value };
-    });
-    const header = ["cobertura", "especies"];
-    return { data: data, header: header };
-  },
-  carbonoExport: (state, getters) => {
-    const data = [];
-    getters.carbono.data.forEach(item => {
-      const obj = {};
-      delete Object.assign(obj, item, { ["año"]: item["year"] })["year"];
-      data.push(obj);
-    });
-    const header = Object.keys(data[0]);
-    return { data: data, header: header };
-  },
-  coberturasExport: (state, getters) => {
-    const data = [];
-    getters.coberturas.children.forEach(parent => {
-      parent.children.forEach(child => {
-        const obj = {
-          nivel_1: parent.name,
-          nivel_2: child.name ? child.name.replace(/, |,/g, "|") : "",
-          area: child.value
-        };
-        data.push(obj);
-      });
-    });
-    const header = ["nivel_1", "nivel_2", "area"];
-    return { data, header };
-  },
   implementacionesExport: (state, getters) => {
     const data = getters.implementaciones.map(item => {
       return { accion: item.name, area: item.value };
@@ -586,62 +594,66 @@ export default {
     const header = Object.keys(data[0]);
     return { data: data, header: header };
   },
-  participantesExport: (state, getters) => {
-    const data = getters.participantes.map(item => {
-      return { genero: item.name, total: item.value };
+  selectedProjectClosingYear(state) {
+    if (state.filtro.modo === "proyecto") {
+      const ts = state.proyectos.find(
+        project => project.ID_proyecto === state.filtro.valor
+      ).fecha_cierre;
+      return new Date(ts).getFullYear();
+    }
+  },
+  estrategias(state) {
+    return state.estrategias.map(estrategia => {
+      return {
+        id: estrategia.ID_estrategia,
+        nombre: estrategia.nombre,
+        color: estrategia.color
+      };
     });
-    const header = Object.keys(data[0]);
-    return { data: data, header: header };
   },
-  contribucionesPorProyectos: state => idsProyecto => {
-    if (idsProyecto) {
-      return state.contribuciones.filter(item =>
-        idsProyecto.includes(item.ID_proyecto)
-      );
-    }
+  proyectos(state) {
+    return state.proyectos.map(proyecto => {
+      return {
+        id: proyecto.ID_proyecto,
+        nombre: proyecto.nombre
+      };
+    });
   },
-  contribucionesPorEstrategia: (state, getters) => idEstrategia => {
-    if (idEstrategia) {
-      const proyectos = getters.proyectosPorEstrategia(idEstrategia);
-      return getters.contribucionesPorProyectos(
-        proyectos.map(proyecto => proyecto.id)
-      );
-    }
+  proyectosId(state) {
+    return state.proyectos.map(proyecto => proyecto.ID_proyecto);
   },
-  contribuciones: (state, getters) => {
-    const features =
-      state.filtro.modo === "estrategia"
-        ? getters.contribucionesPorEstrategia(state.filtro.valor)
-        : state.filtro.modo === "proyecto"
-        ? getters.contribucionesPorProyectos([state.filtro.valor])
-        : state.contribuciones;
-
-    return features;
+  proyectosPorEstrategia: state => estrategia => {
+    return state.proyectos
+      .filter(proyecto => proyecto.ID_estrategia === estrategia)
+      .map(proyecto => {
+        return {
+          id: proyecto.ID_proyecto,
+          nombre: proyecto.nombre,
+          estrategia,
+          color: proyecto.color
+        };
+      });
   },
-  aliadosPorProyectos: state => idsProyecto => {
-    if (idsProyecto) {
-      return state.aliados.filter(item =>
-        idsProyecto.includes(item.ID_proyecto)
-      );
-    }
+  predios: state => idsProyecto => {
+    return idsProyecto
+      ? state.predios.filter(predio => idsProyecto.includes(predio.ID_proyecto))
+      : state.predios;
   },
-  aliadosPorEstrategia: (state, getters) => idEstrategia => {
-    if (idEstrategia) {
-      const proyectos = getters.proyectosPorEstrategia(idEstrategia);
-      return getters.aliadosPorProyectos(
-        proyectos.map(proyecto => proyecto.id)
-      );
-    }
+  regionesProyecto: state => idProyecto => {
+    return idProyecto
+      ? state.regiones.filter(region => idProyecto == region.ID_proyecto)
+      : state.regiones;
   },
-  aliados: (state, getters) => {
-    const features =
-      state.filtro.modo === "estrategia"
-        ? getters.aliadosPorEstrategia(state.filtro.valor)
-        : state.filtro.modo === "proyecto"
-        ? getters.aliadosPorProyectos([state.filtro.valor])
-        : state.aliados;
-
-    return features;
+  regionesEstrategia: state => idsProyecto => {
+    return idsProyecto
+      ? state.regiones.filter(region =>
+          idsProyecto.includes(region.ID_proyecto)
+        )
+      : state.regiones;
+  },
+  colorPorCobertura: state => idCobertura => {
+    return state.colores.find(color => color.ID_cobertura === idCobertura)
+      .color;
   },
   metas: state => {
     return state.metas;
