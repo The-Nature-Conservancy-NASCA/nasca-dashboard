@@ -284,6 +284,10 @@ export default {
       @media screen and (max-height: 768px) {
         width: 80px;
       }
+
+      @media screen and (max-width: 440px) {
+        width: 150px;
+      }
     }
   }
 

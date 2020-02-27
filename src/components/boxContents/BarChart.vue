@@ -22,6 +22,10 @@
   @media screen and (min-height: 1000px) {
     height: 24rem;
   }
+
+  @media screen and (max-width: 440px) {
+    height: 30rem;
+  }
 }
 </style>
 <script>

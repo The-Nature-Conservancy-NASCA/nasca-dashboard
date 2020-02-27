@@ -212,6 +212,10 @@ export default {
       -webkit-transition: all 0.25s;
       transition: all 0.25s;
       opacity: 1;
+
+      @media screen and (max-width: 440px) {
+        height: 90px;
+      }
     }
 
     .VueCarousel-navigation-button {

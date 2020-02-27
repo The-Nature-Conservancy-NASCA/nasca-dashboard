@@ -122,6 +122,10 @@ $font-dark: #333;
     align-items: center;
     justify-content: space-evenly;
     width: 45vw;
+
+    @media screen and (max-width: 440px) {
+      width: 75vw;
+    }
   }
 
   &__logo {
