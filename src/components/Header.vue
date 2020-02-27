@@ -172,7 +172,7 @@ $font-dark: #333;
     padding: 1rem 2rem;
   }
 
-  .colombia___or__strategy {
+  .select {
     border: none;
     border-radius: 0;
     background-color: #fff;
