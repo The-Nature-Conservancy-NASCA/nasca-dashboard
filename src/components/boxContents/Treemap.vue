@@ -284,6 +284,10 @@ export default {
   @media screen and (min-height: 800px) {
     height: 40rem;
   }
+
+  @media screen and (max-width: 440px) {
+    height: 20rem;
+  }
 }
 
 .treemap {
