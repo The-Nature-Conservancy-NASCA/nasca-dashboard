@@ -5,8 +5,8 @@
       alt="logo"
       class="header__logo"
     />
+    <span>{{ currentLevel }}</span>
     <div class="header__estrategias">
-      <span>{{ currentLevel }}</span>
       <select
         class="select colombia___or__strategy"
         @change="changeMoment($event)"
@@ -121,7 +121,7 @@ $font-dark: #333;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-evenly;
-    width: 45vw;
+    width: 35vw;
   }
 
   &__logo {

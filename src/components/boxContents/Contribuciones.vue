@@ -30,11 +30,13 @@
     </carousel>
     <div class="contribuciones__ctas">
       <button
+        v-show="SCAContributions.length"
         :title="strings.contribucionesShared"
         :class="buttonClass('0')"
         @click="changeType('0')"
       ></button>
       <button
+        v-show="otherContributions.length"
         :title="strings.contribucionesOtras"
         :class="buttonClass('1')"
         @click="changeType('1')"
