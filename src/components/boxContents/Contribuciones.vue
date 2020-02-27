@@ -216,7 +216,7 @@ export default {
       opacity: 1;
 
       @media screen and (max-width: 440px) {
-        height: 90px;
+        height: 65px;
       }
     }
 
