@@ -67,6 +67,11 @@ export default {
     @media screen and (min-width: 1440px) {
       font-size: 2rem;
     }
+
+    @media screen and (max-width: 440px) {
+      font-size: 1.4rem;
+    }
+
   }
 
   &__subtitle {
@@ -78,6 +83,10 @@ export default {
 
     @media screen and (min-width: 1440px) {
       font-size: 1.5rem;
+    }
+
+    @media screen and (max-width: 440px) {
+      font-size: 1rem;
     }
   }
 

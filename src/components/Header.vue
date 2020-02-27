@@ -121,7 +121,7 @@ $font-dark: #333;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-evenly;
-    width: 35vw;
+    width: 40vw;
 
     @media screen and (max-width: 440px) {
       width: 75vw;
