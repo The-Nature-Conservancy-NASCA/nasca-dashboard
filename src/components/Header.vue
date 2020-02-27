@@ -120,6 +120,8 @@ $font-dark: #333;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+    justify-content: space-evenly;
+    width: 45vw;
   }
 
   &__logo {
@@ -168,6 +170,13 @@ $font-dark: #333;
 
   @media screen and (max-height: 768px) {
     padding: 1rem 2rem;
+  }
+
+  .colombia___or__strategy {
+    border: none;
+    border-radius: 0;
+    background-color: #fff;
+    border-bottom: 2px solid var(--color-green-tnc);
   }
 }
 

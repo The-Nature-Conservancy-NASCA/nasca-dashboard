@@ -155,10 +155,10 @@ export default {
   height: 12rem;
   margin: 2rem auto;
 
-  @media screen and (max-height: 768px) {
-    width: 8rem;
-    height: 8rem;
-    margin: 1rem auto;
+  @media screen and (max-height: 900px) {
+    width: 8rem !important;
+    height: 8rem !important;
+    margin: 1rem auto !important;
   }
 
   @media screen and (min-width: 901px) and (max-width: 1280px) {
@@ -201,7 +201,7 @@ export default {
     left: 50%;
     position: absolute;
     top: 50%;
-    transform: translate(-50%, calc(-50% + 27px));
+    transform: translate(-50%, calc(-50% + 24px));
     width: 10rem;
     pointer-events: none;
 
@@ -211,6 +211,7 @@ export default {
 
     @media screen and (max-height: 768px) {
       width: 7rem;
+      transform: translate(-50%, calc(-50% + 22px));
     }
   }
 }

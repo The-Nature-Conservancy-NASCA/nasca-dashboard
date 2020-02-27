@@ -275,6 +275,10 @@ export default {
       -webkit-transition: all 0.25s;
       transition: all 0.25s;
       opacity: 1;
+
+      @media screen and (max-height: 768px) {
+        width: 80px;
+      }
     }
   }
 
