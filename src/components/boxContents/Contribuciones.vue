@@ -32,12 +32,12 @@
       <button
         :title="strings.contribucionesShared"
         :class="buttonClass('0')"
-        @click="changeType('0', $event)"
+        @click="changeType('0')"
       ></button>
       <button
         :title="strings.contribucionesOtras"
         :class="buttonClass('1')"
-        @click="changeType('1', $event)"
+        @click="changeType('1')"
       ></button>
     </div>
   </div>
@@ -45,8 +45,6 @@
 <script>
 import { Carousel, Slide } from "vue-carousel";
 import * as d3 from "d3";
-import tippy from "tippy.js";
-import "tippy.js/dist/tippy.css";
 
 export default {
   name: "Contribuciones",
@@ -107,10 +105,9 @@ export default {
         subtitle: this.boxSubtitle
       });
     },
-    changeType(type, event) {
+    changeType(type) {
       this.$store.dispatch("changeContributionType", type);
       this.selectedType = type;
-      this.btn = event.target;
       this.changeBoxSubtitle();
       this.fixCarouselOverflow(type);
     },
@@ -167,11 +164,7 @@ export default {
     }
   },
   mounted() {
-    this.btn = this.$el.querySelector(".contribuciones__ctas button.selected");
     this.changeBoxSubtitle();
-    tippy("[data-tippy-content]", {
-      placement: "bottom"
-    });
     this.setImgsTooltip(
       ".VueCarousel.shared__conservation__agenda img",
       this.SCAContributions
