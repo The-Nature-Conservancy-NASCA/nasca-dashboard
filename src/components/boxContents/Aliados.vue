@@ -1,29 +1,29 @@
 <template>
   <div class="aliados width-100">
     <carousel
-      class="donantes"
+      class="carousel donantes"
       v-show="this.$store.state.filtro.allyType == '0'"
       v-bind="carouselSettings"
     >
       <slide v-for="aliado in donantes" :key="aliado.OBJECTID">
         <a :href="aliado.url" target="_blank">
-          <img :src="aliado.logo" :name="aliado.nombre" alt="" />
+          <img :src="aliado.logo" :name="aliado.nombre" alt />
         </a>
       </slide>
     </carousel>
     <carousel
-      class="socios"
+      class="carousel socios"
       v-show="this.$store.state.filtro.allyType == '1'"
       v-bind="carouselSettings"
     >
       <slide v-for="aliado in socios" :key="aliado.OBJECTID">
         <a :href="aliado.url" target="_blank">
-          <img :src="aliado.logo" :name="aliado.nombre" alt="" />
+          <img :src="aliado.logo" :name="aliado.nombre" alt />
         </a>
       </slide>
     </carousel>
     <carousel
-      class="instituciones__implementadoras"
+      class="carousel instituciones__implementadoras"
       v-show="this.$store.state.filtro.allyType == '2'"
       v-bind="carouselSettings"
     >
@@ -32,18 +32,18 @@
         :key="aliado.OBJECTID"
       >
         <a :href="aliado.url" target="_blank">
-          <img :src="aliado.logo" :name="aliado.nombre" alt="" />
+          <img :src="aliado.logo" :name="aliado.nombre" alt />
         </a>
       </slide>
     </carousel>
     <carousel
-      class="organizaciones__locales"
+      class="carousel organizaciones__locales"
       v-show="this.$store.state.filtro.allyType == '3'"
       v-bind="carouselSettings"
     >
       <slide v-for="aliado in organizacionesLocales" :key="aliado.OBJECTID">
         <a :href="aliado.url" target="_blank">
-          <img :src="aliado.logo" :name="aliado.nombre" alt="" />
+          <img :src="aliado.logo" :name="aliado.nombre" alt />
         </a>
       </slide>
     </carousel>
@@ -235,8 +235,20 @@ export default {
 }
 
 .aliados {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
   .donantes {
     height: 90%;
+  }
+
+  .carousel {
+    flex: 1;
+    display: flex;
+    align-content: center;
+    justify-content: center;
   }
 
   .VueCarousel {
@@ -280,6 +292,7 @@ export default {
     display: flex;
     justify-content: space-evenly;
     margin: 0 auto;
+    margin-bottom: 1rem;
     width: 30%;
 
     button {

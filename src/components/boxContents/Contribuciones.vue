@@ -1,7 +1,7 @@
 <template>
-  <div class="contribuciones w-100">
+  <div class="contribuciones width-100">
     <carousel
-      class="shared__conservation__agenda"
+      class="carousel shared__conservation__agenda"
       v-show="this.$store.state.filtro.contributionType == '0'"
       v-bind="carouselSettings"
     >
@@ -15,7 +15,7 @@
       </slide>
     </carousel>
     <carousel
-      class="otras__contribuciones"
+      class="carousel otras__contribuciones"
       v-show="this.$store.state.filtro.contributionType == '1'"
       v-bind="carouselSettings"
     >
@@ -182,11 +182,19 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.w-100 {
-  width: 100%
-}
-
 .contribuciones {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+  .carousel {
+    flex: 1;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+  }
+
   .VueCarousel {
     width: 80%;
     margin: auto;
@@ -220,6 +228,7 @@ export default {
     display: flex;
     justify-content: space-evenly;
     margin: 0 auto;
+    margin-bottom: 1rem;
     width: 30%;
 
     button {
