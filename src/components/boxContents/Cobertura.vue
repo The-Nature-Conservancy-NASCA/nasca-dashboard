@@ -13,12 +13,12 @@
         <button
           :title="strings.clasificacionCorine"
           :class="buttonClass('corine')"
-          @click="changeClassificationScheme('corine', $event)"
+          @click="changeClassificationScheme('corine')"
         ></button>
         <button
           :title="strings.clasificacionProyecto"
           :class="buttonClass('project')"
-          @click="changeClassificationScheme('project', $event)"
+          @click="changeClassificationScheme('project')"
         ></button>
       </div>
     </div>
@@ -67,10 +67,9 @@ export default {
         subtitle: this.boxSubtitle
       });
     },
-    changeClassificationScheme(schemeName, event) {
+    changeClassificationScheme(schemeName) {
       this.$store.dispatch("changeClassificationScheme", schemeName);
       this.selectedScheme = schemeName;
-      this.btn = event.target;
       this.changeBoxSubtitle();
     }
   },
@@ -80,8 +79,6 @@ export default {
     }
   },
   mounted() {
-    this.btn = this.$el.querySelector(".cobertura__ctas button.selected");
-    console.log(this.btn);
     this.changeBoxSubtitle();
   }
 };

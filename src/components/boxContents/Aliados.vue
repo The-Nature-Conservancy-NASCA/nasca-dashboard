@@ -52,25 +52,25 @@
         v-show="donantes.length"
         :title="strings.donantes"
         :class="buttonClass('0')"
-        @click="changeType('0', $event)"
+        @click="changeType('0')"
       ></button>
       <button
         v-show="socios.length"
         :title="strings.socios"
         :class="buttonClass('1')"
-        @click="changeType('1', $event)"
+        @click="changeType('1')"
       ></button>
       <button
         v-show="institucionesImplementadoras.length"
         :title="strings.institucionesImplementadoras"
         :class="buttonClass('2')"
-        @click="changeType('2', $event)"
+        @click="changeType('2')"
       ></button>
       <button
         v-show="organizacionesLocales.length"
         :title="strings.organizacionesLocales"
         :class="buttonClass('3')"
-        @click="changeType('3', $event)"
+        @click="changeType('3')"
       ></button>
     </div>
   </div>
@@ -78,8 +78,6 @@
 <script>
 import { Carousel, Slide } from "vue-carousel";
 import * as d3 from "d3";
-import tippy from "tippy.js";
-import "tippy.js/dist/tippy.css";
 
 export default {
   name: "Aliados",
@@ -148,10 +146,9 @@ export default {
         subtitle: this.boxSubtitle
       });
     },
-    changeType(type, event) {
+    changeType(type) {
       this.$store.dispatch("changeAllyType", type);
       this.selectedType = type;
-      this.btn = event.target;
       this.changeBoxSubtitle();
       this.fixCarouselOverflow(type);
     },
@@ -212,12 +209,8 @@ export default {
     }
   },
   mounted() {
-    this.btn = this.$el.querySelector(".aliados__ctas button.selected");
     this.changeBoxSubtitle();
     this.fixCarouselOverflow("0");
-    tippy("[data-tippy-content]", {
-      placement: "bottom"
-    });
     this.setImgsTooltip(".VueCarousel.donantes img", this.donantes);
     this.setImgsTooltip(".VueCarousel.socios img", this.socios);
     this.setImgsTooltip(
