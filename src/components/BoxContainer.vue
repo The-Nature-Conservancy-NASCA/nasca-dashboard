@@ -13,7 +13,7 @@ export default {
   },
   computed: {
     boxes() {
-      return this.$store.state.boxes;
+      return this.$store.getters.boxConfiguration;
     }
   }
 };

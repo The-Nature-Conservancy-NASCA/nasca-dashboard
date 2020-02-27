@@ -180,7 +180,10 @@ export default {
         } else {
           if (field === "compartimiento") {
             key = domain[feat[field]];
-          } else {
+          } else if (field === "total") {
+            key = defaultKey;
+          }
+          else {
             key = feat[field];
           }
         }
@@ -248,6 +251,8 @@ export default {
       } else {
         if (field === "compartimiento") {
           key = domain[feat[field]];
+        } else if (field === "total") {
+          key = defaultKey;
         } else {
           key = feat[field];
         }

@@ -29,8 +29,6 @@
 </template>
 <script>
 import Treemap from "./Treemap.vue";
-import tippy from "tippy.js";
-import "tippy.js/dist/tippy.css";
 
 export default {
   name: "Cobertura",
@@ -83,10 +81,8 @@ export default {
   },
   mounted() {
     this.btn = this.$el.querySelector(".cobertura__ctas button.selected");
+    console.log(this.btn);
     this.changeBoxSubtitle();
-    tippy("[data-tippy-content]", {
-      placement: "bottom"
-    });
   }
 };
 </script>

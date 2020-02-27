@@ -12,8 +12,8 @@
         @change="changeMoment($event)"
         v-if="this.$store.state.filtro.modo !== 'proyecto'"
       >
-        <option value="0" selected>{{ strings.lineaBase }}</option>
-        <option value="99">{{ strings.progreso }}</option>
+        <option value="0">{{ strings.lineaBase }}</option>
+        <option value="99" selected>{{ strings.progreso }}</option>
       </select>
       <select
         class="select project"

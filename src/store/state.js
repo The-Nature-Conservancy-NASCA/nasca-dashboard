@@ -155,8 +155,8 @@ export default {
       biodiversidad: null,
       coberturas: null
     },
-    moment: "0",
-    carbonoField: null,
+    moment: "99",
+    carbonoField: "total",
     classificationScheme: null,
     contributionType: "0",
     allyType: "0",

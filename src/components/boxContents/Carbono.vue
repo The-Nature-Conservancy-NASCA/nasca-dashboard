@@ -58,8 +58,6 @@
 <script>
 import QuantityText from "./QuantityText.vue";
 import StackedArea from "./StackedArea.vue";
-import tippy from "tippy.js";
-import "tippy.js/dist/tippy.css";
 
 export default {
   name: "Carbono",
@@ -114,8 +112,8 @@ export default {
       this.changeBoxSubtitle();
     },
     resetFieldAndBoxSubtitle() {
-      this.$store.dispatch("changeCarbonoField", null);
-      this.selectedField = null;
+      this.$store.dispatch("changeCarbonoField", "total");
+      this.selectedField = "total";
       this.btn = this.$el.querySelector(".carbono__ctas button");
       this.changeBoxSubtitle();
     }
@@ -123,9 +121,6 @@ export default {
   mounted() {
     this.btn = this.$el.querySelector(".carbono__ctas button.selected");
     this.changeBoxSubtitle();
-    tippy("[data-tippy-content]", {
-      placement: "bottom"
-    });
   },
   watch: {
     mode() {
