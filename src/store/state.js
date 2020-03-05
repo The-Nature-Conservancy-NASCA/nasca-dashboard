@@ -114,7 +114,7 @@ export default {
       noHayDatos: "Todavía no hay datos :(",
       organizacionesLocales: "Organizaciones locales",
       participantes: "Participantes",
-      progreso: "Progreso",
+      progreso: "Estado actual",
       socios: "Socios",
       verTodo: "Ver todo"
     },
@@ -143,7 +143,7 @@ export default {
       noHayDatos: "No data yet :(",
       organizacionesLocales: "Local organizations",
       participantes: "Participants",
-      progreso: "Progress",
+      progreso: "Current state",
       socios: "Partners",
       verTodo: "All data"
     }

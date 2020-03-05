@@ -9,21 +9,23 @@
     <div class="header__estrategias">
       <select
         class="select colombia___or__strategy"
-        @change="changeMoment($event)"
+        v-model="momentoSelected"
+        @change="changeMoment()"
         v-if="this.$store.state.filtro.modo !== 'proyecto'"
       >
         <option value="0">{{ strings.lineaBase }}</option>
-        <option value="99" selected>{{ strings.progreso }}</option>
+        <option value="99">{{ strings.progreso }}</option>
       </select>
       <select
         class="select project"
-        @change="changeMoment($event)"
+        @change="changeMoment()"
+        v-model="momentoSelected"
         v-if="this.$store.state.filtro.modo === 'proyecto'"
       >
         <option
           v-for="moment in getProjectMoments(this.$store.state.filtro.valor)"
           :key="moment.name"
-          :value="moment.value"
+          :value="moment.value.toString()"
         >
           {{ moment.name }}
         </option>
@@ -70,6 +72,9 @@ export default {
     currentLevel() {
       return this.$store.getters.currentLevel;
     },
+    filtroModo() {
+      return this.$store.getters.filtro.modo;
+    },
     strings() {
       return this.$store.getters.strings;
     }
@@ -77,16 +82,20 @@ export default {
   data() {
     return {
       estrategiaSelected: "",
+      momentoSelected: "99",
       proyectoSelected: "",
       idiomaSelected: "es"
     };
   },
   methods: {
-    changeMoment(event) {
-      this.$store.dispatch("changeMoment", event.target.value);
+    changeMoment() {
+      this.$store.dispatch("changeMoment", this.momentoSelected);
     },
     getProjectMoments(projectId) {
       return this.$store.getters.momentos(projectId);
+    },
+    getProjectMostRecentMoment(projectId) {
+      return this.$store.getters.mostRecentMoment(projectId);
     },
     seleccionarTodo() {
       this.$store.dispatch("verTodo");
@@ -94,6 +103,19 @@ export default {
     cambiarIdioma(nuevoIdioma) {
       this.idiomaSelected = nuevoIdioma;
       this.$store.dispatch("cambiarIdioma", nuevoIdioma);
+    }
+  },
+  watch: {
+    filtroModo() {
+      if (this.filtroModo === "proyecto") {
+        const projectId = this.$store.getters.filtro.valor;
+        const moment = this.getProjectMostRecentMoment(projectId);
+        this.momentoSelected = moment;
+        this.changeMoment(moment);
+      } else {
+        this.momentoSelected = "99";
+        this.changeMoment("99");
+      }
     }
   }
 };

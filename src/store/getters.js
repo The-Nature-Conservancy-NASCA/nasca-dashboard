@@ -182,8 +182,7 @@ export default {
             key = domain[feat[field]];
           } else if (field === "total") {
             key = defaultKey;
-          }
-          else {
+          } else {
             key = feat[field];
           }
         }
@@ -447,7 +446,6 @@ export default {
         : getters.implementacionesPorProyectos(getters.proyectosId);
 
     const actions = {
-      "Manejo sostenible": "area_manejo_sostenible",
       Bosque: "area_bosque",
       Restauración: "area_restauracion",
       "Producción sostenible": "areas_p_sostenibles"
