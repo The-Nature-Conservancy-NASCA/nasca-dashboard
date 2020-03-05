@@ -108,6 +108,9 @@ export default {
       fijacionSolucion: "Fijación por Solución Natural de Clima",
       fijacionTotal: "Fijación total",
       implementaciones: "Implementaciones",
+      informacion: "Información",
+      infoContent:
+        'Este visor, es creado por TNC cuyo objetivo es mostrar la gestion de los proyectos realizados en la region por las estrategias definidas en los proyectos.<br><br>El uso de este visor esta de acuerdo a las politicas de uso de datos definido por TNC el cual especifica el manejo y la propiedad de la informacion aqui expuesta (LINK).<br><br>Si presenta problemas al usar el visor consulte el manual el cual esta disponible en (link)<br>Si esta app pesenta informacion incorrecta  o fallos consulte con (Email) </p><div class="images images--centered"><img src="img/tnc-logo.svg" width="150"><img src="img/dreamgis-logo.png" title="DreamGIS S.A.S"></div>',
       institucionesImplementadoras: "Instituciones implementadoras",
       lineaBase: "Línea base",
       metas: "Metas",
@@ -137,6 +140,9 @@ export default {
       fijacionSolucion: "Fixation by Climate Natural Solution",
       fijacionTotal: "Total fixation",
       implementaciones: "Implementations",
+      informacion: "Information",
+      infoContent:
+        'This viewer is created by TNC whose objective is to show the management of the projects carried out in the region by the strategies defined in the projects.<br><br>If you have problems using the viewer, consult the manual which is available at (link). <br> If this app has incorrect information or errors, please consult (Email)</p><div class="images images--centered"><img src="img/tnc-logo.svg" width="150"><img src="img/dreamgis-logo.png" title="DreamGIS S.A.S"></div>',
       institucionesImplementadoras: "Implementating institutions",
       lineaBase: "Baseline",
       metas: "Milestones",
@@ -169,5 +175,6 @@ export default {
   predios: [],
   colores: [],
   iconos: [],
-  metas: []
+  metas: [],
+  modalVisible: false
 };

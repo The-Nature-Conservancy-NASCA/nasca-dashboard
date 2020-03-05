@@ -46,7 +46,7 @@ export default {
 <style lang="scss" scoped>
 .box {
   background-color: #fff;
-  border-top: 3px solid var(--color-green-tnc);
+  border-top: 3px solid var(--theme-color);
   box-shadow: 0 3px 5px rgba(black, 0.4);
   overflow: hidden;
 
@@ -71,7 +71,6 @@ export default {
     @media screen and (max-width: 440px) {
       font-size: 1.4rem;
     }
-
   }
 
   &__subtitle {

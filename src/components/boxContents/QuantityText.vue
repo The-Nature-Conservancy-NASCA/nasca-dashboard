@@ -92,12 +92,12 @@ export default {
   }
 
   &__value {
-    color: var(--color-green-tnc);
+    color: var(--theme-color);
     font-weight: 300;
   }
 
   &__unit {
-    color: var(--color-green-tnc);
+    color: var(--theme-color);
     font-weight: 700;
   }
 }
