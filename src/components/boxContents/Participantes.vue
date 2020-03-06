@@ -43,7 +43,6 @@ export default {
   },
   computed: {
     groups() {
-      console.log(this.$store.getters.gruposParticipantes);
       return this.$store.getters.gruposParticipantes;
     },
     participantes() {
