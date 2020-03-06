@@ -1,6 +1,11 @@
 <template>
   <div class="participantes">
-    <div>
+    <!-- <div> -->
+      <QuantityText
+        class="participantes__quantity__text"
+        :name="'Campesinos'"
+        :value="countOtros('Campesinos')"
+      />
       <PieChart
         :graphData="participantes"
         :graphId="'piechart__participantes__genero'"
@@ -10,7 +15,12 @@
         :colors="colors"
         quantityValueSize="2"
       />
-    </div>
+      <QuantityText
+        class="participantes__quantity__text"
+        :name="'Indígenas'"
+        :value="countOtros('Indígenas')"
+      />
+    <!-- </div>
     <div class="participantes__otros">
       <QuantityText
         v-for="group in Object.keys(groups)"
@@ -18,7 +28,7 @@
         :name="group"
         :value="countOtros(group)"
       />
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
@@ -33,6 +43,7 @@ export default {
   },
   computed: {
     groups() {
+      console.log(this.$store.getters.gruposParticipantes);
       return this.$store.getters.gruposParticipantes;
     },
     participantes() {
@@ -72,11 +83,11 @@ export default {
   width: 100%;
   justify-content: space-evenly;
 
-  &__otros {
+  &__quantity__text {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    width: 40%;
+    justify-content: center;
   }
 }
 </style>
