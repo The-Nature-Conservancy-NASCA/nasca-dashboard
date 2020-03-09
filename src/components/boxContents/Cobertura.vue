@@ -48,7 +48,7 @@ export default {
       selectedScheme: "corine",
       subtitle: {
         corine: "clasificacionCorine",
-        proyecto: "clasificacionProyecto"
+        project: "clasificacionProyecto"
       }
     };
   },
