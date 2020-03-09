@@ -1,25 +1,22 @@
 <template>
   <div class="participantes">
     <!-- <div> -->
-      <QuantityText
-        class="participantes__quantity__text"
-        :name="'Campesinos'"
-        :value="countOtros('Campesinos')"
-      />
-      <PieChart
-        :graphData="participantes"
-        :graphId="'piechart__participantes__genero'"
-        :group="'Participantes'"
-        :count="count()"
-        :valueLabel="'individuos'"
-        :colors="colors"
-        quantityValueSize="2"
-      />
-      <QuantityText
-        class="participantes__quantity__text"
-        :name="'Indígenas'"
-        :value="countOtros('Indígenas')"
-      />
+    <QuantityText
+      class="participantes__quantity__text"
+      :name="'Campesinos'"
+      :value="countOtros('Campesinos')"
+    />
+    <PieChart
+      :graphData="participantes"
+      :graphId="'piechart__participantes__genero'"
+      :colors="colors"
+      :value="count()"
+    />
+    <QuantityText
+      class="participantes__quantity__text"
+      :name="'Indígenas'"
+      :value="countOtros('Indígenas')"
+    />
     <!-- </div>
     <div class="participantes__otros">
       <QuantityText
@@ -52,8 +49,8 @@ export default {
   data() {
     return {
       colors: {
-        Hombres: "#1e88e5",
-        Mujeres: "#d81b60"
+        Hombres: "#285572",
+        Mujeres: "#EDB43A"
       }
     };
   },
@@ -64,7 +61,7 @@ export default {
         : 0;
     },
     countOtros(group) {
-      const value = this.groups[group]
+      const value = this.groups[group];
       if (value === 0) {
         return "-";
       } else {
