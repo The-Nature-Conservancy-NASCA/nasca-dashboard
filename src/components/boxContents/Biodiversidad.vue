@@ -7,7 +7,7 @@
         :group="group.name"
         :count="group.data.reduce((a, b) => +a + +b.value, 0)"
         :graphId="`piechart__biodiversidad__${group.name}`"
-        :valueLabel="'especies'"
+        :valueLabel="strings.especies"
       />
     </div>
   </div>
@@ -23,6 +23,9 @@ export default {
   computed: {
     biodiversidad() {
       return this.$store.getters.biodiversidad;
+    },
+    strings() {
+      return this.$store.getters.strings;
     }
   },
   methods: {

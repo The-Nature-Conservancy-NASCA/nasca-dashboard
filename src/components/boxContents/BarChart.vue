@@ -39,11 +39,22 @@ export default {
       required: true
     },
     graphId: {
-      typre: String,
+      type: String,
       required: true
+    },
+    xlabel: {
+      type: String,
+      required: false
+    },
+    ylabel: {
+      type: String,
+      required: false
     }
   },
   computed: {
+    strings() {
+      return this.$store.getters.strings;
+    },
     years() {
       return this.graphData.years;
     }
@@ -59,6 +70,9 @@ export default {
   },
   watch: {
     graphData() {
+      this.render();
+    },
+    strings() {
       this.render();
     }
   },
@@ -82,9 +96,9 @@ export default {
         this.margin.bottom;
       this.color = "#4AA241";
       this.factor = 0.6;
-      this.title = "Área total por acción";
-      this.ylabel = "Acción";
-      this.xlabel = "Área (ha)";
+      // this.title = "Área total por acción";
+      // this.ylabel = "Acción";
+      // this.xlabel = "Área (ha)";
       this.tooltipOffset = 15;
       const barGroup = this.el
         .append("svg")
@@ -211,25 +225,29 @@ export default {
               this.margin.bottom})`
           )
           .call(xAxis);
-        barGroup
-          .append("text")
-          .attr("class", "x label")
-          .attr("text-anchor", "end")
-          .attr("x", this.width + this.offset.left)
-          .attr("y", this.height + 10)
-          .attr("font-size", 10)
-          .attr("font-weight", "bold")
-          .text(this.xlabel);
-        barGroup
-          .append("text")
-          .attr("class", "y label")
-          .attr("text-anchor", "end")
-          .attr("x", 0)
-          .attr("y", 0)
-          .attr("transform", "rotate(-90)")
-          .attr("font-size", 10)
-          .attr("font-weight", "bold")
-          .text(this.ylabel);
+        if (this.xlabel) {
+          barGroup
+            .append("text")
+            .attr("class", "x label")
+            .attr("text-anchor", "end")
+            .attr("x", this.width + this.offset.left)
+            .attr("y", this.height + 10)
+            .attr("font-size", 10)
+            .attr("font-weight", "bold")
+            .text(this.xlabel);
+        }
+        if (this.ylabel) {
+          barGroup
+            .append("text")
+            .attr("class", "y label")
+            .attr("text-anchor", "end")
+            .attr("x", 0)
+            .attr("y", 0)
+            .attr("transform", "rotate(-90)")
+            .attr("font-size", 10)
+            .attr("font-weight", "bold")
+            .text(this.ylabel);
+        }
       } catch (error) {
         console.log(error);
       }

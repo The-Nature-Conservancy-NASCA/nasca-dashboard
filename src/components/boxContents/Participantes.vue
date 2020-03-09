@@ -3,19 +3,20 @@
     <!-- <div> -->
     <QuantityText
       class="participantes__quantity__text"
-      :name="'Campesinos'"
-      :value="countOtros('Campesinos')"
+      :name="strings.campesinos"
+      :value="countOtros(strings.campesinos)"
     />
     <PieChart
       :graphData="participantes"
       :graphId="'piechart__participantes__genero'"
-      :colors="colors"
+      :colors="getColors()"
+      :valueLabel="strings.individuos"
       :value="count()"
     />
     <QuantityText
       class="participantes__quantity__text"
-      :name="'Indígenas'"
-      :value="countOtros('Indígenas')"
+      :name="strings.indigenas"
+      :value="countOtros(strings.indigenas)"
     />
     <!-- </div>
     <div class="participantes__otros">
@@ -44,15 +45,10 @@ export default {
     },
     participantes() {
       return this.$store.getters.participantes;
+    },
+    strings() {
+      return this.$store.getters.strings;
     }
-  },
-  data() {
-    return {
-      colors: {
-        Hombres: "#285572",
-        Mujeres: "#EDB43A"
-      }
-    };
   },
   methods: {
     count() {
@@ -66,6 +62,12 @@ export default {
         return "-";
       } else {
         return value;
+      }
+    },
+    getColors() {
+      return {
+        [this.strings.hombres]: "#285572",
+        [this.strings.mujeres]: "#EDB43A"
       }
     }
   }

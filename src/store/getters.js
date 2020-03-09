@@ -446,9 +446,10 @@ export default {
         : getters.implementacionesPorProyectos(getters.proyectosId);
 
     const actions = {
-      Bosque: "area_bosque",
-      Restauración: "area_restauracion",
-      "Producción sostenible": "areas_p_sostenibles"
+      [getters.strings.implementacionesBosque]: "area_bosque",
+      [getters.strings.implementacionesRestauracion]: "area_restauracion",
+      [getters.strings.implementacionesProduccionSostenible]:
+        "areas_p_sostenibles"
     };
 
     const data = [];
@@ -507,8 +508,8 @@ export default {
         ? getters.participantesPorProyectos([state.filtro.valor])
         : getters.participantesPorProyectos(getters.proyectosId);
     const genders = {
-      Hombres: "numero_hombres",
-      Mujeres: "numero_mujeres"
+      [getters.strings.hombres]: "numero_hombres",
+      [getters.strings.mujeres]: "numero_mujeres"
     };
     const data = [];
     features.forEach(feat => {
@@ -541,8 +542,8 @@ export default {
         : getters.participantesPorProyectos(getters.proyectosId);
 
     const groups = {
-      Indígenas: "numero_indigenas",
-      Campesinos: "numero_campesinos"
+      [getters.strings.indigenas]: "numero_indigenas",
+      [getters.strings.campesinos]: "numero_campesinos"
     };
     const counts = {};
     features.forEach(feat => {

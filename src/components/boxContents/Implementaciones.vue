@@ -4,6 +4,8 @@
       <BarChart
         :graphData="implementaciones"
         :graphId="'barchart__implementaciones'"
+        :xlabel="strings.implementacionesXLabel"
+        :ylabel="strings.implementacionesYLabel"
       />
     </div>
     <div v-else class="no__data__warning">
@@ -21,6 +23,9 @@ export default {
   computed: {
     implementaciones() {
       return this.$store.getters.implementaciones;
+    },
+    strings() {
+      return this.$store.getters.strings;
     }
   }
 };

@@ -12,6 +12,9 @@
         v-if="this.$store.state.filtro.modo === 'proyecto'"
         :graphData="carbonoProyecto"
         :graphId="'areachart__carbono'"
+        :xlabel="strings.carbonoXLabel"
+        :ylabel="strings.carbonoYLabel"
+        :closureLabel="strings.cierreProyecto"
       />
       <div
         class="carbono__numbers"

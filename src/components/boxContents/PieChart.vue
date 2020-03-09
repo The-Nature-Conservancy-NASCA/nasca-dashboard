@@ -65,8 +65,16 @@ export default {
   components: {
     QuantityText
   },
+  computed: {
+    strings() {
+      return this.$store.getters.strings;
+    }
+  },
   watch: {
     graphData() {
+      this.render();
+    },
+    strings() {
       this.render();
     }
   },
