@@ -173,7 +173,7 @@ export default {
   }
 
   &__numbers {
-    margin-top: 3rem;
+    // margin-top: 3rem;
     display: flex;
     flex-direction: row;
     flex: 1;
