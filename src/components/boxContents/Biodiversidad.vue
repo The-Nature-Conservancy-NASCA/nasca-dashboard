@@ -1,14 +1,19 @@
 <template>
   <div class="biodiversidad">
-    <div v-for="group in biodiversidad" :key="group.name">
-      <PieChart
-        :graphData="group.data"
-        :icono="icono(group.name)"
-        :group="group.name"
-        :count="group.data.reduce((a, b) => +a + +b.value, 0)"
-        :graphId="`piechart__biodiversidad__${group.name}`"
-        :valueLabel="strings.especies"
-      />
+    <span v-if="biodiversidad.length">
+      <div v-for="group in biodiversidad" :key="group.name">
+        <PieChart
+          :graphData="group.data"
+          :icono="icono(group.name)"
+          :group="group.name"
+          :count="group.data.reduce((a, b) => +a + +b.value, 0)"
+          :graphId="`piechart__biodiversidad__${group.name}`"
+          :valueLabel="strings.especies"
+        />
+      </div>
+    </span>
+    <div v-else class="no__data__warning">
+      <p>{{ strings.noHayDatos }}</p>
     </div>
   </div>
 </template>
@@ -52,7 +57,8 @@ export default {
 </script>
 
 <style lang="scss">
-.biodiversidad {
+.biodiversidad,
+.biodiversidad > span {
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;

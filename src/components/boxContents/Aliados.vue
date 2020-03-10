@@ -1,77 +1,82 @@
 <template>
   <div class="aliados width-100">
-    <carousel
-      class="carousel donantes"
-      v-show="this.$store.state.filtro.allyType == '0'"
-      v-bind="carouselSettings"
-    >
-      <slide v-for="aliado in donantes" :key="aliado.OBJECTID">
-        <a :href="aliado.url" target="_blank">
-          <img :src="aliado.logo" :name="aliado.nombre" alt />
-        </a>
-      </slide>
-    </carousel>
-    <carousel
-      class="carousel socios"
-      v-show="this.$store.state.filtro.allyType == '1'"
-      v-bind="carouselSettings"
-    >
-      <slide v-for="aliado in socios" :key="aliado.OBJECTID">
-        <a :href="aliado.url" target="_blank">
-          <img :src="aliado.logo" :name="aliado.nombre" alt />
-        </a>
-      </slide>
-    </carousel>
-    <carousel
-      class="carousel instituciones__implementadoras"
-      v-show="this.$store.state.filtro.allyType == '2'"
-      v-bind="carouselSettings"
-    >
-      <slide
-        v-for="aliado in institucionesImplementadoras"
-        :key="aliado.OBJECTID"
+    <span v-if="hayDatos">
+      <carousel
+        class="carousel donantes"
+        v-show="this.$store.state.filtro.allyType == '0'"
+        v-bind="carouselSettings"
       >
-        <a :href="aliado.url" target="_blank">
-          <img :src="aliado.logo" :name="aliado.nombre" alt />
-        </a>
-      </slide>
-    </carousel>
-    <carousel
-      class="carousel organizaciones__locales"
-      v-show="this.$store.state.filtro.allyType == '3'"
-      v-bind="carouselSettings"
-    >
-      <slide v-for="aliado in organizacionesLocales" :key="aliado.OBJECTID">
-        <a :href="aliado.url" target="_blank">
-          <img :src="aliado.logo" :name="aliado.nombre" alt />
-        </a>
-      </slide>
-    </carousel>
-    <div class="aliados__ctas">
-      <button
-        v-show="donantes.length"
-        :title="strings.donantes"
-        :class="buttonClass('0')"
-        @click="changeType('0')"
-      ></button>
-      <button
-        v-show="socios.length"
-        :title="strings.socios"
-        :class="buttonClass('1')"
-        @click="changeType('1')"
-      ></button>
-      <button
-        v-show="institucionesImplementadoras.length"
-        :title="strings.institucionesImplementadoras"
-        :class="buttonClass('2')"
-        @click="changeType('2')"
-      ></button>
-      <button
-        v-show="organizacionesLocales.length"
-        :title="strings.organizacionesLocales"
-        :class="buttonClass('3')"
-        @click="changeType('3')"
-      ></button>
+        <slide v-for="aliado in donantes" :key="aliado.OBJECTID">
+          <a :href="aliado.url" target="_blank">
+            <img :src="aliado.logo" :name="aliado.nombre" alt />
+          </a>
+        </slide>
+      </carousel>
+      <carousel
+        class="carousel socios"
+        v-show="this.$store.state.filtro.allyType == '1'"
+        v-bind="carouselSettings"
+      >
+        <slide v-for="aliado in socios" :key="aliado.OBJECTID">
+          <a :href="aliado.url" target="_blank">
+            <img :src="aliado.logo" :name="aliado.nombre" alt />
+          </a>
+        </slide>
+      </carousel>
+      <carousel
+        class="carousel instituciones__implementadoras"
+        v-show="this.$store.state.filtro.allyType == '2'"
+        v-bind="carouselSettings"
+      >
+        <slide
+          v-for="aliado in institucionesImplementadoras"
+          :key="aliado.OBJECTID"
+        >
+          <a :href="aliado.url" target="_blank">
+            <img :src="aliado.logo" :name="aliado.nombre" alt />
+          </a>
+        </slide>
+      </carousel>
+      <carousel
+        class="carousel organizaciones__locales"
+        v-show="this.$store.state.filtro.allyType == '3'"
+        v-bind="carouselSettings"
+      >
+        <slide v-for="aliado in organizacionesLocales" :key="aliado.OBJECTID">
+          <a :href="aliado.url" target="_blank">
+            <img :src="aliado.logo" :name="aliado.nombre" alt />
+          </a>
+        </slide>
+      </carousel>
+      <div class="aliados__ctas">
+        <button
+          v-show="donantes.length"
+          :title="strings.donantes"
+          :class="buttonClass('0')"
+          @click="changeType('0')"
+        ></button>
+        <button
+          v-show="socios.length"
+          :title="strings.socios"
+          :class="buttonClass('1')"
+          @click="changeType('1')"
+        ></button>
+        <button
+          v-show="institucionesImplementadoras.length"
+          :title="strings.institucionesImplementadoras"
+          :class="buttonClass('2')"
+          @click="changeType('2')"
+        ></button>
+        <button
+          v-show="organizacionesLocales.length"
+          :title="strings.organizacionesLocales"
+          :class="buttonClass('3')"
+          @click="changeType('3')"
+        ></button>
+      </div>
+    </span>
+    <div v-else class="no__data__warning">
+      <p>{{ strings.noHayDatos }}</p>
     </div>
   </div>
 </template>
@@ -115,6 +120,15 @@ export default {
         aliado => aliado.tipo == "3"
       );
       return this.removeDuplicates(arr, "nombre");
+    },
+    hayDatos() {
+      return (
+        this.donantes.length +
+          this.socios.length +
+          this.institucionesImplementadoras.length +
+          this.organizacionesLocales.length !==
+        0
+      );
     },
     strings() {
       return this.$store.getters.strings;
@@ -259,10 +273,12 @@ export default {
   width: 100%;
 }
 
-.aliados {
+.aliados,
+.aliados > span {
+  align-items: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  height: 100%;
   justify-content: space-between;
 
   .donantes {
@@ -309,6 +325,10 @@ export default {
         width: 80px;
       }
 
+      @media screen and (max-width: 768px) {
+        width: 215px;
+      }
+
       @media screen and (max-width: 440px) {
         width: 115px;
       }
@@ -321,7 +341,7 @@ export default {
     justify-content: space-evenly;
     margin: 0 auto;
     margin-bottom: 1rem;
-    width: 30%;
+    width: 160px;
 
     button {
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);

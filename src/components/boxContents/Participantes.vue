@@ -1,32 +1,27 @@
 <template>
   <div class="participantes">
-    <!-- <div> -->
-    <QuantityText
-      class="participantes__quantity__text"
-      :name="strings.campesinos"
-      :value="countOtros(strings.campesinos)"
-    />
-    <PieChart
-      :graphData="participantes"
-      :graphId="'piechart__participantes__genero'"
-      :colors="getColors()"
-      :valueLabel="strings.individuos"
-      :value="count()"
-    />
-    <QuantityText
-      class="participantes__quantity__text"
-      :name="strings.indigenas"
-      :value="countOtros(strings.indigenas)"
-    />
-    <!-- </div>
-    <div class="participantes__otros">
+    <span v-if="hayDatos">
       <QuantityText
-        v-for="group in Object.keys(groups)"
-        :key="group"
-        :name="group"
-        :value="countOtros(group)"
+        class="participantes__quantity__text"
+        :name="strings.campesinos"
+        :value="countOtros(strings.campesinos)"
       />
-    </div> -->
+      <PieChart
+        :graphData="participantes"
+        :graphId="'piechart__participantes__genero'"
+        :colors="getColors()"
+        :valueLabel="strings.individuos"
+        :value="count()"
+      />
+      <QuantityText
+        class="participantes__quantity__text"
+        :name="strings.indigenas"
+        :value="countOtros(strings.indigenas)"
+      />
+    </span>
+    <div v-else class="no__data__warning">
+      <p>{{ strings.noHayDatos }}</p>
+    </div>
   </div>
 </template>
 <script>
@@ -48,6 +43,14 @@ export default {
     },
     strings() {
       return this.$store.getters.strings;
+    },
+    hayDatos() {
+      return (
+        this.count(this.strings.campesinos) +
+          this.count(this.strings.indigenas) +
+          this.count() !==
+        0
+      );
     }
   },
   methods: {
@@ -68,13 +71,14 @@ export default {
       return {
         [this.strings.hombres]: "#285572",
         [this.strings.mujeres]: "#EDB43A"
-      }
+      };
     }
   }
 };
 </script>
 <style lang="scss" scoped>
-.participantes {
+.participantes,
+.participantes > span {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;

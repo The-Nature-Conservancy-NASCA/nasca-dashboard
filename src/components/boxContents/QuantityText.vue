@@ -92,6 +92,9 @@ export default {
   &__value {
     color: var(--theme-color);
     font-weight: 300;
+    @media screen and (max-width: 768px) {
+      font-size: 3.4rem !important;
+    }
   }
 
   &__unit {

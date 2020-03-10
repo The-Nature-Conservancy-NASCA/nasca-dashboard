@@ -23,6 +23,10 @@
     height: 24rem;
   }
 
+  @media screen and (max-width: 768px) {
+    height: 45rem;
+  }
+
   @media screen and (max-width: 440px) {
     height: 25rem;
   }

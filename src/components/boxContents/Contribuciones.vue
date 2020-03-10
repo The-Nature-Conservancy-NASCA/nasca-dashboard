@@ -1,48 +1,53 @@
 <template>
   <div class="contribuciones width-100">
-    <carousel
-      ref="carousel__shared__conservation__agenda"
-      class="carousel shared__conservation__agenda"
-      v-show="this.$store.state.filtro.contributionType == '0'"
-      v-bind="carouselSettings"
-    >
-      <slide
-        v-for="contribution in SCAContributions"
-        :key="contribution.OBJECTID"
+    <span class="width-100" v-if="hayDatos">
+      <carousel
+        ref="carousel__shared__conservation__agenda"
+        class="carousel shared__conservation__agenda"
+        v-show="this.$store.state.filtro.contributionType == '0'"
+        v-bind="carouselSettings"
       >
-        <a :href="contribution.url" target="_blank">
-          <img :src="contribution.logo" :name="contribution.nombre" alt="" />
-        </a>
-      </slide>
-    </carousel>
-    <carousel
-      ref="carousel__otras__contribuciones"
-      class="carousel otras__contribuciones"
-      v-show="this.$store.state.filtro.contributionType == '1'"
-      v-bind="carouselSettings"
-    >
-      <slide
-        v-for="contribution in otherContributions"
-        :key="contribution.OBJECTID"
+        <slide
+          v-for="contribution in SCAContributions"
+          :key="contribution.OBJECTID"
+        >
+          <a :href="contribution.url" target="_blank">
+            <img :src="contribution.logo" :name="contribution.nombre" alt="" />
+          </a>
+        </slide>
+      </carousel>
+      <carousel
+        ref="carousel__otras__contribuciones"
+        class="carousel otras__contribuciones"
+        v-show="this.$store.state.filtro.contributionType == '1'"
+        v-bind="carouselSettings"
       >
-        <a :href="contribution.url" target="_blank">
-          <img :src="contribution.logo" :name="contribution.nombre" alt="" />
-        </a>
-      </slide>
-    </carousel>
-    <div class="contribuciones__ctas">
-      <button
-        v-show="SCAContributions.length"
-        :title="strings.contribucionesShared"
-        :class="buttonClass('0')"
-        @click="changeType('0')"
-      ></button>
-      <button
-        v-show="otherContributions.length"
-        :title="strings.contribucionesOtras"
-        :class="buttonClass('1')"
-        @click="changeType('1')"
-      ></button>
+        <slide
+          v-for="contribution in otherContributions"
+          :key="contribution.OBJECTID"
+        >
+          <a :href="contribution.url" target="_blank">
+            <img :src="contribution.logo" :name="contribution.nombre" alt="" />
+          </a>
+        </slide>
+      </carousel>
+      <div class="contribuciones__ctas">
+        <button
+          v-show="SCAContributions.length"
+          :title="strings.contribucionesShared"
+          :class="buttonClass('0')"
+          @click="changeType('0')"
+        ></button>
+        <button
+          v-show="otherContributions.length"
+          :title="strings.contribucionesOtras"
+          :class="buttonClass('1')"
+          @click="changeType('1')"
+        ></button>
+      </div>
+    </span>
+    <div v-else class="no__data__warning">
+      <p>{{ strings.noHayDatos }}</p>
     </div>
   </div>
 </template>
@@ -77,6 +82,11 @@ export default {
         contribution => contribution.tipo == "1"
       );
       return this.removeDuplicates(arr, "nombre");
+    },
+    hayDatos() {
+      return (
+        this.SCAContributions.length + this.otherContributions.length !== 0
+      );
     },
     strings() {
       return this.$store.getters.strings;
@@ -206,7 +216,8 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.contribuciones {
+.contribuciones,
+.contribuciones > span {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -236,6 +247,10 @@ export default {
       -webkit-transition: all 0.25s;
       transition: all 0.25s;
       opacity: 1;
+
+      @media screen and (max-width: 768px) {
+        height: 100px;
+      }
 
       @media screen and (max-width: 440px) {
         height: 65px;

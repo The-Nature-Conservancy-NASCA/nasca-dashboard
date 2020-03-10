@@ -89,7 +89,13 @@ export default {
       this.tooltipOffset = 15;
       this.iconSize;
       this.fontSize;
-      if (screen.height <= 768) {
+      if (screen.width <= 440) {
+        this.iconSize = "8.5rem";
+        this.fontSize = "2.5rem";
+      } else if (screen.width <= 768) {
+        this.iconSize = "16.5rem";
+        this.fontSize = "2.5rem";
+      } else if (screen.height <= 768) {
         this.iconSize = "6.5rem";
         this.fontSize = "2.5rem";
       } else if (screen.width > 900 && screen.width <= 1280) {
@@ -225,6 +231,16 @@ export default {
     height: 10rem;
     margin: 1rem auto;
   }
+
+  @media screen and (max-width: 768px) {
+    width: 20rem;
+    height: 20rem;
+  }
+
+  @media screen and (max-width: 440px) {
+    width: 10rem !important;
+    height: 10rem !important;
+  }
 }
 
 .graph__header {
@@ -256,5 +272,4 @@ export default {
   justify-content: center;
   align-items: center;
 }
-
 </style>

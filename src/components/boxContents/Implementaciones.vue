@@ -31,10 +31,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.no__data__warning > p {
-  text-align: center;
-  font-size: 14px;
-}
 .implementaciones {
   display: flex;
   flex-direction: column;

@@ -37,7 +37,8 @@
       <a
         href="http://tnc-visor.dreamgis.com/visor.html"
         target="_blank"
-        title="Ir al visor TNC">
+        title="Ir al visor TNC"
+      >
         <i class="material-icons">
           map
         </i>

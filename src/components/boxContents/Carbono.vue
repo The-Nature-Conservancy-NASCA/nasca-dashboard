@@ -185,9 +185,4 @@ export default {
     width: 100%;
   }
 }
-
-.no__data__warning > p {
-  text-align: center;
-  font-size: 14px;
-}
 </style>

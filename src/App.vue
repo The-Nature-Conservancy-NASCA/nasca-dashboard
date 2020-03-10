@@ -229,4 +229,18 @@ a {
     }
   }
 }
+
+.no__data__warning {
+  align-items: center;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+
+  & > p {
+    color: #bbb;
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+  }
+}
 </style>
