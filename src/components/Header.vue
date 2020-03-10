@@ -186,6 +186,8 @@ $font-dark: #333;
 
     @media screen and (max-width: 768px) {
       margin-bottom: 2rem;
+      margin-right: 0;
+      margin-top: 40px;
       flex: 1;
     }
   }
