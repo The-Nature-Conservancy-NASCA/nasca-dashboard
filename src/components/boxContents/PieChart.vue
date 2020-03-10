@@ -84,25 +84,25 @@ export default {
       this.el.html("");
       this.width = parseInt(this.el.style("width"));
       this.height = parseInt(this.el.style("height"));
-      this.margin = 1;
+      this.margin = 4;
       this.color = d3.scaleOrdinal(d3.schemeCategory10);
       this.tooltipOffset = 15;
       this.iconSize;
       this.fontSize;
       if (screen.width <= 440) {
-        this.iconSize = "8.5rem";
+        this.iconSize = "8rem";
         this.fontSize = "2.5rem";
       } else if (screen.width <= 768) {
-        this.iconSize = "16.5rem";
+        this.iconSize = "16rem";
         this.fontSize = "2.5rem";
       } else if (screen.height <= 768) {
-        this.iconSize = "6.5rem";
+        this.iconSize = "6rem";
         this.fontSize = "2.5rem";
       } else if (screen.width > 900 && screen.width <= 1280) {
-        this.iconSize = "7.5rem";
+        this.iconSize = "7rem";
         this.fontSize = "2.75rem";
       } else {
-        this.iconSize = "9.5rem";
+        this.iconSize = "9rem";
         this.fontSize = "3rem";
       }
       const svg = this.el
@@ -136,13 +136,16 @@ export default {
         arcs
           .append("path")
           .on("mouseover", function(d) {
-            svg
-              .selectAll("g.arc path")
-              .attr("fill-opacity", 0.3)
-              .attr("stroke-opacity", 0.5);
-            d3.select(this)
-              .attr("fill-opacity", 0.8)
-              .attr("stroke-opacity", 1);
+            // svg
+            //   .selectAll("g.arc path")
+            //   .attr("fill-opacity", 0.6)
+            //   .attr("stroke-opacity", 0.7);
+            const newOuterRadius = that.width / 2 - 1;
+            const arcOver = d3
+              .arc()
+              .innerRadius(innerRadius)
+              .outerRadius(newOuterRadius);
+            d3.select(this).attr("fill-opacity", 1).transition().attr("d", arcOver);
             const coordinates = [d3.event.pageX, d3.event.pageY];
             const value = Number(Math.round(d.value)).toLocaleString("en");
             const tooltipContent = `
@@ -166,18 +169,21 @@ export default {
           .on("mouseout", function() {
             svg
               .selectAll("g.arc path")
-              .attr("fill-opacity", 0.6)
-              .attr("stroke-opacity", 0.75);
+              .attr("fill-opacity", 0.8)
+              .attr("stroke-opacity", 1);
+            d3.select(this).transition().attr("d", arc);
             d3.select("#tooltip__graph").style("display", "none");
           })
           .attr("fill", d =>
             this.colors ? this.colors[d.data.name] : this.color(d.data.name)
           )
           .attr("stroke", d =>
-            this.colors ? this.colors[d.data.name] : this.color(d.data.name)
+            this.colors
+              ? this.shadeColor(this.colors[d.data.name], -15)
+              : this.shadeColor(this.color(d.data.name), -15)
           )
-          .attr("fill-opacity", 0.6)
-          .attr("stroke-opacity", 0.75)
+          .attr("fill-opacity", 0.8)
+          .attr("stroke-opacity", 1)
           .attr("d", arc);
         if (this.icono) {
           const img = svg
@@ -207,6 +213,28 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+    shadeColor(color, percent) {
+      var R = parseInt(color.substring(1, 3), 16);
+      var G = parseInt(color.substring(3, 5), 16);
+      var B = parseInt(color.substring(5, 7), 16);
+
+      R = parseInt((R * (100 + percent)) / 100);
+      G = parseInt((G * (100 + percent)) / 100);
+      B = parseInt((B * (100 + percent)) / 100);
+
+      R = R < 255 ? R : 255;
+      G = G < 255 ? G : 255;
+      B = B < 255 ? B : 255;
+
+      var RR =
+        R.toString(16).length == 1 ? "0" + R.toString(16) : R.toString(16);
+      var GG =
+        G.toString(16).length == 1 ? "0" + G.toString(16) : G.toString(16);
+      var BB =
+        B.toString(16).length == 1 ? "0" + B.toString(16) : B.toString(16);
+
+      return "#" + RR + GG + BB;
     }
   },
   mounted() {
