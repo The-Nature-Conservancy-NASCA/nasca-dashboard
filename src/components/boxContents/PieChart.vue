@@ -145,7 +145,10 @@ export default {
               .arc()
               .innerRadius(innerRadius)
               .outerRadius(newOuterRadius);
-            d3.select(this).attr("fill-opacity", 1).transition().attr("d", arcOver);
+            d3.select(this)
+              .attr("fill-opacity", 1)
+              .transition()
+              .attr("d", arcOver);
             const coordinates = [d3.event.pageX, d3.event.pageY];
             const value = Number(Math.round(d.value)).toLocaleString("en");
             const tooltipContent = `
@@ -171,7 +174,9 @@ export default {
               .selectAll("g.arc path")
               .attr("fill-opacity", 0.8)
               .attr("stroke-opacity", 1);
-            d3.select(this).transition().attr("d", arc);
+            d3.select(this)
+              .transition()
+              .attr("d", arc);
             d3.select("#tooltip__graph").style("display", "none");
           })
           .attr("fill", d =>

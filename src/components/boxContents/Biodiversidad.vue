@@ -1,16 +1,18 @@
 <template>
   <div class="biodiversidad">
     <span v-if="biodiversidad.length">
-      <div v-for="group in biodiversidad" :key="group.name">
-        <PieChart
-          :graphData="group.data"
-          :icono="icono(group.name)"
-          :group="group.name"
-          :count="group.data.reduce((a, b) => +a + +b.value, 0)"
-          :graphId="`piechart__biodiversidad__${group.name}`"
-          :valueLabel="strings.especies"
-        />
-      </div>
+      <carousel class="carousel biodiversidad" v-bind="carouselSettings">
+        <slide v-for="group in biodiversidad" :key="group.name">
+          <PieChart
+            :graphData="group.data"
+            :icono="icono(group.name)"
+            :group="group.name"
+            :count="group.data.reduce((a, b) => +a + +b.value, 0)"
+            :graphId="`piechart__biodiversidad__${group.name}`"
+            :valueLabel="strings.especies"
+          />
+        </slide>
+      </carousel>
     </span>
     <div v-else class="no__data__warning">
       <p>{{ strings.noHayDatos }}</p>
@@ -18,12 +20,15 @@
   </div>
 </template>
 <script>
+import { Carousel, Slide } from "vue-carousel";
 import PieChart from "./PieChart.vue";
 
 export default {
   name: "Biodiversidad",
   components: {
-    PieChart
+    Carousel,
+    PieChart,
+    Slide
   },
   computed: {
     biodiversidad() {
@@ -32,6 +37,19 @@ export default {
     strings() {
       return this.$store.getters.strings;
     }
+  },
+  data() {
+    return {
+      carouselSettings: {
+        perPage: 3,
+        scrollPerPage: false,
+        paginationEnabled: false,
+        navigationEnabled: true,
+        navigationClickTargetSize: 15,
+        navigationPrevLabel: "&#8249;",
+        navigationNextLabel: "&#8250;"
+      }
+    };
   },
   methods: {
     buttonClass(year) {
@@ -63,6 +81,22 @@ export default {
   justify-content: space-evenly;
   flex-wrap: wrap;
   width: 100%;
+
+  .carousel {
+    // flex: 1;
+    // display: flex;
+    // align-content: center;
+    // justify-content: center;
+  }
+
+  .VueCarousel {
+    width: 80%;
+    margin: auto;
+
+    &-navigation-button {
+      font-size: 20px;
+    }
+  }
 
   &__buttons {
     transform: translateY(-3.5rem);
