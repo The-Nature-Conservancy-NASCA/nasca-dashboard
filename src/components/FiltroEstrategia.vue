@@ -1,28 +1,33 @@
 <template>
-  <div class="filtro">
-    <a class="toggle" href="#">{{ strings.estrategias }}</a>
-    <ul class="filtro__estrategias">
-      <li
-        class="filtro__estrategia-item selector"
-        v-for="estrategia in estrategias"
-        :key="estrategia.id"
-        :style="`border-left: 3px solid ${estrategia.color}`"
-        @click.stop="cambiarEstrategia(estrategia.id)"
-      >
-        {{ estrategia.nombre }}
-        <ul class="filtro__proyectos">
-          <li
-            class="filtro__proyecto-item selector"
-            v-for="proyecto in proyectosPorEstrategia(estrategia.id)"
-            :key="proyecto.id"
-            :style="`border-left: 3px solid ${proyecto.color}`"
-            @click.stop="cambiarProyecto(proyecto.id)"
+  <div>
+    <div class="filtro">
+      <a class="toggle" href="#">{{ strings.estrategias }}</a>
+      <ul class="filtro__estrategias">
+        <li
+          class="filtro__estrategia-item selector"
+          v-for="estrategia in estrategias"
+          :key="estrategia.id"
+          :style="`border-left: 3px solid ${estrategia.color}`"
+          @click.stop="cambiarEstrategia(estrategia.id)"
+        >
+          {{ estrategia.nombre }}
+          <ul
+            class="filtro__proyectos"
+            v-if="proyectosPorEstrategia(estrategia.id).length !== 0"
           >
-            {{ proyecto.nombre }}
-          </li>
-        </ul>
-      </li>
-    </ul>
+            <li
+              class="filtro__proyecto-item selector"
+              v-for="proyecto in proyectosPorEstrategia(estrategia.id)"
+              :key="proyecto.id"
+              :style="`border-left: 3px solid ${proyecto.color}`"
+              @click.stop="cambiarProyecto(proyecto.id)"
+            >
+              {{ proyecto.nombre }}
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 <script>
@@ -30,7 +35,12 @@ export default {
   name: "FiltroEstrategia",
   computed: {
     estrategias() {
-      return this.$store.getters.estrategias;
+      const todos = {
+        id: "todos",
+        nombre: this.strings.verTodo,
+        color: "#000"
+      };
+      return [todos, ...this.$store.getters.estrategias];
     },
     strings() {
       return this.$store.getters.strings;
@@ -41,10 +51,17 @@ export default {
       return this.$store.getters.proyectosPorEstrategia(estrategia);
     },
     cambiarEstrategia(estrategia) {
-      this.$store.dispatch("cambiarEstrategia", estrategia);
+      if ("todos" === estrategia) {
+        this.verTodo();
+      } else {
+        this.$store.dispatch("cambiarEstrategia", estrategia);
+      }
     },
     cambiarProyecto(proyecto) {
       this.$store.dispatch("cambiarProyecto", proyecto);
+    },
+    verTodo() {
+      this.$store.dispatch("verTodo");
     }
   }
 };
@@ -87,7 +104,7 @@ export default {
     transition: all 0.3s ease-in-out;
     z-index: 3;
     left: 15rem;
-    width: 25rem;
+    width: 22.5rem;
     overflow: hidden;
     transform: translateY(-29px);
   }
@@ -114,6 +131,10 @@ export default {
     max-height: 100rem;
     overflow: visible;
     opacity: 1;
+  }
+
+  @media screen and (max-width: 768px) {
+    display: none;
   }
 }
 </style>

@@ -5,7 +5,7 @@
       alt="logo"
       class="header__logo"
     />
-    <span>{{ currentLevel }}</span>
+    <span class="header__level">{{ currentLevel }}</span>
     <div class="header__estrategias">
       <select
         class="select colombia___or__strategy"
@@ -30,19 +30,20 @@
           {{ moment.name }}
         </option>
       </select>
-      <FiltroEstrategia />
-      <button @click="seleccionarTodo">{{ strings.verTodo }}</button>
-      <DownloadDataBtn />
-      <DownloadImageBtn />
-      <a
-        href="http://tnc-visor.dreamgis.com/visor.html"
-        target="_blank"
-        title="Ir al visor TNC"
-      >
-        <i class="material-icons">
-          map
-        </i>
-      </a>
+      <FiltroEstrategia class="header__filtros" />
+      <div class="header__ctas">
+        <DownloadDataBtn />
+        <DownloadImageBtn />
+        <a
+          href="http://tnc-visor.dreamgis.com/visor.html"
+          target="_blank"
+          title="Ir al visor TNC"
+        >
+          <i class="material-icons">
+            map
+          </i>
+        </a>
+      </div>
       <div class="divider"></div>
       <div class="header__options">
         <i class="options__icon esri-icon-description" @click="showModal()"></i>
@@ -154,17 +155,39 @@ $font-dark: #333;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: space-evenly;
-    width: 40vw;
+    justify-content: space-between;
+    width: 30vw;
 
-    @media screen and (max-width: 440px) {
-      width: 75vw;
+    @media screen and (max-width: 1280px) {
+      width: 40vw;
+    }
+
+    @media screen and (max-width: 768px) {
+      width: 100%;
+    }
+  }
+
+  &__ctas {
+    display: flex;
+    justify-content: space-between;
+
+    a {
+      margin: 0 0.5rem;
     }
   }
 
   &__logo {
     width: 15rem;
     margin-right: 2rem;
+
+    @media screen and (min-width: 901px) and (max-width: 1280px) {
+      width: 15rem;
+    }
+
+    @media screen and (max-width: 768px) {
+      margin-bottom: 2rem;
+      flex: 1;
+    }
   }
 
   button {
@@ -190,20 +213,24 @@ $font-dark: #333;
   .divider {
     background-color: $font-gray;
     height: 3rem;
-    margin-right: 1.5rem;
-    margin-left: 1.5rem;
     width: 2px;
   }
 
-  @media screen and (min-width: 901px) and (max-width: 1280px) {
-    &__logo {
-      width: 15rem;
-    }
-  }
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
 
-  @media screen and (max-width: 440px) {
-    flex-wrap: wrap;
-    justify-content: center;
+    &__filtros {
+      position: absolute;
+    }
+
+    &__level {
+      margin-bottom: 1rem;
+      font-size: 2rem;
+    }
+
+    .divider {
+      display: none;
+    }
   }
 
   @media screen and (max-height: 768px) {
