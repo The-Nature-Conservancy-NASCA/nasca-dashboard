@@ -144,7 +144,7 @@ export default {
           .on("mouseout", function() {
             treemapGroup
               .selectAll("rect")
-              .attr("fill-opacity", 0.9)
+              .attr("fill-opacity", 0.8)
               .attr("stroke-opacity", 1)
               .attr("stroke-width", 0.5);
             treemapGroup
@@ -158,7 +158,7 @@ export default {
           .attr("x", d => d.x0)
           .attr("y", d => d.y0)
           .attr("fill", d => d.data.color)
-          .attr("fill-opacity", 0.9)
+          .attr("fill-opacity", 0.8)
           .attr("stroke", d => this.shadeColor(d.data.color, -20))
           .attr("stroke-width", 0.5)
           .attr("stroke-opacity", 1)
