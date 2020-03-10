@@ -92,5 +92,11 @@ export default {
   },
   SET_METAS(state, payload) {
     state.metas = payload;
+  },
+  SHOW_MODAL(state) {
+    state.modalVisible = true;
+  },
+  HIDE_MODAL(state) {
+    state.modalVisible = false;
   }
 };

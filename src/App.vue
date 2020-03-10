@@ -6,12 +6,14 @@
       <img src="@/assets/images/loader.gif" alt="" />
     </div>
     <div id="tooltip__graph"></div>
+    <Modal />
   </div>
 </template>
 
 <script>
 import BoxContainer from "./components/BoxContainer.vue";
 import Header from "./components/Header.vue";
+import Modal from "./components/Modal";
 
 import { buildQuery } from "./lib/queryBuilder";
 
@@ -24,7 +26,8 @@ export default {
   name: "app",
   components: {
     Header,
-    BoxContainer
+    BoxContainer,
+    Modal
   },
   data() {
     return {
@@ -135,7 +138,7 @@ export default {
 
 <style lang="scss">
 :root {
-  --color-green-tnc: #4aa241;
+  --theme-color: #4aa241;
 }
 
 * {
@@ -195,7 +198,7 @@ a:focus {
     margin: 5px 0;
     border: 0;
     height: 0;
-    border-top: 1px solid var(--color-green-tnc);
+    border-top: 1px solid var(--theme-color);
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
   }
 }

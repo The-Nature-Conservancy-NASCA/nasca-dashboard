@@ -76,7 +76,7 @@ export default {
       transition: all 0.2s;
 
       &.selected {
-        background-color: var(--color-green-tnc);
+        background-color: var(--theme-color);
         color: #fff;
       }
 

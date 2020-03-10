@@ -36,7 +36,7 @@
       <DownloadImageBtn />
       <div class="divider"></div>
       <div class="header__options">
-        <i class="options__icon esri-icon-description js-show-general-info"></i>
+        <i class="options__icon esri-icon-description" @click="showModal()"></i>
         <span
           @click="cambiarIdioma('es')"
           class="options__language"
@@ -103,6 +103,9 @@ export default {
     cambiarIdioma(nuevoIdioma) {
       this.idiomaSelected = nuevoIdioma;
       this.$store.dispatch("cambiarIdioma", nuevoIdioma);
+    },
+    showModal() {
+      this.$store.dispatch("showModal");
     }
   },
   watch: {
@@ -202,7 +205,7 @@ $font-dark: #333;
     border: none;
     border-radius: 0;
     background-color: #fff;
-    border-bottom: 2px solid var(--color-green-tnc);
+    border-bottom: 2px solid var(--theme-color);
   }
 }
 
