@@ -78,6 +78,17 @@ export default {
         parseInt(this.el.style("height")) -
         this.margin.top -
         this.margin.bottom;
+      this.fontSize;
+      if (screen.height <= 768) {
+        this.fontSize = "10px";
+        this.smallerFontSize = "9px";
+      } else if (screen.width > 900 && screen.width <= 1280) {
+        this.fontSize = "12px";
+        this.smallerFontSize = "11px";
+      } else {
+        this.fontSize = "14px";
+        this.smallerFontSize = "13px";
+      }
       const areaGroup = this.el
         .append("svg")
         .attr("id", this.graphId)
@@ -304,7 +315,7 @@ export default {
             .attr("x", yScale.range()[1] - this.margin.bottom)
             .attr("transform", "rotate(-90)")
             .attr("text-anchor", "end")
-            .attr("font-size", 9)
+            .attr("font-size", this.smallerFontSize)
             .attr("fill", "black")
             .text(this.closureLabel);
         }
@@ -313,7 +324,7 @@ export default {
             .append("text")
             .attr("class", "x label")
             .attr("text-anchor", "end")
-            .attr("font-size", 10)
+            .attr("font-size", this.fontSize)
             .attr("font-weight", "bold")
             .attr("x", this.width - this.margin.right)
             .attr("y", this.height + 15)
@@ -323,7 +334,7 @@ export default {
           areaGroup
             .append("text")
             .attr("text-anchor", "start")
-            .attr("font-size", 10)
+            .attr("font-size", this.fontSize)
             .attr("font-weight", "bold")
             .attr("x", this.margin.left)
             .attr("y", 0)

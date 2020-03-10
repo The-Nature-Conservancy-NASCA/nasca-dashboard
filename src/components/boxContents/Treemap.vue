@@ -67,6 +67,14 @@ export default {
         this.margin.bottom;
       this.color = d3.scaleOrdinal(d3.schemeCategory10);
       this.tooltipOffset = 15;
+      this.fontSize;
+      if (screen.height <= 768) {
+        this.fontSize = "10px";
+      } else if (screen.width > 900 && screen.width <= 1280) {
+        this.fontSize = "12px";
+      } else {
+        this.fontSize = "14px";
+      }
 
       const treemapGroup = this.el
         .append("svg")
@@ -166,7 +174,7 @@ export default {
           .attr("text-anchor", "middle")
           .attr("dominant-baseline", "middle")
           .attr("pointer-events", "none")
-          .attr("font-size", 10)
+          .attr("font-size", this.fontSize)
           .attr("fill", "black")
           .attr("fill-opacity", 1)
           .attr("x", d => {
@@ -311,7 +319,7 @@ export default {
       }
 
       if (lineNumber > 0) {
-        const startDy = -((lineNumber - 1) * lineHeight);
+        const startDy = -(lineNumber * (lineHeight / 2));
         text
           .selectAll("tspan")
           .attr("dy", (d, i) => startDy + lineHeight * i + "em");

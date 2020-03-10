@@ -96,10 +96,15 @@ export default {
         this.margin.bottom;
       this.color = "#4AA241";
       this.factor = 0.6;
-      // this.title = "Área total por acción";
-      // this.ylabel = "Acción";
-      // this.xlabel = "Área (ha)";
       this.tooltipOffset = 15;
+      this.fontSize;
+      if (screen.height <= 768) {
+        this.fontSize = "10px";
+      } else if (screen.width > 900 && screen.width <= 1280) {
+        this.fontSize = "12px";
+      } else {
+        this.fontSize = "14px";
+      }
       const barGroup = this.el
         .append("svg")
         .attr("id", this.graphId)
@@ -201,8 +206,8 @@ export default {
           )
           .attr("text-anchor", "middle")
           .attr("dominant-baseline", "middle")
-          .attr("font-size", 9)
-          .attr("font-weight", "bold")
+          .attr("font-size", this.fontSize)
+          .attr("font-weight", "normal")
           .attr("fill", "white")
           .attr("pointer-events", "none")
           .text(d => d.name)
@@ -232,7 +237,7 @@ export default {
             .attr("text-anchor", "end")
             .attr("x", this.width + this.offset.left)
             .attr("y", this.height + 10)
-            .attr("font-size", 10)
+            .attr("font-size", this.fontSize)
             .attr("font-weight", "bold")
             .text(this.xlabel);
         }
@@ -244,7 +249,7 @@ export default {
             .attr("x", 0)
             .attr("y", 0)
             .attr("transform", "rotate(-90)")
-            .attr("font-size", 10)
+            .attr("font-size", this.fontSize)
             .attr("font-weight", "bold")
             .text(this.ylabel);
         }
