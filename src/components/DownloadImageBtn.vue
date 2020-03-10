@@ -52,17 +52,3 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
-a {
-  cursor: pointer;
-
-  .material-icons {
-    color: #999;
-    transition: color 0.3s;
-
-    &:hover {
-      color: #666;
-    }
-  }
-}
-</style>

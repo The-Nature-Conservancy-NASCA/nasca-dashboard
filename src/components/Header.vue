@@ -32,6 +32,14 @@
       <button @click="seleccionarTodo">{{ strings.verTodo }}</button>
       <DownloadDataBtn />
       <DownloadImageBtn />
+      <a
+        href="http://tnc-visor.dreamgis.com/visor.html"
+        target="_blank"
+        title="Ir al visor TNC">
+        <i class="material-icons">
+          map
+        </i>
+      </a>
       <div class="divider"></div>
       <div class="header__options">
         <i class="options__icon esri-icon-description" @click="showModal()"></i>

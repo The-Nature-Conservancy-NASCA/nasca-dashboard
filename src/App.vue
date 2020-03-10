@@ -216,4 +216,17 @@ svg {
   height: 100%;
   width: 100%;
 }
+
+a {
+  cursor: pointer;
+
+  .material-icons {
+    color: #999;
+    transition: color 0.3s;
+
+    &:hover {
+      color: #666;
+    }
+  }
+}
 </style>
