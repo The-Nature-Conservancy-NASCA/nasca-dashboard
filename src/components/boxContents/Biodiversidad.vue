@@ -34,6 +34,12 @@ export default {
     biodiversidad() {
       return this.$store.getters.biodiversidad;
     },
+    filtroModo() {
+      return this.$store.getters.filtro.modo;
+    },
+    filtroValor() {
+      return this.$store.getters.filtro.valor;
+    },
     strings() {
       return this.$store.getters.strings;
     }
@@ -64,12 +70,39 @@ export default {
         component: "biodiversidad"
       });
     },
+    fixCarouselOverflow() {
+      const items = this.biodiversidad.length;
+      const carousel = this.$el.querySelector(".carousel.biodiversidad");
+      if (!carousel) {
+        return;
+      }
+      if (items > this.carouselSettings.perPage) {
+        carousel.querySelector(".VueCarousel-inner").style["justify-content"] =
+          "normal";
+      } else {
+        carousel.querySelector(".VueCarousel-inner").style["justify-content"] =
+          "center";
+      }
+    },
     icono(group) {
       return this.$store.getters.biodiversityIcon(group);
     }
   },
+  mounted() {
+    this.fixCarouselOverflow();
+  },
   beforeMount() {
     this.years;
+  },
+  watch: {
+    filtroModo() {
+      if (this.filtroModo === "colombia") {
+        this.fixCarouselOverflow();
+      }
+    },
+    filtroValor() {
+      this.fixCarouselOverflow();
+    },
   }
 };
 </script>
@@ -92,6 +125,10 @@ export default {
   .VueCarousel {
     width: 80%;
     margin: auto;
+
+    &-inner {
+      justify-content: center;
+    }
 
     &-navigation-button {
       font-size: 20px;
