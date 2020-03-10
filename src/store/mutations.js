@@ -24,7 +24,6 @@ export default {
   PONER_FILTRO_PROYECTO(state, payload) {
     state.filtro.modo = "proyecto";
     state.filtro.valor = payload;
-    state.filtro.moment = "0";
     for (let key in state.filtro.year) {
       if (state.filtro.year.hasOwnProperty(key)) {
         state.filtro.year[key] = null;
@@ -34,7 +33,6 @@ export default {
   PONER_FILTRO_ESTRATEGIA(state, payload) {
     state.filtro.modo = "estrategia";
     state.filtro.valor = payload;
-    state.filtro.moment = "0";
     for (let key in state.filtro.year) {
       if (state.filtro.year.hasOwnProperty(key)) {
         state.filtro.year[key] = null;
@@ -44,7 +42,6 @@ export default {
   RESET_FILTRO(state) {
     state.filtro.modo = "colombia";
     state.filtro.value = null;
-    state.filtro.moment = "0";
     for (let key in state.filtro.year) {
       if (state.filtro.year.hasOwnProperty(key)) {
         state.filtro.year[key] = null;

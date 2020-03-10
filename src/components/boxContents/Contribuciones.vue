@@ -1,6 +1,7 @@
 <template>
   <div class="contribuciones width-100">
     <carousel
+      ref="carousel__shared__conservation__agenda"
       class="carousel shared__conservation__agenda"
       v-show="this.$store.state.filtro.contributionType == '0'"
       v-bind="carouselSettings"
@@ -15,6 +16,7 @@
       </slide>
     </carousel>
     <carousel
+      ref="carousel__otras__contribuciones"
       class="carousel otras__contribuciones"
       v-show="this.$store.state.filtro.contributionType == '1'"
       v-bind="carouselSettings"
@@ -57,6 +59,12 @@ export default {
   computed: {
     contributionType() {
       return this.$store.getters.filtro.contributionType;
+    },
+    filtroModo() {
+      return this.$store.getters.filtro.modo;
+    },
+    filtroValor() {
+      return this.$store.getters.filtro.valor;
     },
     SCAContributions() {
       const arr = this.$store.getters.contribuciones.filter(
@@ -115,13 +123,19 @@ export default {
     },
     fixCarouselOverflow(type) {
       let carouselClass;
+      let items;
       if (type === "0") {
         carouselClass = "shared__conservation__agenda";
+        items = this.SCAContributions.length;
       } else if (type === "1") {
         carouselClass = "otras__contribuciones";
+        items = this.otherContributions.length;
       }
-      const carousel = this.$el.querySelector(`.VueCarousel.${carouselClass}`);
-      if (carousel.querySelector(".VueCarousel-navigation")) {
+      const carousel = this.$el.querySelector(`.carousel.${carouselClass}`);
+      if (!carousel) {
+        return;
+      }
+      if (items > this.carouselSettings.perPage) {
         carousel.querySelector(".VueCarousel-inner").style["justify-content"] =
           "normal";
       } else {
@@ -177,6 +191,14 @@ export default {
     );
   },
   watch: {
+    filtroModo() {
+      if (this.filtroModo === "colombia") {
+        this.fixCarouselOverflow(this.contributionType);
+      }
+    },
+    filtroValor() {
+      this.fixCarouselOverflow(this.contributionType);
+    },
     strings() {
       this.changeBoxSubtitle();
     }

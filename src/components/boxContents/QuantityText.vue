@@ -33,12 +33,10 @@ export default {
   name: "QuantityText",
   props: {
     name: {
-      type: String,
-      required: true
+      required: false
     },
     value: {
-      type: [Number, String],
-      required: true
+      required: false
     },
     unit: {
       type: String,

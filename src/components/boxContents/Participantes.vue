@@ -1,16 +1,24 @@
 <template>
   <div class="participantes">
-    <div>
-      <PieChart
-        :graphData="participantes"
-        :graphId="'piechart__participantes__genero'"
-        :group="'Participantes'"
-        :count="count()"
-        :valueLabel="'individuos'"
-        :colors="colors"
-        quantityValueSize="2"
-      />
-    </div>
+    <!-- <div> -->
+    <QuantityText
+      class="participantes__quantity__text"
+      :name="strings.campesinos"
+      :value="countOtros(strings.campesinos)"
+    />
+    <PieChart
+      :graphData="participantes"
+      :graphId="'piechart__participantes__genero'"
+      :colors="getColors()"
+      :valueLabel="strings.individuos"
+      :value="count()"
+    />
+    <QuantityText
+      class="participantes__quantity__text"
+      :name="strings.indigenas"
+      :value="countOtros(strings.indigenas)"
+    />
+    <!-- </div>
     <div class="participantes__otros">
       <QuantityText
         v-for="group in Object.keys(groups)"
@@ -18,7 +26,7 @@
         :name="group"
         :value="countOtros(group)"
       />
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
@@ -37,15 +45,10 @@ export default {
     },
     participantes() {
       return this.$store.getters.participantes;
+    },
+    strings() {
+      return this.$store.getters.strings;
     }
-  },
-  data() {
-    return {
-      colors: {
-        Hombres: "#1e88e5",
-        Mujeres: "#d81b60"
-      }
-    };
   },
   methods: {
     count() {
@@ -60,6 +63,12 @@ export default {
       } else {
         return value;
       }
+    },
+    getColors() {
+      return {
+        [this.strings.hombres]: "#285572",
+        [this.strings.mujeres]: "#EDB43A"
+      }
     }
   }
 };
@@ -72,11 +81,11 @@ export default {
   width: 100%;
   justify-content: space-evenly;
 
-  &__otros {
+  &__quantity__text {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    width: 40%;
+    justify-content: center;
   }
 }
 </style>

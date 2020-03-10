@@ -14,6 +14,23 @@ export default {
     graphId: {
       type: String,
       required: true
+    },
+    xlabel: {
+      type: String,
+      required: false
+    },
+    ylabel: {
+      type: String,
+      required: false
+    },
+    closureLabel: {
+      type: String,
+      required: false
+    }
+  },
+  computed: {
+    strings() {
+      return this.$store.getters.strings;
     }
   },
   data() {
@@ -27,6 +44,9 @@ export default {
   },
   watch: {
     graphData() {
+      this.render();
+    },
+    strings() {
       this.render();
     }
   },
@@ -58,9 +78,17 @@ export default {
         parseInt(this.el.style("height")) -
         this.margin.top -
         this.margin.bottom;
-      this.xlabel = "Año";
-      this.ylabel = "Carbono";
-      this.title = "Captura de carbono";
+      this.fontSize;
+      if (screen.height <= 768) {
+        this.fontSize = "10px";
+        this.smallerFontSize = "9px";
+      } else if (screen.width > 900 && screen.width <= 1280) {
+        this.fontSize = "12px";
+        this.smallerFontSize = "11px";
+      } else {
+        this.fontSize = "14px";
+        this.smallerFontSize = "13px";
+      }
       const areaGroup = this.el
         .append("svg")
         .attr("id", this.graphId)
@@ -116,12 +144,6 @@ export default {
           .keys(keys)
           .order(d3.stackOrderDescending);
         const series = stack(this.graphData.data);
-        // const areaBeforeCurrentYear = d3
-        //   .area()
-        //   .defined(d => d.data.year <= this.currentYear)
-        //   .x(d => xScale(d.data.year))
-        //   .y0(d => yScale(d[0]))
-        //   .y1(d => yScale(d[1]));
         const area = d3
           .area()
           .x(d => xScale(d.data.year))
@@ -286,32 +308,38 @@ export default {
           .attr("pointer-events", "none")
           .attr("stroke", "black")
           .attr("stroke-width", 0.75);
-        yearDivision
-          .append("text")
-          .attr("y", xScale(this.closingYear) - 5)
-          .attr("x", yScale.range()[1] - this.margin.bottom)
-          .attr("transform", "rotate(-90)")
-          .attr("text-anchor", "end")
-          .attr("font-size", 9)
-          .attr("fill", "black")
-          .text("Cierre");
-        areaGroup
-          .append("text")
-          .attr("class", "x label")
-          .attr("text-anchor", "end")
-          .attr("font-size", 10)
-          .attr("font-weight", "bold")
-          .attr("x", this.width - this.margin.right)
-          .attr("y", this.height + 15)
-          .text(this.xlabel);
-        areaGroup
-          .append("text")
-          .attr("text-anchor", "start")
-          .attr("font-size", 10)
-          .attr("font-weight", "bold")
-          .attr("x", this.margin.left)
-          .attr("y", 0)
-          .text(this.ylabel);
+        if (this.closureLabel) {
+          yearDivision
+            .append("text")
+            .attr("y", xScale(this.closingYear) - 5)
+            .attr("x", yScale.range()[1] - this.margin.bottom)
+            .attr("transform", "rotate(-90)")
+            .attr("text-anchor", "end")
+            .attr("font-size", this.smallerFontSize)
+            .attr("fill", "black")
+            .text(this.closureLabel);
+        }
+        if (this.xlabel) {
+          areaGroup
+            .append("text")
+            .attr("class", "x label")
+            .attr("text-anchor", "end")
+            .attr("font-size", this.fontSize)
+            .attr("font-weight", "bold")
+            .attr("x", this.width - this.margin.right)
+            .attr("y", this.height + 15)
+            .text(this.xlabel);
+        }
+        if (this.ylabel) {
+          areaGroup
+            .append("text")
+            .attr("text-anchor", "start")
+            .attr("font-size", this.fontSize)
+            .attr("font-weight", "bold")
+            .attr("x", this.margin.left)
+            .attr("y", 0)
+            .text(this.ylabel);
+        }
         areaGroup
           .append("line")
           .attr("class", "vertical helper__line")

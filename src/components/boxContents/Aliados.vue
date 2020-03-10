@@ -83,6 +83,15 @@ export default {
   name: "Aliados",
   components: { Carousel, Slide },
   computed: {
+    allyType() {
+      return this.$store.getters.filtro.allyType;
+    },
+    filtroModo() {
+      return this.$store.getters.filtro.modo;
+    },
+    filtroValor() {
+      return this.$store.getters.filtro.valor;
+    },
     donantes() {
       const arr = this.$store.getters.aliados.filter(
         aliado => aliado.tipo == "0"
@@ -154,17 +163,25 @@ export default {
     },
     fixCarouselOverflow(type) {
       let carouselClass;
+      let items;
       if (type === "0") {
         carouselClass = "donantes";
+        items = this.donantes.length;
       } else if (type === "1") {
         carouselClass = "socios";
+        items = this.socios.length;
       } else if (type === "2") {
         carouselClass = "instituciones__implementadoras";
+        items = this.institucionesImplementadoras.length;
       } else if (type === "3") {
         carouselClass = "organizaciones__locales";
+        items = this.organizacionesLocales.length;
       }
-      const carousel = this.$el.querySelector(`.VueCarousel.${carouselClass}`);
-      if (carousel.querySelector(".VueCarousel-navigation")) {
+      const carousel = this.$el.querySelector(`.carousel.${carouselClass}`);
+      if (!carousel) {
+        return;
+      }
+      if (items > this.carouselSettings.perPage) {
         carousel.querySelector(".VueCarousel-inner").style["justify-content"] =
           "normal";
       } else {
@@ -223,6 +240,14 @@ export default {
     );
   },
   watch: {
+    filtroModo() {
+      if (this.filtroModo === "colombia") {
+        this.fixCarouselOverflow(this.contributionType);
+      }
+    },
+    filtroValor() {
+      this.fixCarouselOverflow(this.contributionType);
+    },
     strings() {
       this.changeBoxSubtitle();
     }
@@ -270,7 +295,6 @@ export default {
     }
 
     img {
-      // height: 100px;
       width: 120px;
       position: relative;
       top: 50%;
@@ -286,7 +310,7 @@ export default {
       }
 
       @media screen and (max-width: 440px) {
-        width: 150px;
+        width: 115px;
       }
     }
   }

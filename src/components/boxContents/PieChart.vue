@@ -1,10 +1,12 @@
 <template>
   <section class="pie-chart">
-    <QuantityText :name="group" :value="count" valueSize="2.5" />
+    <QuantityText
+      v-if="showQuantity"
+      :name="group"
+      :value="count"
+      valueSize="2.5"
+    />
     <div ref="graph" class="graph__container"></div>
-    <div v-if="icono">
-      <img class="pie-chart__icon" :src="icono" alt="" />
-    </div>
   </section>
 </template>
 <script>
@@ -32,15 +34,23 @@ export default {
     },
     group: {
       type: String,
-      required: true
+      required: false
     },
     icono: {
       type: String,
       required: false
     },
+    showQuantity: {
+      type: Boolean,
+      required: false,
+      default: true
+    },
+    value: {
+      required: false
+    },
     valueLabel: {
       type: String,
-      required: true
+      required: false
     }
   },
   data() {
@@ -55,8 +65,16 @@ export default {
   components: {
     QuantityText
   },
+  computed: {
+    strings() {
+      return this.$store.getters.strings;
+    }
+  },
   watch: {
     graphData() {
+      this.render();
+    },
+    strings() {
       this.render();
     }
   },
@@ -66,8 +84,21 @@ export default {
       this.el.html("");
       this.width = parseInt(this.el.style("width"));
       this.height = parseInt(this.el.style("height"));
+      this.margin = 1;
       this.color = d3.scaleOrdinal(d3.schemeCategory10);
       this.tooltipOffset = 15;
+      this.iconSize;
+      this.fontSize;
+      if (screen.height <= 768) {
+        this.iconSize = "6.5rem";
+        this.fontSize = "2.5rem";
+      } else if (screen.width > 900 && screen.width <= 1280) {
+        this.iconSize = "7.5rem";
+        this.fontSize = "2.75rem";
+      } else {
+        this.iconSize = "9.5rem";
+        this.fontSize = "3rem";
+      }
       const svg = this.el
         .append("svg")
         .attr("class", "pie graph")
@@ -76,7 +107,7 @@ export default {
         .attr("height", this.height);
       try {
         const that = this;
-        const outerRadius = this.width / 2;
+        const outerRadius = this.width / 2 - this.margin;
         const innerRadius = outerRadius / 1.25;
         const arc = d3
           .arc()
@@ -92,7 +123,10 @@ export default {
           .enter()
           .append("g")
           .attr("class", "arc")
-          .attr("transform", `translate(${outerRadius}, ${outerRadius})`);
+          .attr(
+            "transform",
+            `translate(${this.width / 2}, ${this.height / 2})`
+          );
         arcs
           .append("path")
           .on("mouseover", function(d) {
@@ -139,6 +173,31 @@ export default {
           .attr("fill-opacity", 0.6)
           .attr("stroke-opacity", 0.75)
           .attr("d", arc);
+        if (this.icono) {
+          const img = svg
+            .append("image")
+            .attr("href", this.icono)
+            .attr("width", this.iconSize)
+            .attr("height", this.iconSize)
+            .attr("pointer-events", "none");
+          const bbox = img.node().getBBox();
+          img
+            .attr("x", this.width / 2 - bbox.width / 2)
+            .attr("y", this.height / 2 - bbox.height / 2);
+        }
+        if (this.value) {
+          svg
+            .append("text")
+            .attr("class", "pie-chart__label")
+            .attr("x", this.width / 2)
+            .attr("y", this.height / 2)
+            .attr("text-anchor", "middle")
+            .attr("dominant-baseline", "middle")
+            .attr("fill", "#49A942")
+            .attr("font-weight", 300)
+            .attr("font-size", this.fontSize)
+            .text(this.value.toLocaleString());
+        }
       } catch (error) {
         console.log(error);
       }
@@ -196,23 +255,6 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  &__icon {
-    left: 50%;
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%, calc(-50% + 24px));
-    width: 10rem;
-    pointer-events: none;
-
-    @media screen and (min-width: 901px) and (max-width: 1280px) {
-      width: 8rem;
-    }
-
-    @media screen and (max-height: 768px) {
-      width: 7rem;
-      transform: translate(-50%, calc(-50% + 22px));
-    }
-  }
 }
+
 </style>

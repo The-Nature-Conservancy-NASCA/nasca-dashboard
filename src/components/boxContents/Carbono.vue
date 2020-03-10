@@ -12,6 +12,9 @@
         v-if="this.$store.state.filtro.modo === 'proyecto'"
         :graphData="carbonoProyecto"
         :graphId="'areachart__carbono'"
+        :xlabel="strings.carbonoXLabel"
+        :ylabel="strings.carbonoYLabel"
+        :closureLabel="strings.cierreProyecto"
       />
       <div
         class="carbono__numbers"
@@ -173,7 +176,7 @@ export default {
   }
 
   &__numbers {
-    margin-top: 3rem;
+    // margin-top: 3rem;
     display: flex;
     flex-direction: row;
     flex: 1;
