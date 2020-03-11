@@ -20,7 +20,7 @@ export default {
   },
   methods: {
     downloadImages() {
-      const options = { backgroundColor: "white" };
+      const options = { backgroundColor: "white", excludeCss: true };
       const svgElements = document.getElementsByClassName("graph");
       const promises = [];
       const names = [];

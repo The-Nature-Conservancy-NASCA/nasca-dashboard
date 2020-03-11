@@ -193,7 +193,7 @@ export default {
         if (this.icono) {
           const img = svg
             .append("image")
-            .attr("href", this.icono)
+            .attr("xlink:href", this.icono)
             .attr("width", this.iconSize)
             .attr("height", this.iconSize)
             .attr("pointer-events", "none");

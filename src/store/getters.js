@@ -269,12 +269,22 @@ export default {
   },
   carbonoExport: (state, getters) => {
     const data = [];
-    getters.carbono.data.forEach(item => {
+    let header;
+    if (getters.filtro.modo === "proyecto") {
+      getters.carbonoPorProyecto.data.forEach(item => {
+        const obj = {};
+        delete Object.assign(obj, item, { ["año"]: item["year"] })["year"];
+        data.push(obj);
+      });
+      header = Object.keys(data[0]);
+    } else {
       const obj = {};
-      delete Object.assign(obj, item, { ["año"]: item["year"] })["year"];
+      getters.carbono.forEach(item => {
+        obj[item.name] = item.value; 
+      });
       data.push(obj);
-    });
-    const header = Object.keys(data[0]);
+      header = Object.keys(obj);
+    }
     return { data: data, header: header };
   },
   coberturasPorProyectos: (state, getters) => idsProyectos => {
@@ -563,8 +573,8 @@ export default {
     });
     return counts;
   },
-  biodiversidadExport: (state, getters) => group => {
-    const data = getters.biodiversidad(group).map(item => {
+  biodiversidadExport: () => group => {
+    const data = group.data.map(item => {
       return { cobertura: item.name, especies: item.value };
     });
     const header = ["cobertura", "especies"];

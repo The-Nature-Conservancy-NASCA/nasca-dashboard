@@ -28,9 +28,9 @@ export default {
         implementaciones: this.$store.getters.implementacionesExport,
         participantes: this.$store.getters.participantesExport
       };
-      this.$store.getters.gruposBiodiversidad.forEach(group => {
+      this.$store.getters.biodiversidad.forEach(group => {
         data[
-          `biodiversidad_${group}`
+          `biodiversidad_${group.name}`
         ] = this.$store.getters.biodiversidadExport(group);
       });
       const zip = new JSZip();
