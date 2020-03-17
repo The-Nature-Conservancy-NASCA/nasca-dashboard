@@ -104,7 +104,10 @@ export default {
           landcover => landcover.name === item.cobertura
         );
         if (!landcover) {
-          landcover = { name: item.cobertura, unique_species: [item.especie] };
+          landcover = {
+            name: item.cobertura,
+            unique_species: [item.especie]
+          };
           group.data.push(landcover);
         } else {
           if (!landcover.unique_species.includes(item.especie)) {
@@ -125,9 +128,21 @@ export default {
     const icono = state.iconos.find(item => item.grupo_tnc === group);
     return icono ? icono.url : null;
   },
-  colorPorCobertura: state => idCobertura => {
-    return state.colores.find(color => color.ID_cobertura === idCobertura)
-      .color;
+  coloresBiodiversidad: (state, getters) => groupName => {
+    const group = getters.biodiversidad.find(group => group.name === groupName);
+    const colors = {};
+    group.data.forEach(landcover => {
+      colors[landcover.name] = getters.colorPorCobertura(landcover.name);
+    });
+    return colors;
+  },
+  colorPorCobertura: state => cobertura => {
+    const item = state.colores.find(color => color.cobertura === cobertura);
+    if (item) {
+      return item.color;
+    } else {
+      return "#000000";
+    }
   },
   estrategias(state) {
     return state.estrategias.map(estrategia => {
@@ -280,7 +295,7 @@ export default {
     } else {
       const obj = {};
       getters.carbono.forEach(item => {
-        obj[item.name] = item.value; 
+        obj[item.name] = item.value;
       });
       data.push(obj);
       header = Object.keys(obj);
@@ -361,7 +376,7 @@ export default {
             name: feat[constants.CHILD_LABEL],
             id: feat[constants.ID_FIELD],
             value: feat[constants.VALUE_FIELD],
-            color: getters.colorPorCobertura(feat[constants.ID_FIELD])
+            color: getters.colorPorCobertura(feat[constants.PARENT_LABEL])
           };
           parent.children.push(obj);
         }
@@ -373,7 +388,7 @@ export default {
               name: feat[constants.CHILD_LABEL],
               id: feat[constants.ID_FIELD],
               value: feat[constants.VALUE_FIELD],
-              color: getters.colorPorCobertura(feat[constants.ID_FIELD])
+              color: getters.colorPorCobertura(feat[constants.PARENT_LABEL])
             }
           ]
         };

@@ -10,6 +10,7 @@
             :count="group.data.reduce((a, b) => +a + +b.value, 0)"
             :graphId="`piechart__biodiversidad__${group.name}`"
             :valueLabel="strings.especies"
+            :colors="colores(group.name)"
           />
         </slide>
       </carousel>
@@ -63,6 +64,10 @@ export default {
         selected: this.selectedYear === year,
         unselected: this.selectedYear !== year
       };
+    },
+    colores(group) {
+      console.log(this.$store.getters.coloresBiodiversidad(group));
+      return this.$store.getters.coloresBiodiversidad(group);
     },
     changeYear(year) {
       this.$store.dispatch("changeYear", {
