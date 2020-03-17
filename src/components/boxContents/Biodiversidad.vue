@@ -46,9 +46,16 @@ export default {
     }
   },
   data() {
+    let itemsPerPage;
+    if (screen.width <= 768) {
+      itemsPerPage = 2;
+    } else {
+      itemsPerPage = 3;
+    }
+
     return {
       carouselSettings: {
-        perPage: 3,
+        perPage: itemsPerPage,
         scrollPerPage: false,
         paginationEnabled: false,
         navigationEnabled: true,
@@ -66,7 +73,6 @@ export default {
       };
     },
     colores(group) {
-      console.log(this.$store.getters.coloresBiodiversidad(group));
       return this.$store.getters.coloresBiodiversidad(group);
     },
     changeYear(year) {
