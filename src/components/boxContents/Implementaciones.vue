@@ -6,6 +6,7 @@
         :graphId="'barchart__implementaciones'"
         :xlabel="strings.implementacionesXLabel"
         :ylabel="strings.implementacionesYLabel"
+        :dataDomainUpperBound="domainUpperBoundImplementaciones"
       />
     </div>
     <div v-else class="no__data__warning">
@@ -21,6 +22,9 @@ export default {
     BarChart
   },
   computed: {
+    domainUpperBoundImplementaciones() {
+      return this.$store.getters.domainUpperBoundImplementaciones;
+    },
     implementaciones() {
       return this.$store.getters.implementaciones;
     },

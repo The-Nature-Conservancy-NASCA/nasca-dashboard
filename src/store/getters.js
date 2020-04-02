@@ -429,7 +429,10 @@ export default {
   idiomaActual(state) {
     return state.filtro.language;
   },
-  implementacionesPorProyectos: (state, getters) => idsProyectos => {
+  implementacionesPorProyectos: (state, getters) => (
+    idsProyectos,
+    filterByMoment = true
+  ) => {
     const implementaciones = [];
     idsProyectos.forEach(idProyecto => {
       let moment;
@@ -443,10 +446,14 @@ export default {
         .map(predio => predio.ID_predio);
       const implementacionesProyecto = state.implementaciones.filter(
         implementacion => {
-          return (
-            predios.includes(implementacion.ID_predio) &&
-            implementacion.momento === moment
-          );
+          if (filterByMoment) {
+            return (
+              predios.includes(implementacion.ID_predio) &&
+              implementacion.momento === moment
+            );
+          } else {
+            return predios.includes(implementacion.ID_predio);
+          }
         }
       );
       implementaciones.push(...implementacionesProyecto);
@@ -454,11 +461,15 @@ export default {
 
     return implementaciones;
   },
-  implementacionesPorEstrategia: (state, getters) => idEstrategia => {
+  implementacionesPorEstrategia: (state, getters) => (
+    idEstrategia,
+    filterByMoment = true
+  ) => {
     if (idEstrategia) {
       const proyectos = getters.proyectosPorEstrategia(idEstrategia);
       return getters.implementacionesPorProyectos(
-        proyectos.map(proyecto => proyecto.id)
+        proyectos.map(proyecto => proyecto.id),
+        filterByMoment
       );
     }
   },
@@ -497,8 +508,28 @@ export default {
         }
       }
     });
-
-    return data;
+    return data.sort((a, b) => a.name.localeCompare(b.name)); // asegurarse de devolver un array ordenado por el nombre de la accion
+  },
+  domainUpperBoundImplementaciones: (state, getters) => {
+    const moments = ["0", "1", "2", "3"];
+    const fields = ["area_bosque", "areas_p_sostenibles", "area_restauracion"];
+    const features =
+      state.filtro.modo === "estrategia"
+        ? getters.implementacionesPorEstrategia(state.filtro.valor, false)
+        : state.filtro.modo === "proyecto"
+        ? getters.implementacionesPorProyectos([state.filtro.valor], false)
+        : getters.implementacionesPorProyectos(getters.proyectosId, false);
+    const values = [];
+    moments.forEach(moment => {
+      fields.forEach(field => {
+        values.push(
+          features
+            .filter(feat => feat.momento === moment)
+            .reduce((a, b) => a + b[field], 0)
+        );
+      });
+    });
+    return Math.max(...values);
   },
   participantesPorProyectos: (state, getters) => idsProyectos => {
     const participantes = [];

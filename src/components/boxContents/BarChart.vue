@@ -42,6 +42,10 @@ export default {
       type: Array,
       required: true
     },
+    dataDomainUpperBound: {
+      type: Number,
+      required: false
+    },
     graphId: {
       type: String,
       required: true
@@ -121,20 +125,28 @@ export default {
           `translate(${this.margin.left}, ${this.margin.top})`
         );
       try {
+        let domainUpperBound;
+        if (this.dataDomainUpperBound) {
+          domainUpperBound = this.dataDomainUpperBound;
+        } else {
+          domainUpperBound = d3.max(this.graphData, d => d.value);
+        }
         this.xScale = d3
           .scaleBand()
           .domain(d3.range(this.graphData.length))
           .range([this.margin.bottom + this.offset.bottom, this.height])
           .paddingInner(0.05);
         this.yScale = d3
-          .scaleLinear()
-          .domain([0, d3.max(this.graphData, d => d.value)])
+          .scaleLog()
+          .clamp(true)
+          .domain([0.1, domainUpperBound])
           .range([0, this.width - this.margin.left - this.offset.left]);
         var xAxis = d3
           .axisBottom()
           .scale(this.yScale)
+          .ticks(4)
           .tickSizeOuter(0)
-          .ticks(4);
+          .tickFormat(d => d.toLocaleString("en"));
         var yAxis = d3
           .axisLeft()
           .scale(this.xScale)
@@ -239,8 +251,8 @@ export default {
             .append("text")
             .attr("class", "x label")
             .attr("text-anchor", "end")
-            .attr("x", this.width + this.offset.left)
-            .attr("y", this.height + 10)
+            .attr("x", this.width)
+            .attr("y", this.height - (this.offset.bottom + this.margin.bottom))
             .attr("font-size", this.fontSize)
             .attr("font-weight", "bold")
             .text(this.xlabel);
@@ -279,3 +291,8 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+svg.bar.graph {
+  overflow: visible;
+}
+</style>
