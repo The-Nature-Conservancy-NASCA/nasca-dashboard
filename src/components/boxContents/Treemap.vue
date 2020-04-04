@@ -92,7 +92,7 @@ export default {
       d3
         .treemap()
         .size([this.width, this.height])
-        .padding(1)
+        .padding(0)
         .round(true)(root);
       try {
         const that = this;
@@ -107,15 +107,26 @@ export default {
           .on("mouseover", function(d) {
             treemapGroup
               .selectAll("rect")
-              .attr("fill-opacity", 0.2)
-              .attr("stroke-opacity", 0.3);
-            treemapGroup.selectAll("text").attr("fill-opacity", 0.3);
+              .attr("fill-opacity", 0.05)
+              .attr("stroke-opacity", 0.1);
             treemapGroup
-              .select(`text#${that.cleanString(d.parent.data.name)}`)
-              .attr("fill-opacity", 1)
-              .attr("font-weight", "bold");
+              .selectAll(`rect.${that.cleanString(d.parent.data.name)}`)
+              .attr("fill-opacity", 0.6)
+              .attr("stroke-opacity", 1);
+            treemapGroup
+              .selectAll("text")
+              .filter(function() {
+                return (
+                  d3.select(this).attr("id") !==
+                  that.cleanString(d.parent.data.name)
+                );
+              })
+              .attr("fill", "black")
+              .attr("fill-opacity", 0.4)
+              .attr("font-weight", "normal")
+              .style("text-shadow", "none");
             d3.select(this)
-              .attr("stroke-width", 1)
+              .attr("stroke-width", 1.5)
               .attr("fill-opacity", 1)
               .attr("stroke-opacity", 1);
             const coordinates = [d3.event.pageX, d3.event.pageY];
@@ -149,8 +160,21 @@ export default {
               .attr("stroke-width", 0.5);
             treemapGroup
               .selectAll("text")
+              .attr("visibility", "visible")
+              .attr("fill", d =>
+                that.pickTextColorBasedOnBgColorAdvanced(d.children[0].color)
+              )
               .attr("fill-opacity", 1)
-              .attr("font-weight", "normal");
+              .attr("font-weight", "bold")
+              .style(
+                "text-shadow",
+                d =>
+                  `0 0 6px ${that.pickShadowColorBasedOnBgColorAdvanced(
+                    d.children[0].color
+                  )}, 0 0 3px ${that.pickShadowColorBasedOnBgColorAdvanced(
+                    d.children[0].color
+                  )}`
+              );
             d3.select("#tooltip__graph")
               .html("")
               .style("display", "none");
@@ -175,8 +199,11 @@ export default {
           .attr("dominant-baseline", "middle")
           .attr("pointer-events", "none")
           .attr("font-size", this.fontSize)
-          .attr("fill", "black")
+          .attr("fill", d =>
+            this.pickTextColorBasedOnBgColorAdvanced(d.children[0].color)
+          )
           .attr("fill-opacity", 1)
+          .attr("font-weight", "bold")
           .attr("x", d => {
             const center = that.computeElementsCenter(
               d3
@@ -197,6 +224,15 @@ export default {
             );
             return center.y;
           })
+          .style(
+            "text-shadow",
+            d =>
+              `0 0 6px ${this.pickShadowColorBasedOnBgColorAdvanced(
+                d.children[0].color
+              )}, 0 0 3px ${this.pickShadowColorBasedOnBgColorAdvanced(
+                d.children[0].color
+              )}`
+          )
           .text(d => d.name)
           .each(this.wrap);
         treemapGroup
@@ -253,6 +289,37 @@ export default {
       const x = xmin + (xmax - xmin) / 2;
       const y = ymin + (ymax - ymin) / 2;
       return { x, y };
+    },
+    pickShadowColorBasedOnBgColorAdvanced(bgColor) {
+      var color = bgColor.charAt(0) === "#" ? bgColor.substring(1, 7) : bgColor;
+      var r = parseInt(color.substring(0, 2), 16); // hexToR
+      var g = parseInt(color.substring(2, 4), 16); // hexToG
+      var b = parseInt(color.substring(4, 6), 16); // hexToB
+      var uicolors = [r / 255, g / 255, b / 255];
+      var c = uicolors.map(col => {
+        if (col <= 0.03928) {
+          return col / 12.92;
+        }
+        return Math.pow((col + 0.055) / 1.055, 2.4);
+      });
+      var L = 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+      return L > 0.179 ? "#ffffff" : "#000000";
+    },
+
+    pickTextColorBasedOnBgColorAdvanced(bgColor) {
+      var color = bgColor.charAt(0) === "#" ? bgColor.substring(1, 7) : bgColor;
+      var r = parseInt(color.substring(0, 2), 16); // hexToR
+      var g = parseInt(color.substring(2, 4), 16); // hexToG
+      var b = parseInt(color.substring(4, 6), 16); // hexToB
+      var uicolors = [r / 255, g / 255, b / 255];
+      var c = uicolors.map(col => {
+        if (col <= 0.03928) {
+          return col / 12.92;
+        }
+        return Math.pow((col + 0.055) / 1.055, 2.4);
+      });
+      var L = 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+      return L > 0.179 ? "#000000" : "#ffffff";
     },
     shadeColor(color, percent) {
       var R = parseInt(color.substring(1, 3), 16);
