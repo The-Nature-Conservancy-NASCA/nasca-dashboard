@@ -144,7 +144,7 @@ export default {
         var xAxis = d3
           .axisBottom()
           .scale(this.yScale)
-          .ticks(4)
+          .ticks(5)
           .tickSizeOuter(0)
           .tickFormat(d => d.toLocaleString("en"));
         var yAxis = d3
@@ -246,6 +246,10 @@ export default {
               this.margin.bottom})`
           )
           .call(xAxis);
+          const firstTickText = barGroup.select(".x.axis .tick text");
+          if (firstTickText.text() === "0.1") {
+            firstTickText.text("0");
+          }
         if (this.xlabel) {
           barGroup
             .append("text")
