@@ -243,6 +243,7 @@ export default {
     }
   },
   carbono: (state, getters) => {
+    const factor = 1000000; // pasar de toneladas a Megatoneladas (1 t = 1e-6 Mt)
     let features;
     if (state.filtro.modo === "estrategia") {
       features = getters.carbonoPorEstrategia(state.filtro.valor);
@@ -256,7 +257,6 @@ export default {
     };
     const field = state.filtro.carbonoField;
     const defaultKey = "Total";
-    const yearField = "T20";
     const data = [];
     features.forEach(feat => {
       let key;
@@ -272,15 +272,40 @@ export default {
         }
       }
       if (key) {
+        const yearField = getters.carbonoYearField(feat.ID_region);
         const obj = data.find(item => item.name == key);
         if (obj) {
-          obj.value += feat[yearField];
+          obj.value += feat[yearField] / factor;
         } else {
-          data.push({ name: key, value: feat[yearField] });
+          data.push({ name: key, value: feat[yearField] / factor });
         }
       }
     });
+    console.log(data);
     return data;
+  },
+  carbonoYearField: (state, getters) => regionId => {
+    const projectId = state.regiones.find(
+      region => region.ID_region === regionId
+    ).ID_proyecto;
+    let moment;
+    if (state.filtro.moment === "99") {
+      moment = getters.mostRecentMoment(projectId);
+    } else {
+      moment = state.filtro.moment;
+    }
+    const project = state.proyectos.find(
+      project => project.ID_proyecto === projectId
+    );
+    const baselineYear = new Date(project.fecha_linea_base).getFullYear();
+    const selectedMoment = state.availableMoments.find(
+      item => item.value == moment
+    );
+    const selectedMomentYear = new Date(
+      project[selectedMoment.field]
+    ).getFullYear();
+    const delta = selectedMomentYear - baselineYear;
+    return "T" + delta;
   },
   carbonoExport: (state, getters) => {
     const data = [];
@@ -674,33 +699,11 @@ export default {
     return state.metas;
   },
   momentos: state => projectId => {
-    const availableMoments = [
-      {
-        name: "Línea base",
-        value: 0,
-        field: "fecha_linea_base"
-      },
-      {
-        name: "Primer seguimiento",
-        value: 1,
-        field: "fecha_seguimiento1"
-      },
-      {
-        name: "Segundo seguimiento",
-        value: 2,
-        field: "fecha_seguimiento2"
-      },
-      {
-        name: "Cierre",
-        value: 3,
-        field: "fecha_cierre"
-      }
-    ];
     const project = state.proyectos.find(
       project => project.ID_proyecto === projectId
     );
     const moments = [];
-    availableMoments.forEach(moment => {
+    state.availableMoments.forEach(moment => {
       if (project[moment.field]) {
         moments.push(moment);
       }

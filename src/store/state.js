@@ -108,10 +108,10 @@ export default {
       donantes: "Donantes",
       especies: "especies",
       estrategias: "Estrategias",
-      fijacionCompartimiento: "Fijación por compartimiento",
-      fijacionCobertura: "Fijación por cobertura",
-      fijacionSolucion: "Fijación por Solución Natural de Clima",
-      fijacionTotal: "Fijación total",
+      fijacionCompartimiento: "Captura por compartimiento",
+      fijacionCobertura: "Captura por cobertura",
+      fijacionSolucion: "Captura por Solución Natural de Clima",
+      fijacionTotal: "Captura total",
       hombres: "Hombres",
       implementaciones: "Implementaciones",
       implementacionesBosque: "Protección de Ecosistemas Naturales",
@@ -154,10 +154,10 @@ export default {
       donantes: "Donors",
       especies: "species",
       estrategias: "Strategies",
-      fijacionCompartimiento: "Fixation by compartment",
-      fijacionCobertura: "Fixation by landcover",
-      fijacionSolucion: "Fixation by Climate Natural Solution",
-      fijacionTotal: "Total fixation",
+      fijacionCompartimiento: "Capture by compartment",
+      fijacionCobertura: "Capture by landcover",
+      fijacionSolucion: "Capture by Climate Natural Solution",
+      fijacionTotal: "Total capture",
       hombres: "Men",
       implementaciones: "Implementations",
       implementacionesBosque: "Natural Ecosystems Protection",
@@ -204,5 +204,27 @@ export default {
   colores: [],
   iconos: [],
   metas: [],
-  modalVisible: false
+  modalVisible: false,
+  availableMoments: [
+    {
+      name: "Línea base",
+      value: 0,
+      field: "fecha_linea_base"
+    },
+    {
+      name: "Primer seguimiento",
+      value: 1,
+      field: "fecha_seguimiento1"
+    },
+    {
+      name: "Segundo seguimiento",
+      value: 2,
+      field: "fecha_seguimiento2"
+    },
+    {
+      name: "Cierre",
+      value: 3,
+      field: "fecha_cierre"
+    }
+  ]
 };

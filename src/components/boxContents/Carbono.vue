@@ -24,7 +24,9 @@
           <QuantityText
             :name="item.name"
             :value="item.value"
-            :unit="'GtCO2e'"
+            :removeDecimals="false"
+            :decimalPoints="2"
+            :unit="'MtCO2e'"
           />
         </div>
       </div>
