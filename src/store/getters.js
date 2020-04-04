@@ -164,7 +164,14 @@ export default {
   proyectosId(state) {
     return state.proyectos.map(proyecto => proyecto.ID_proyecto);
   },
+  baselineYear: state => projectId => {
+    const baselineDate = state.proyectos.find(
+      project => project.ID_proyecto === projectId
+    ).fecha_linea_base;
+    return new Date(baselineDate).getFullYear();
+  },
   carbonoPorProyecto: (state, getters) => {
+    const factor = 1000000; // pasar de toneladas a Megatoneladas (1 t = 1e-6 Mt)
     const idProyecto = state.filtro.valor;
     if (idProyecto) {
       const regionesPorProyecto = getters
@@ -182,8 +189,8 @@ export default {
       const defaultKey = "Total";
       let years;
       if (features.length) {
-        const startYear = new Date(features[0].fecha).getFullYear();
-        years = Array.from(Array(startYear + 21).keys()).slice(startYear);
+        const baselineYear = getters.baselineYear(idProyecto);
+        years = Array.from(Array(baselineYear + 21).keys()).slice(baselineYear);
       } else {
         years = [];
       }
@@ -206,14 +213,14 @@ export default {
           const year = years[j];
           if (i == 0) {
             const obj = { year: year };
-            obj[key] = feat[t];
+            obj[key] = feat[t] / factor;
             data.push(obj);
           } else {
             const obj = data.filter(el => el.year == year)[0];
             if (key in obj) {
-              obj[key] += feat[t];
+              obj[key] += feat[t] / factor;
             } else {
-              obj[key] = feat[t];
+              obj[key] = feat[t] / factor;
             }
           }
         }
@@ -281,7 +288,6 @@ export default {
         }
       }
     });
-    console.log(data);
     return data;
   },
   carbonoYearField: (state, getters) => regionId => {

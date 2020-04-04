@@ -70,8 +70,9 @@ export default {
         "Sistemas silvopastoriles intensivos": "#7a5195"
       };
       this.closingYear = this.$store.getters.selectedProjectClosingYear;
-      this.margin = { top: 20, right: 25, bottom: 20, left: 25 };
+      this.margin = { top: 10, right: 25, bottom: 10, left: 25 };
       this.tooltipOffset = 20;
+      this.decimals = 2;
       this.width =
         parseInt(this.el.style("width")) - this.margin.left - this.margin.right;
       this.height =
@@ -125,11 +126,12 @@ export default {
           .tickFormat(d => parseInt(d))
           .ticks(5);
         const yAxis = d3
-          .axisLeft()
+          .axisRight()
           .scale(yScale)
           .tickSizeOuter(0)
           .tickSize(0)
-          .ticks(3);
+          .ticks(3)
+          .tickFormat(d => d.toFixed(this.decimals));
         const keys = [];
         this.graphData.data.forEach(el => {
           const elKeys = Object.keys(el).filter(item => item !== "year");
@@ -201,14 +203,13 @@ export default {
             areaGroup.selectAll(".helper__line").raise();
             areaGroup.select(".year__division").raise();
             areaGroup.select(".helper__dot").raise();
+            const tooltipValue = value.toFixed(that.decimals);
             const coordinates = [d3.event.pageX, d3.event.pageY];
             const tooltipContent = `
             <span class="tooltip__title">${label}</span><br>
             <span class="tooltip__subtitle">Año: </span><span class="tooltip__value">${year}</span>
             <br>
-            <span class="tooltip__subtitle">Valor: </span><span class="tooltip__value">${Math.round(
-              value
-            )} MtCO2e</span>
+            <span class="tooltip__subtitle">Valor: </span><span class="tooltip__value">${tooltipValue} MtCO2e</span>
             `;
             d3.select("#tooltip__graph")
               .style("left", `${coordinates[0] + that.tooltipOffset}px`)
@@ -244,7 +245,7 @@ export default {
             areaGroup.select(".year__division").raise();
             areaGroup.select(".helper__dot").raise();
             const coordinates = [d3.event.pageX, d3.event.pageY];
-            const tooltipValue = Number(Math.round(value)).toLocaleString("en");
+            const tooltipValue = value.toFixed(that.decimals);
             const tooltipContent = `
             <span class="tooltip__title">${label} (${year})</span>
             <hr>
@@ -289,11 +290,12 @@ export default {
         areaGroup
           .append("g")
           .attr("class", "y axis")
-          .attr("transform", `translate(${this.margin.left}, 0)`)
+          .attr("transform", `translate(${this.margin.left}, -5)`)
           .call(yAxis);
         areaGroup
           .selectAll(".x.axis .domain, .axis .tick line")
           .attr("stroke", "LightGray");
+        areaGroup.select(".y.axis .tick").remove();
         areaGroup.select(".y.axis .domain").attr("stroke", "none");
         const yearDivision = areaGroup
           .append("g")
@@ -326,17 +328,21 @@ export default {
             .attr("text-anchor", "end")
             .attr("font-size", this.fontSize)
             .attr("font-weight", "bold")
-            .attr("x", this.width - this.margin.right)
-            .attr("y", this.height + 15)
+            .attr("x", this.width - (this.margin.right + 10))
+            .attr("y", this.height - (this.margin.bottom + 5))
             .text(this.xlabel);
         }
         if (this.ylabel) {
           areaGroup
             .append("text")
-            .attr("text-anchor", "start")
+            .attr("text-anchor", "middle")
             .attr("font-size", this.fontSize)
             .attr("font-weight", "bold")
-            .attr("x", this.margin.left)
+            .attr("transform", "rotate(-90)")
+            .attr(
+              "x",
+              -(this.margin.top + this.height / 2 - this.margin.bottom)
+            )
             .attr("y", 0)
             .text(this.ylabel);
         }
