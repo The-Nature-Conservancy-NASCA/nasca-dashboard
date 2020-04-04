@@ -2,14 +2,14 @@
   <div class="quantity-text">
     <div>
       <span
-        v-if="removeDecimals"
+        v-if="!ignoreDecimalPoints && typeof value === 'number'"
         class="quantity-text__value"
         :style="`font-size: ${valueSize}rem;`"
       >
-        {{ value | removeDecimal(decimalPoints) }}
+        {{ value.toFixed(decimalPoints).toLocaleString("en") }}
       </span>
       <span
-        v-else
+        v-else-if="ignoreDecimalPoints"
         class="quantity-text__value"
         :style="`font-size: ${valueSize}rem;`"
       >
@@ -62,19 +62,10 @@ export default {
       required: false,
       default: 0
     },
-    removeDecimals: {
+    ignoreDecimalPoints: {
       type: Boolean,
       required: false,
-      default: true
-    }
-  },
-  filters: {
-    removeDecimal(value, decimalPoints) {
-      if (typeof value === "number") {
-        return Number(value.toFixed(decimalPoints)).toLocaleString("en");
-      } else {
-        return value;
-      }
+      default: false
     }
   }
 };
