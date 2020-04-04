@@ -14,7 +14,7 @@
           :name="meta.meta"
           :value="meta.valor"
           :unit="meta.unidad"
-          :removeDecimals="false"
+          :ignoreDecimalPoints="true"
         />
       </slide>
     </carousel>
