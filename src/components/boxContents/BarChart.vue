@@ -141,13 +141,26 @@ export default {
           .clamp(true)
           .domain([0.1, domainUpperBound])
           .range([0, this.width - this.margin.left - this.offset.left]);
-        var xAxis = d3
+        let exp = -1;
+        let domainFits = true;
+        let result;
+        const xTicks = [];
+        while (domainFits) {
+          result = domainUpperBound / 10 ** exp;
+          if (result >= 1) {
+            xTicks.push(10 ** exp);
+            exp += 1;
+          } else {
+            domainFits = false;
+          }
+        }
+        const xAxis = d3
           .axisBottom()
           .scale(this.yScale)
-          .ticks(5)
+          .tickValues(xTicks)
           .tickSizeOuter(0)
           .tickFormat(d => d.toLocaleString("en"));
-        var yAxis = d3
+        const yAxis = d3
           .axisLeft()
           .scale(this.xScale)
           .tickValues([])
@@ -246,10 +259,10 @@ export default {
               this.margin.bottom})`
           )
           .call(xAxis);
-          const firstTickText = barGroup.select(".x.axis .tick text");
-          if (firstTickText.text() === "0.1") {
-            firstTickText.text("0");
-          }
+        const firstTickText = barGroup.select(".x.axis .tick text");
+        if (firstTickText.text() === "0.1") {
+          firstTickText.text("0");
+        }
         if (this.xlabel) {
           barGroup
             .append("text")
