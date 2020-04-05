@@ -67,7 +67,9 @@ export default {
         "Árboles dispersos en potreros": "#ffa600",
         Bosque: "#49A942",
         "Bosque secundario": "#4F7942",
-        "Sistemas silvopastoriles intensivos": "#7a5195"
+        "Sistemas silvopastoriles intensivos": "#7a5195",
+        "Restauración del bosque": "#49A942",
+        Cacao: "#8B4513"
       };
       this.closingYear = this.$store.getters.selectedProjectClosingYear;
       this.margin = { top: 10, right: 25, bottom: 10, left: 25 };
@@ -297,29 +299,31 @@ export default {
           .attr("stroke", "LightGray");
         areaGroup.select(".y.axis .tick").remove();
         areaGroup.select(".y.axis .domain").attr("stroke", "none");
-        const yearDivision = areaGroup
-          .append("g")
-          .attr("class", "year__division")
-          .attr("pointer-events", "none");
-        yearDivision
-          .append("line")
-          .attr("x1", xScale(this.closingYear))
-          .attr("x2", xScale(this.closingYear))
-          .attr("y1", yScale.range()[0])
-          .attr("y2", yScale.range()[1])
-          .attr("pointer-events", "none")
-          .attr("stroke", "black")
-          .attr("stroke-width", 0.75);
-        if (this.closureLabel) {
+        if (this.closingYear) {
+          const yearDivision = areaGroup
+            .append("g")
+            .attr("class", "year__division")
+            .attr("pointer-events", "none");
           yearDivision
-            .append("text")
-            .attr("y", xScale(this.closingYear) - 5)
-            .attr("x", yScale.range()[1] - this.margin.bottom)
-            .attr("transform", "rotate(-90)")
-            .attr("text-anchor", "end")
-            .attr("font-size", this.smallerFontSize)
-            .attr("fill", "black")
-            .text(this.closureLabel);
+            .append("line")
+            .attr("x1", xScale(this.closingYear))
+            .attr("x2", xScale(this.closingYear))
+            .attr("y1", yScale.range()[0])
+            .attr("y2", yScale.range()[1])
+            .attr("pointer-events", "none")
+            .attr("stroke", "black")
+            .attr("stroke-width", 0.75);
+          if (this.closureLabel) {
+            yearDivision
+              .append("text")
+              .attr("y", xScale(this.closingYear) - 5)
+              .attr("x", yScale.range()[1] - this.margin.bottom)
+              .attr("transform", "rotate(-90)")
+              .attr("text-anchor", "end")
+              .attr("font-size", this.smallerFontSize)
+              .attr("fill", "black")
+              .text(this.closureLabel);
+          }
         }
         if (this.xlabel) {
           areaGroup
