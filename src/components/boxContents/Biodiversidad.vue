@@ -8,7 +8,7 @@
             :graphData="group.data"
             :icono="icono(group.name)"
             :group="group.name"
-            :count="group.data.reduce((a, b) => +a + +b.value, 0)"
+            :count="group.value"
             :graphId="`piechart__biodiversidad__${group.name}`"
             :valueLabel="strings.especies"
             :colors="colores(group.name)"
@@ -101,9 +101,9 @@ export default {
     },
     showModal() {
       const modalContent = {
-        header:  this.$parent.box.title,
+        header: this.$parent.box.title,
         content: "Lorem ipsum Biodiversidad"
-      }
+      };
       this.$store.dispatch("showModal", modalContent);
     }
   },
@@ -121,7 +121,7 @@ export default {
     },
     filtroValor() {
       this.fixCarouselOverflow();
-    },
+    }
   }
 };
 </script>

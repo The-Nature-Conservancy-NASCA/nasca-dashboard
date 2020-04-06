@@ -65,7 +65,7 @@ export default {
       fetch(
         `${BASE_DATA_URL}2/${buildQuery({
           outFields:
-            "ID_proyecto%2C+grupo_tnc%2C+cobertura%2C+especie%2C+momento"
+            "ID_proyecto%2C+grupo_tnc%2C+cobertura%2C+cobertura_comun%2C+especie%2C+momento"
         })}`
       )
     ); // Biodiversidad

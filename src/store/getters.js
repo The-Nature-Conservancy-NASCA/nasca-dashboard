@@ -89,23 +89,37 @@ export default {
         ? getters.biodiversidadPorProyectos([state.filtro.valor])
         : getters.biodiversidadPorProyectos(getters.proyectosId);
 
+    let landcoverField;
+    if (state.filtro.modo === "proyecto") {
+      landcoverField = "cobertura";
+    } else {
+      landcoverField = "cobertura_comun";
+    }
+
     const data = [];
     features.forEach(item => {
       let group = data.find(group => group.name === item.grupo_tnc);
       if (!group) {
-        group = { name: item.grupo_tnc, data: [] };
+        group = {
+          name: item.grupo_tnc,
+          data: [],
+          unique_species: [item.especie]
+        };
         group.data.push({
-          name: item.cobertura,
+          name: item[landcoverField],
           unique_species: [item.especie]
         });
         data.push(group);
       } else {
         let landcover = group.data.find(
-          landcover => landcover.name === item.cobertura
+          landcover => landcover.name === item[landcoverField]
         );
+        if (!group.unique_species.includes(item.especie)) {
+          group.unique_species.push(item.especie);
+        }
         if (!landcover) {
           landcover = {
-            name: item.cobertura,
+            name: item[landcoverField],
             unique_species: [item.especie]
           };
           group.data.push(landcover);
@@ -117,6 +131,8 @@ export default {
       }
     });
     data.forEach(group => {
+      group.value = group.unique_species.length;
+      delete group.unique_species;
       group.data.forEach(landcover => {
         landcover.value = landcover.unique_species.length;
         delete landcover.unique_species;
