@@ -121,7 +121,7 @@ export default {
       implementacionesXLabel: "Área (ha)",
       implementacionesYLabel: "Acción",
       indigenas: "Indígenas",
-      individuos: "individuos",
+      individuos: "personas",
       informacion: "Información",
       infoHeader: "Sobre la herramienta",
       infoContent:
@@ -186,7 +186,7 @@ export default {
       implementacionesXLabel: "Area (ha)",
       implementacionesYLabel: "Action",
       indigenas: "Indigenous",
-      individuos: "individuals",
+      individuos: "persons",
       informacion: "Information",
       infoHeader: "Abou this tool",
       infoContent:
