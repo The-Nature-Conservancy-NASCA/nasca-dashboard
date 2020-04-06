@@ -12,9 +12,11 @@
     >
       <slide v-for="meta in metas" :key="meta.OBJECTID">
         <QuantityText
-          :name="meta.meta"
-          :value="meta.valor"
-          :unit="meta.unidad"
+          :name="meta.name"
+          :value="meta.value"
+          :unit="meta.unit"
+          :otherValue="meta.progress"
+          :valueConnector="strings.conectorValoresMetas"
           :ignoreDecimalPoints="true"
         />
       </slide>
@@ -35,6 +37,9 @@ export default {
   computed: {
     metas() {
       return this.$store.getters.metas;
+    },
+    strings() {
+      return this.$store.getters.strings;
     }
   },
   methods: {

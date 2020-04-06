@@ -100,6 +100,7 @@ export default {
       clasificacionCorine: "Clasificación CORINE",
       clasificacionProyecto: "Clasificación proyecto",
       coberturas: "Coberturas",
+      conectorValoresMetas: "de",
       contribuciones: "Contribuciones",
       contribucionesShared: "Shared Conservation Agenda",
       contribucionesOtras: "Otras contribuciones",
@@ -132,6 +133,7 @@ export default {
       organizacionesLocales: "Organizaciones locales",
       participantes: "Participantes",
       progreso: "Estado actual",
+      sinInformacion: "Sin información",
       socios: "Socios",
       verTodo: "Ver todo"
     },
@@ -146,6 +148,7 @@ export default {
       clasificacionCorine: "CORINE classification",
       clasificacionProyecto: "Project classification",
       coberturas: "Covers",
+      conectorValoresMetas: "from",
       contribuciones: "Contributions",
       contribucionesShared: "Shared Conservation Agenda",
       contribucionesOtras: "Other contributions",
@@ -178,6 +181,7 @@ export default {
       organizacionesLocales: "Local organizations",
       participantes: "Participants",
       progreso: "Current state",
+      sinInformacion: "No information",
       socios: "Partners",
       verTodo: "All data"
     }

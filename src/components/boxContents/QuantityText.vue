@@ -2,6 +2,23 @@
   <div class="quantity-text">
     <div>
       <span
+        v-if="
+          otherValue && !ignoreDecimalPoints && typeof otherValue === 'number'
+        "
+        class="quantity-text__value"
+        :style="`font-size: ${valueSize}rem;`"
+      >
+        {{ otherValue.toFixed(decimalPoints).toLocaleString("en") }}
+      </span>
+      <span
+        v-else-if="otherValue && ignoreDecimalPoints"
+        class="quantity-text__value"
+        :style="`font-size: ${valueSize}rem;`"
+      >
+        {{ otherValue.toLocaleString("en") }}
+      </span>
+      <span v-if="valueConnector" class="quantity-text__text">{{ valueConnector }}</span>
+      <span
         v-if="!ignoreDecimalPoints && typeof value === 'number'"
         class="quantity-text__value"
         :style="`font-size: ${valueSize}rem;`"
@@ -9,7 +26,7 @@
         {{ value.toFixed(decimalPoints).toLocaleString("en") }}
       </span>
       <span
-        v-else-if="ignoreDecimalPoints"
+        v-else-if="ignoreDecimalPoints || typeof value === 'string'"
         class="quantity-text__value"
         :style="`font-size: ${valueSize}rem;`"
       >
@@ -39,6 +56,13 @@ export default {
       required: false
     },
     unit: {
+      type: String,
+      required: false
+    },
+    otherValue: {
+      required: false
+    },
+    valueConnector: {
       type: String,
       required: false
     },

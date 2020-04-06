@@ -57,7 +57,7 @@ export default {
   methods: {
     count() {
       return this.participantes.length > 0
-        ? this.participantes.reduce((a, b) => a.value + b.value)
+        ? this.participantes.reduce((a, b) => a + b.value, 0)
         : 0;
     },
     countOtros(group) {
@@ -70,8 +70,9 @@ export default {
     },
     getColors() {
       return {
-        [this.strings.hombres]: "#285572",
-        [this.strings.mujeres]: "#EDB43A"
+        [this.strings.hombres]: "#FFC107",
+        [this.strings.mujeres]: "#1976D2",
+        [this.strings.sinInformacion]: "#757575"
       };
     },
     showModal() {

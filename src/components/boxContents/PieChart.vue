@@ -113,6 +113,18 @@ export default {
         .attr("height", this.height);
       try {
         const that = this;
+        if (this.icono) {
+          const img = svg
+            .append("image")
+            .attr("xlink:href", this.icono)
+            .attr("width", this.iconSize)
+            .attr("height", this.iconSize)
+            .attr("pointer-events", "none");
+          const bbox = img.node().getBBox();
+          img
+            .attr("x", this.width / 2 - bbox.width / 2)
+            .attr("y", this.height / 2 - bbox.height / 2);
+        }
         const outerRadius = this.width / 2 - this.margin;
         const innerRadius = outerRadius / 1.25;
         const arc = d3
@@ -190,18 +202,6 @@ export default {
           .attr("fill-opacity", 0.8)
           .attr("stroke-opacity", 1)
           .attr("d", arc);
-        if (this.icono) {
-          const img = svg
-            .append("image")
-            .attr("xlink:href", this.icono)
-            .attr("width", this.iconSize)
-            .attr("height", this.iconSize)
-            .attr("pointer-events", "none");
-          const bbox = img.node().getBBox();
-          img
-            .attr("x", this.width / 2 - bbox.width / 2)
-            .attr("y", this.height / 2 - bbox.height / 2);
-        }
         if (this.value) {
           svg
             .append("text")

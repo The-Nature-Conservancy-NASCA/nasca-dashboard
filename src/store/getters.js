@@ -596,7 +596,8 @@ export default {
         : getters.participantesPorProyectos(getters.proyectosId);
     const genders = {
       [getters.strings.hombres]: "numero_hombres",
-      [getters.strings.mujeres]: "numero_mujeres"
+      [getters.strings.mujeres]: "numero_mujeres",
+      [getters.strings.sinInformacion]: "numero_sin_informacion"
     };
     const data = [];
     features.forEach(feat => {
@@ -701,8 +702,63 @@ export default {
         )
       : state.regiones;
   },
-  metas: state => {
-    return state.metas;
+  metasPorProyectos: (state, getters) => idsProyectos => {
+    const metas = [];
+    idsProyectos.forEach(idProyecto => {
+      let moment;
+      if (state.filtro.moment === "99") {
+        moment = getters.mostRecentMoment(idProyecto);
+      } else {
+        moment = state.filtro.moment;
+      }
+      // obtener metas por proyecto y agregar a metas globales
+      const projectGoals = state.metas.filter(
+        item => item.ID_proyecto === idProyecto
+      );
+      const uniqueProjectGoals = [
+        ...new Set(projectGoals.map(item => item.meta))
+      ];
+      uniqueProjectGoals.forEach(goalName => {
+        const projectGoal = projectGoals.find(item => item.meta === goalName);
+        let goal = metas.find(item => item.name === goalName);
+        if (goal) {
+          goal.value += projectGoal.valor; // sumar valor de la misma meta en diferentes
+        } else {
+          goal = {
+            name: projectGoal.meta,
+            unit: projectGoal.unidad,
+            value: projectGoal.valor,
+            progress: 0
+          };
+          metas.push(goal);
+        }
+      });
+      state.metas
+        .filter(item => {
+          return item.ID_proyecto === idProyecto && item.momento === moment;
+        })
+        .forEach(projectGoal => {
+          const goal = metas.find(item => item.name === projectGoal.meta);
+          goal.progress += projectGoal.progreso;
+        });
+    });
+    return metas;
+  },
+  metasPorEstrategia: (state, getters) => idEstrategia => {
+    if (idEstrategia) {
+      const proyectos = getters.proyectosPorEstrategia(idEstrategia);
+      return getters.metasPorProyectos(proyectos.map(proyecto => proyecto.id));
+    }
+  },
+  metas: (state, getters) => {
+    const goals =
+      state.filtro.modo === "estrategia"
+        ? getters.metasPorEstrategia(state.filtro.valor)
+        : state.filtro.modo === "proyecto"
+        ? getters.metasPorProyectos([state.filtro.valor])
+        : getters.metasPorProyectos(getters.proyectosId);
+
+    return goals;
   },
   momentos: state => projectId => {
     const project = state.proyectos.find(
