@@ -1,5 +1,6 @@
 <template>
   <div class="aliados width-100">
+    <i class="box__icon esri-icon-description" @click="showModal()"></i>
     <span v-if="hayDatos">
       <carousel
         class="carousel donantes"
@@ -237,6 +238,13 @@ export default {
             .html("")
             .style("display", "none");
         });
+    },
+    showModal() {
+      const modalContent = {
+        header:  this.$parent.box.title,
+        content: "Lorem ipsum Aliados"
+      }
+      this.$store.dispatch("showModal", modalContent);
     }
   },
   mounted() {
@@ -283,6 +291,18 @@ export default {
 
   .donantes {
     height: 90%;
+
+    img {
+      width: 350px;
+    }
+  }
+
+  .socios img {
+    width: 130px;
+  }
+
+  .instituciones__implementadoras img {
+    width: 250px;
   }
 
   .carousel {
@@ -293,7 +313,6 @@ export default {
   }
 
   .VueCarousel {
-    width: 80%;
     margin: auto;
 
     &-inner {
@@ -303,7 +322,7 @@ export default {
     }
 
     &-navigation-button {
-      font-size: 20px;
+      font-size: 40px;
     }
 
     &-slide {
@@ -311,7 +330,6 @@ export default {
     }
 
     img {
-      width: 120px;
       position: relative;
       top: 50%;
       transform: translateY(-50%);

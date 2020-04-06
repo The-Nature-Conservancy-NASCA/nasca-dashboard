@@ -20,10 +20,10 @@ export default {
       return this.$store.state.modalVisible;
     },
     header() {
-      return this.$store.getters.strings.informacion;
+      return this.$store.state.modalContent.header;
     },
     content() {
-      return this.$store.getters.strings.infoContent;
+      return this.$store.state.modalContent.content;
     }
   },
   methods: {

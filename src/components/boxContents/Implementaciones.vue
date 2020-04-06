@@ -1,5 +1,6 @@
 <template>
   <div class="width-100">
+    <i class="box__icon esri-icon-description" @click="showModal()"></i>
     <div class="implementaciones" v-if="implementaciones.length">
       <BarChart
         :graphData="implementaciones"
@@ -10,7 +11,7 @@
       />
     </div>
     <div v-else class="no__data__warning">
-      <p>Todavía no hay datos :(</p>
+      <p>{{ strings.noHayDatos }}</p>
     </div>
   </div>
 </template>
@@ -30,6 +31,15 @@ export default {
     },
     strings() {
       return this.$store.getters.strings;
+    }
+  },
+  methods: {
+    showModal() {
+      const modalContent = {
+        header:  this.$parent.box.title,
+        content: "Lorem ipsum Implementaciones"
+      }
+      this.$store.dispatch("showModal", modalContent);
     }
   }
 };

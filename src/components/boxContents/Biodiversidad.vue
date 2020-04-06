@@ -1,5 +1,6 @@
 <template>
   <div class="biodiversidad">
+    <i class="box__icon esri-icon-description" @click="showModal()"></i>
     <span v-if="biodiversidad.length">
       <carousel class="carousel biodiversidad" v-bind="carouselSettings">
         <slide v-for="group in biodiversidad" :key="group.name">
@@ -97,6 +98,13 @@ export default {
     },
     icono(group) {
       return this.$store.getters.biodiversityIcon(group);
+    },
+    showModal() {
+      const modalContent = {
+        header:  this.$parent.box.title,
+        content: "Lorem ipsum Biodiversidad"
+      }
+      this.$store.dispatch("showModal", modalContent);
     }
   },
   mounted() {

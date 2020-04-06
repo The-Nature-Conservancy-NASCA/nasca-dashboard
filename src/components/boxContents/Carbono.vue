@@ -1,5 +1,6 @@
 <template>
   <div class="width-100">
+    <i class="box__icon esri-icon-description" @click="showModal()"></i>
     <div
       v-if="
         this.$store.state.filtro.modo === 'proyecto'
@@ -121,6 +122,13 @@ export default {
       this.selectedField = "total";
       this.btn = this.$el.querySelector(".carbono__ctas button");
       this.changeBoxSubtitle();
+    },
+    showModal() {
+      const modalContent = {
+        header:  this.$parent.box.title,
+        content: "Lorem ipsum Carbono"
+      }
+      this.$store.dispatch("showModal", modalContent);
     }
   },
   mounted() {

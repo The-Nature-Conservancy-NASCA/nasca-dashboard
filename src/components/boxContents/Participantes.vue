@@ -1,18 +1,22 @@
 <template>
   <div class="participantes">
+    <i class="box__icon esri-icon-description" @click="showModal()"></i>
     <span v-if="hayDatos">
       <QuantityText
         class="participantes__quantity__text"
         :name="strings.campesinos"
         :value="countOtros(strings.campesinos)"
       />
-      <PieChart
-        :graphData="participantes"
-        :graphId="'piechart__participantes__genero'"
-        :colors="getColors()"
-        :valueLabel="strings.individuos"
-        :value="count()"
-      />
+      <div class="participantes__personas">
+        <h3>Personas</h3>
+        <PieChart
+          :graphData="participantes"
+          :graphId="'piechart__participantes__genero'"
+          :colors="getColors()"
+          :valueLabel="strings.individuos"
+          :value="count()"
+        />
+      </div>
       <QuantityText
         class="participantes__quantity__text"
         :name="strings.indigenas"
@@ -73,6 +77,13 @@ export default {
         [this.strings.mujeres]: "#1976D2",
         [this.strings.sinInformacion]: "#757575"
       };
+    },
+    showModal() {
+      const modalContent = {
+        header:  this.$parent.box.title,
+        content: "Lorem ipsum Participantes"
+      }
+      this.$store.dispatch("showModal", modalContent);
     }
   }
 };
@@ -91,6 +102,19 @@ export default {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+  }
+
+  &__personas {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h3 {
+      color: #666;
+      @media only screen and (max-height: 719px) and (min-width: 901px) {
+        font-size: 1.4rem;
+      }
+    }
   }
 }
 </style>
