@@ -116,7 +116,7 @@ export default {
     },
     showModal() {
       const modalContent = {
-        header:  this.$store.getters.strings.informacion,
+        header:  this.$store.getters.strings.infoHeader,
         content: this.$store.getters.strings.infoContent
       }
       this.$store.dispatch("showModal", modalContent);
@@ -222,6 +222,15 @@ $font-dark: #333;
     width: 2px;
   }
 
+  &__level {
+    position: absolute;
+    left: 50vw;
+    transform: translateX(-50%);
+    font-size: 3rem;
+    font-weight: 200;
+    letter-spacing: 2px;
+  }
+
   @media screen and (max-width: 768px) {
     flex-direction: column;
 
@@ -230,8 +239,16 @@ $font-dark: #333;
     }
 
     &__level {
+      position: fixed;
+      top: 10px;
       margin-bottom: 1rem;
       font-size: 2rem;
+      z-index: 100;
+      font-size: 1.8rem;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      max-width: 25rem;
     }
 
     .divider {
