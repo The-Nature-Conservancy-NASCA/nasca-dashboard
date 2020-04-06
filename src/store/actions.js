@@ -32,7 +32,8 @@ export default {
   changeBoxSubtitle({ commit }, boxInfo) {
     commit("CHANGE_BOX_SUBTITLE", boxInfo);
   },
-  showModal({ commit }) {
+  showModal({ commit }, modalContent) {
+    commit("SET_MODAL_CONTENT", modalContent)
     commit("SHOW_MODAL");
   },
   hideModal({ commit }) {

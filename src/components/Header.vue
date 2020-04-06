@@ -115,7 +115,11 @@ export default {
       this.$store.dispatch("cambiarIdioma", nuevoIdioma);
     },
     showModal() {
-      this.$store.dispatch("showModal");
+      const modalContent = {
+        header:  this.$store.getters.strings.informacion,
+        content: this.$store.getters.strings.infoContent
+      }
+      this.$store.dispatch("showModal", modalContent);
     }
   },
   watch: {

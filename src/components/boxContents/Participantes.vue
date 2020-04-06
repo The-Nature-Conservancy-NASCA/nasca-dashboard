@@ -1,5 +1,6 @@
 <template>
   <div class="participantes">
+    <i class="box__icon esri-icon-description" @click="showModal()"></i>
     <span v-if="hayDatos">
       <QuantityText
         class="participantes__quantity__text"
@@ -72,6 +73,13 @@ export default {
         [this.strings.hombres]: "#285572",
         [this.strings.mujeres]: "#EDB43A"
       };
+    },
+    showModal() {
+      const modalContent = {
+        header:  this.$parent.box.title,
+        content: "Lorem ipsum Participantes"
+      }
+      this.$store.dispatch("showModal", modalContent);
     }
   }
 };

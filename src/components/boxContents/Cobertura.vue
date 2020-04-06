@@ -1,5 +1,6 @@
 <template>
   <div class="width-100">
+    <i class="box__icon esri-icon-description" @click="showModal()"></i>
     <div class="cobertura" v-if="cobertura.children.length">
       <Treemap
         :graphData="cobertura"
@@ -71,6 +72,13 @@ export default {
       this.$store.dispatch("changeClassificationScheme", schemeName);
       this.selectedScheme = schemeName;
       this.changeBoxSubtitle();
+    },
+    showModal() {
+      const modalContent = {
+        header:  this.$parent.box.title,
+        content: "Lorem ipsum Cobertura"
+      }
+      this.$store.dispatch("showModal", modalContent);
     }
   },
   watch: {

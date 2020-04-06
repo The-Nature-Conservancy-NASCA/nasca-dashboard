@@ -1,5 +1,6 @@
 <template>
   <div class="aliados width-100">
+    <i class="box__icon esri-icon-description" @click="showModal()"></i>
     <span v-if="hayDatos">
       <carousel
         class="carousel donantes"
@@ -237,6 +238,13 @@ export default {
             .html("")
             .style("display", "none");
         });
+    },
+    showModal() {
+      const modalContent = {
+        header:  this.$parent.box.title,
+        content: "Lorem ipsum Aliados"
+      }
+      this.$store.dispatch("showModal", modalContent);
     }
   },
   mounted() {

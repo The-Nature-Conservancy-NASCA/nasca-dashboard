@@ -1,5 +1,6 @@
 <template>
   <div class="contribuciones width-100">
+    <i class="box__icon esri-icon-description" @click="showModal()"></i>
     <span class="width-100" v-if="hayDatos">
       <carousel
         ref="carousel__shared__conservation__agenda"
@@ -187,6 +188,13 @@ export default {
             .html("")
             .style("display", "none");
         });
+    },
+    showModal() {
+      const modalContent = {
+        header:  this.$parent.box.title,
+        content: "Lorem ipsum Contribuciones"
+      }
+      this.$store.dispatch("showModal", modalContent);
     }
   },
   mounted() {
@@ -215,7 +223,7 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 .contribuciones,
 .contribuciones > span {
   display: flex;
@@ -258,7 +266,7 @@ export default {
     }
 
     .VueCarousel-navigation-button {
-      font-size: 20px;
+      font-size: 40px;
     }
 
     .VueCarousel-slide {

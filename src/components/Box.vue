@@ -43,12 +43,16 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
+$font-dark: #333;
+$font-gray: #999;
+
 .box {
   background-color: #fff;
   border-top: 3px solid var(--theme-color);
   box-shadow: 0 3px 5px rgba(black, 0.4);
   overflow: hidden;
+  position: relative;
 
   &__header {
     padding: 0.5rem;
@@ -89,6 +93,18 @@ export default {
     }
   }
 
+  &__icon {
+    color: $font-gray;
+    cursor: pointer;
+    position: absolute;
+    right: 1rem;
+    top: 10px;
+    transition: color 0.3s;
+
+    &:hover {
+      color: $font-dark;
+    }
+  }
   &__content {
     align-items: center;
     display: flex;

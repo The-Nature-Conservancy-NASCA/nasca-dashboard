@@ -98,5 +98,9 @@ export default {
   },
   HIDE_MODAL(state) {
     state.modalVisible = false;
+  },
+  SET_MODAL_CONTENT(state, payload) {
+    state.modalContent.header = payload.header;
+    state.modalContent.content = payload.content;
   }
 };

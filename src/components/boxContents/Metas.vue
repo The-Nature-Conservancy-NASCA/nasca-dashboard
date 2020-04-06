@@ -1,5 +1,6 @@
 <template>
   <div class="metas">
+    <i class="box__icon esri-icon-description" @click="showModal()"></i>
     <carousel
       :perPage="1"
       :scrollPerPage="false"
@@ -36,7 +37,15 @@ export default {
       return this.$store.getters.metas;
     }
   },
-  methods: {}
+  methods: {
+    showModal() {
+      const modalContent = {
+        header:  this.$parent.box.title,
+        content: "Lorem ipsum Metas"
+      }
+      this.$store.dispatch("showModal", modalContent);
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>

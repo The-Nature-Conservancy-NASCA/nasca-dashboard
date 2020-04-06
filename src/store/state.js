@@ -205,6 +205,10 @@ export default {
   iconos: [],
   metas: [],
   modalVisible: false,
+  modalContent: {
+    header: "",
+    content: ""
+  },
   availableMoments: [
     {
       name: "Línea base",
