@@ -97,7 +97,7 @@ export default {
         this.fontSize = "2.5rem";
       } else if (screen.height <= 768) {
         this.iconSize = "6rem";
-        this.fontSize = "2.5rem";
+        this.fontSize = "1.75rem";
       } else if (screen.width > 900 && screen.width <= 1280) {
         this.iconSize = "7rem";
         this.fontSize = "2.75rem";
@@ -213,7 +213,7 @@ export default {
             .attr("fill", "#49A942")
             .attr("font-weight", 300)
             .attr("font-size", this.fontSize)
-            .text(this.value.toLocaleString());
+            .text(this.value.toLocaleString("en"));
         }
       } catch (error) {
         console.log(error);
