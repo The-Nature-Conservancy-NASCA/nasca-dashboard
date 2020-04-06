@@ -229,6 +229,15 @@ $font-dark: #333;
     font-size: 3rem;
     font-weight: 200;
     letter-spacing: 2px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+
+    @media only screen and (max-height: 719px) and (min-width: 901px) {
+      font-size: 2rem;
+      max-width: 30rem;
+      transform: translateX(-80%);
+    }
   }
 
   @media screen and (max-width: 768px) {
@@ -245,9 +254,6 @@ $font-dark: #333;
       font-size: 2rem;
       z-index: 100;
       font-size: 1.8rem;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      white-space: nowrap;
       max-width: 25rem;
     }
 
