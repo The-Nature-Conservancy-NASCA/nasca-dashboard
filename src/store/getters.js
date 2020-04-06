@@ -66,7 +66,7 @@ export default {
         moment = state.filtro.moment;
       }
       const biodiversidadProyecto = state.biodiversidad.filter(item => {
-        return item.ID_proyecto === idProyecto && item.momento === moment;
+        return item.ID_proyecto === idProyecto && +item.momento <= +moment;
       });
       biodiversidad.push(...biodiversidadProyecto);
     });
