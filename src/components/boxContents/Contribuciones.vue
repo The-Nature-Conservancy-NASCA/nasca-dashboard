@@ -94,10 +94,16 @@ export default {
     }
   },
   data() {
+    let itemsPerPage;
+    if (screen.width <= 768) {
+      itemsPerPage = 3;
+    } else {
+      itemsPerPage = 5;
+    }
     return {
       selectedType: "0",
       carouselSettings: {
-        perPage: 3,
+        perPage: itemsPerPage,
         scrollPerPage: false,
         paginationEnabled: false,
         navigationEnabled: true,
@@ -202,11 +208,11 @@ export default {
   mounted() {
     this.changeBoxSubtitle();
     this.setImgsTooltip(
-      ".VueCarousel.shared__conservation__agenda img",
+      ".carousel.shared__conservation__agenda img",
       this.SCAContributions
     );
     this.setImgsTooltip(
-      ".VueCarousel.otras__contribuciones img",
+      ".carousel.otras__contribuciones img",
       this.otherContributions
     );
   },
@@ -218,6 +224,22 @@ export default {
     },
     filtroValor() {
       this.fixCarouselOverflow(this.contributionType);
+    },
+    SCAContributions() {
+      this.$nextTick(function() {
+        this.setImgsTooltip(
+          ".carousel.shared__conservation__agenda img",
+          this.SCAContributions
+        );
+      });
+    },
+    otherContributions() {
+      this.$nextTick(function() {
+        this.setImgsTooltip(
+          ".carousel.otras__contribuciones img",
+          this.otherContributions
+        );
+      });
     },
     strings() {
       this.changeBoxSubtitle();
