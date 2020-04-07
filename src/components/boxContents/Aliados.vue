@@ -296,15 +296,25 @@ export default {
 
     img {
       width: 350px;
+      @media only screen and (max-height: 719px) and (min-width: 901px) {
+        width: 200px;
+      }
     }
   }
 
   .socios img {
     width: 130px;
+
+    @media only screen and (max-height: 719px) and (min-width: 901px) {
+      width: 80px;
+    }
   }
 
   .instituciones__implementadoras img {
-    width: 250px;
+    width: 250px;    
+    @media only screen and (max-height: 719px) and (min-width: 901px) {
+      width: 150px;
+    }
   }
 
   .carousel {
@@ -340,10 +350,6 @@ export default {
       -webkit-transition: all 0.25s;
       transition: all 0.25s;
       opacity: 1;
-
-      @media screen and (max-height: 768px) {
-        width: 80px;
-      }
 
       @media screen and (max-width: 768px) {
         width: 215px;
