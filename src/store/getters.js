@@ -637,7 +637,7 @@ export default {
         }
       }
     });
-    return data;
+    return data.filter(item => item.value > 0);
   },
   gruposParticipantes: (state, getters) => {
     const features =
