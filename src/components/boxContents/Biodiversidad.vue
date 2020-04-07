@@ -48,7 +48,7 @@ export default {
   },
   data() {
     let itemsPerPage;
-    if (screen.width <= 768) {
+    if (screen.width <= 440) {
       itemsPerPage = 2;
     } else {
       itemsPerPage = 3;
