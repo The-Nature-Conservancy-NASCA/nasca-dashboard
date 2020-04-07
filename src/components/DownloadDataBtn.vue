@@ -20,6 +20,25 @@ export default {
       return this.$store.getters.strings;
     }
   },
+  data() {
+    return {
+      mapValores: {
+        null: "colombia",
+        "01": "aguas",
+        "02": "tierras",
+        "03": "infraestructura",
+        "01AB": "ganaderia",
+        "02BC": "agroforesteria"
+      },
+      mapMomentos: {
+        "0": "linea_base",
+        "1": "seguimiento1",
+        "2": "seguimiento2",
+        "3": "cierre",
+        "99": "estado_actual"
+      }
+    };
+  },
   methods: {
     downloadData() {
       const data = {
@@ -30,7 +49,7 @@ export default {
       };
       this.$store.getters.biodiversidad.forEach(group => {
         data[
-          `biodiversidad_${group.name}`
+          `biodiversidad_${group.name.toLowerCase()}`
         ] = this.$store.getters.biodiversidadExport(group);
       });
       const zip = new JSZip();
@@ -41,7 +60,12 @@ export default {
         }
       }
       zip.generateAsync({ type: "blob" }).then(blob => {
-        saveAs(blob, "data.zip");
+        const value = this.$store.getters.filtro.valor;
+        const moment = this.$store.getters.filtro.moment;
+        saveAs(
+          blob,
+          `datos_${this.mapValores[value]}_${this.mapMomentos[moment]}.zip`
+        );
       });
     },
     arrayToCSVString(header, items) {
