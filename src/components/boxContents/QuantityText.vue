@@ -3,7 +3,7 @@
     <div>
       <span
         v-if="
-          otherValue && !ignoreDecimalPoints && typeof otherValue === 'number'
+          otherValue !== undefined && !ignoreDecimalPoints && typeof otherValue === 'number'
         "
         class="quantity-text__value"
         :style="`font-size: ${valueSize}rem;`"
@@ -11,13 +11,15 @@
         {{ otherValue.toFixed(decimalPoints).toLocaleString("en") }}
       </span>
       <span
-        v-else-if="otherValue && ignoreDecimalPoints"
+        v-else-if="otherValue !== undefined && ignoreDecimalPoints"
         class="quantity-text__value"
         :style="`font-size: ${valueSize}rem;`"
       >
         {{ otherValue.toLocaleString("en") }}
       </span>
-      <span v-if="valueConnector" class="quantity-text__text">{{ valueConnector }}</span>
+      <span v-if="valueConnector" class="quantity-text__text">{{
+        valueConnector
+      }}</span>
       <span
         v-if="!ignoreDecimalPoints && typeof value === 'number'"
         class="quantity-text__value"
