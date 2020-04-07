@@ -45,9 +45,11 @@ export default {
   methods: {
     showModal() {
       const modalContent = {
-        header:  this.$parent.box.title,
-        content: "Lorem ipsum Metas"
-      }
+        header: this.$parent.box.title,
+        content: this.$store.getters.panelDescription(
+          this.$options.name.toLocaleLowerCase()
+        )
+      };
       this.$store.dispatch("showModal", modalContent);
     }
   }

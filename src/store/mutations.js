@@ -102,5 +102,8 @@ export default {
   SET_MODAL_CONTENT(state, payload) {
     state.modalContent.header = payload.header;
     state.modalContent.content = payload.content;
+  },
+  SET_TEXTOS_GENERALES(state, payload) {
+    state.textos = payload;
   }
 };

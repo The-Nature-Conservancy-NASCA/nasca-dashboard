@@ -1,3 +1,5 @@
+import marked from "marked";
+
 export default {
   participantesExport: (state, getters) => {
     const data = getters.participantes.map(item => {
@@ -814,5 +816,30 @@ export default {
       level = "Colombia";
     }
     return level;
+  },
+  panelDescription: state => panelName => {
+    const fieldMap = {
+      aliados: "descripcion_aliados",
+      biodiversidad: "descripcion_biodiversidad",
+      carbono: "descripcion_carbono",
+      coberturas: "descripcion_coberturas",
+      contribuciones: "descripcion_contribuciones",
+      implementaciones: "descripcion_implementaciones",
+      metas: "descripcion_metas",
+      participantes: "descripcion_participantes"
+    };
+    const textField =
+      state.filtro.language === "es" ? "texto_espanol" : "texto_ingles";
+    let text;
+    if (state.filtro.modo === "proyecto") {
+      text = state.proyectos.find(
+        item => item.ID_proyecto === state.filtro.valor
+      )[fieldMap[panelName]];
+    } else {
+      text = state.textos.find(item => item.identificador === panelName)[
+        textField
+      ];
+    }
+    return marked(text);
   }
 };

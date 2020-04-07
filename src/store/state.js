@@ -252,5 +252,6 @@ export default {
       value: 3,
       field: "fecha_cierre"
     }
-  ]
+  ],
+  textos: []
 };

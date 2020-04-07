@@ -241,9 +241,11 @@ export default {
     },
     showModal() {
       const modalContent = {
-        header:  this.$parent.box.title,
-        content: "Lorem ipsum Aliados"
-      }
+        header: this.$parent.box.title,
+        content: this.$store.getters.panelDescription(
+          this.$options.name.toLocaleLowerCase()
+        )
+      };
       this.$store.dispatch("showModal", modalContent);
     }
   },

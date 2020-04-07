@@ -32,7 +32,7 @@
 import Treemap from "./Treemap.vue";
 
 export default {
-  name: "Cobertura",
+  name: "Coberturas",
   components: {
     Treemap
   },
@@ -75,9 +75,11 @@ export default {
     },
     showModal() {
       const modalContent = {
-        header:  this.$parent.box.title,
-        content: "Lorem ipsum Cobertura"
-      }
+        header: this.$parent.box.title,
+        content: this.$store.getters.panelDescription(
+          this.$options.name.toLocaleLowerCase()
+        )
+      };
       this.$store.dispatch("showModal", modalContent);
     }
   },

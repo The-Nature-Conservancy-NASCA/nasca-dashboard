@@ -21,6 +21,8 @@ const BASE_DATA_URL =
   "https://services9.arcgis.com/LQG65AprqDvQfUnp/ArcGIS/rest/services/TNCServices4/FeatureServer/";
 const ICON_DATA_URL =
   "https://services9.arcgis.com/LQG65AprqDvQfUnp/ArcGIS/rest/services/iconos_biodiversidad/FeatureServer/";
+const TEXT_DATA_URL =
+  "https://services9.arcgis.com/LQG65AprqDvQfUnp/arcgis/rest/services/textos_generales/FeatureServer/";
 
 export default {
   name: "app",
@@ -60,7 +62,7 @@ export default {
           outFields: "ID_predio%2C+ID_proyecto"
         })}`
       )
-    ); // Proyectos
+    ); // Predios
     requests.push(
       fetch(
         `${BASE_DATA_URL}2/${buildQuery({
@@ -70,9 +72,14 @@ export default {
       )
     ); // Biodiversidad
     requests.push(fetch(`${BASE_DATA_URL}0/${buildQuery()}`)); // Regiones
+    requests.push(fetch(`${TEXT_DATA_URL}0/${buildQuery()}`)); // Textos generales
     Promise.all(requests).then(responses => {
       const parsePromises = responses.map(response => response.json());
       Promise.all(parsePromises).then(dataset => {
+        this.$store.commit(
+          "SET_TEXTOS_GENERALES",
+          dataset[14].features.map(feature => feature.attributes)
+        );
         this.$store.commit(
           "SET_REGIONES",
           dataset[13].features.map(feature => feature.attributes)
