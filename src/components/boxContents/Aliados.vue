@@ -252,18 +252,44 @@ export default {
   mounted() {
     this.changeBoxSubtitle();
     this.fixCarouselOverflow("0");
-    this.setImgsTooltip(".VueCarousel.donantes img", this.donantes);
-    this.setImgsTooltip(".VueCarousel.socios img", this.socios);
+    this.setImgsTooltip(".carousel.donantes img", this.donantes);
+    this.setImgsTooltip(".carousel.socios img", this.socios);
     this.setImgsTooltip(
-      ".VueCarousel.instituciones__implementadoras img",
+      ".carousel.instituciones__implementadoras img",
       this.institucionesImplementadoras
     );
     this.setImgsTooltip(
-      ".VueCarousel.organizaciones__locales img",
+      ".carousel.organizaciones__locales img",
       this.organizacionesLocales
     );
   },
   watch: {
+    donantes() {
+      this.$nextTick(function() {
+        this.setImgsTooltip(".carousel.donantes img", this.donantes);
+      });
+    },
+    socios() {
+      this.$nextTick(function() {
+        this.setImgsTooltip(".carousel.socios img", this.socios);
+      });
+    },
+    institucionesImplementadoras() {
+      this.$nextTick(function() {
+        this.setImgsTooltip(
+          ".carousel.instituciones__implementadoras img",
+          this.institucionesImplementadoras
+        );
+      });
+    },
+    organizacionesLocales() {
+      this.$nextTick(function() {
+        this.setImgsTooltip(
+          ".carousel.organizaciones__locales img",
+          this.organizacionesLocales
+        );
+      });
+    },
     filtroModo() {
       if (this.filtroModo === "colombia") {
         this.fixCarouselOverflow(this.contributionType);
