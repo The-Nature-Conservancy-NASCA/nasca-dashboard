@@ -8,7 +8,9 @@
 <script>
 import * as JSZip from "jszip";
 import { saveAs } from "file-saver";
-import { svgAsPngUri } from "save-svg-as-png";
+// import { svgAsPngUri } from "save-svg-as-png";
+// import * as html2canvas from "html2canvas";
+import domtoimage from "dom-to-image";
 
 export default {
   name: "DownloadImageBtn",
@@ -18,24 +20,63 @@ export default {
       return this.$store.getters.strings;
     }
   },
+  data() {
+    return {
+      boxTitles: [
+        "coberturas",
+        "biodiversidad",
+        "carbono",
+        "implementaciones",
+        "participantes",
+        "metas",
+        "contribuciones",
+        "aliados"
+      ],
+      exportOptions: {
+        filter: this.filterElements,
+        style: {
+          borderRight: "1px solid lightGray",
+          borderLeft: "1px solid lightGray",
+          borderBottom: "1px solid lightGray"
+        }
+      },
+      mapValores: {
+        null: "colombia",
+        "01": "aguas",
+        "02": "tierras",
+        "03": "infraestructura",
+        "01AB": "ganaderia",
+        "02BC": "agroforesteria"
+      },
+      mapMomentos: {
+        "0": "linea_base",
+        "1": "seguimiento1",
+        "2": "seguimiento2",
+        "3": "cierre",
+        "99": "estado_actual"
+      }
+    };
+  },
   methods: {
     downloadImages() {
-      const options = { backgroundColor: "white", excludeCss: true };
-      const svgElements = document.getElementsByClassName("graph");
-      const promises = [];
-      const names = [];
       const zip = new JSZip();
-      svgElements.forEach(el => {
-        promises.push(svgAsPngUri(el, options));
-        names.push(el.id);
+      const promises = [];
+      document.querySelectorAll(".box").forEach(box => {
+        const promise = domtoimage.toJpeg(box, this.exportOptions);
+        promises.push(promise);
       });
-      Promise.all(promises).then(uris => {
-        uris.forEach((uri, i) => {
-          const data = this.dataURLtoBase64(uri);
-          zip.file(`${names[i]}.png`, data, { base64: true });
+      Promise.all(promises).then(results => {
+        results.forEach((dataURL, i) => {
+          const data = this.dataURLtoBase64(dataURL);
+          zip.file(`${this.boxTitles[i]}.jpg`, data, { base64: true });
         });
+        const value = this.$store.getters.filtro.valor;
+        const moment = this.$store.getters.filtro.moment;
         zip.generateAsync({ type: "blob" }).then(blob => {
-          saveAs(blob, "img.zip");
+          saveAs(
+            blob,
+            `imagenes_${this.mapValores[value]}_${this.mapMomentos[moment]}.zip`
+          );
         });
       });
     },
@@ -48,6 +89,16 @@ export default {
         u8arr[n] = bstr.charCodeAt(n);
       }
       return u8arr;
+    },
+    filterElements(node) {
+      let keepNode = true;
+      if (node.tagName) {
+        const tagName = node.tagName.toLowerCase();
+        if (tagName === "button" || tagName === "i") {
+          keepNode = false;
+        }
+      }
+      return keepNode;
     }
   }
 };

@@ -114,16 +114,20 @@ export default {
       try {
         const that = this;
         if (this.icono) {
-          const img = svg
-            .append("image")
-            .attr("xlink:href", this.icono)
+          const foreingObject = svg
+            .append("foreignObject")
             .attr("width", this.iconSize)
             .attr("height", this.iconSize)
             .attr("pointer-events", "none");
-          const bbox = img.node().getBBox();
-          img
+          const bbox = foreingObject.node().getBBox();
+          foreingObject
             .attr("x", this.width / 2 - bbox.width / 2)
             .attr("y", this.height / 2 - bbox.height / 2);
+          foreingObject
+            .append("xhtml:img")
+            .attr("src", this.icono)
+            .style("width", "100%")
+            .style("height", "100%");
         }
         const outerRadius = this.width / 2 - this.margin;
         const innerRadius = outerRadius / 1.25;
