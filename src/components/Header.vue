@@ -85,6 +85,9 @@ export default {
     filtroModo() {
       return this.$store.getters.filtro.modo;
     },
+    filtroValor() {
+      return this.$store.getters.filtro.valor;
+    },
     strings() {
       return this.$store.getters.strings;
     }
@@ -114,16 +117,7 @@ export default {
       this.idiomaSelected = nuevoIdioma;
       this.$store.dispatch("cambiarIdioma", nuevoIdioma);
     },
-    showModal() {
-      const modalContent = {
-        header:  this.$store.getters.strings.infoHeader,
-        content: this.$store.getters.strings.infoContent
-      }
-      this.$store.dispatch("showModal", modalContent);
-    }
-  },
-  watch: {
-    filtroModo() {
+    setMoment() {
       if (this.filtroModo === "proyecto") {
         const projectId = this.$store.getters.filtro.valor;
         const moment = this.getProjectMostRecentMoment(projectId);
@@ -133,6 +127,21 @@ export default {
         this.momentoSelected = "99";
         this.changeMoment("99");
       }
+    },
+    showModal() {
+      const modalContent = {
+        header: this.$store.getters.strings.infoHeader,
+        content: this.$store.getters.strings.infoContent
+      };
+      this.$store.dispatch("showModal", modalContent);
+    }
+  },
+  watch: {
+    filtroModo() {
+      this.setMoment();
+    },
+    filtroValor() {
+      this.setMoment();
     }
   }
 };
