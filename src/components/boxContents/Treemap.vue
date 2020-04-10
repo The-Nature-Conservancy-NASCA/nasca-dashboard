@@ -1,7 +1,5 @@
 <template>
-  <section class="treemap">
-    <div ref="graph" class="graph__container"></div>
-  </section>
+  <section ref="graph" class="graph__container"></section>
 </template>
 <script>
 import * as d3 from "d3";
@@ -59,13 +57,19 @@ export default {
         return;
       }
       this.margin = { top: 0, right: 0, bottom: 0, left: 0 };
-      this.width =
-        parseInt(this.el.style("width")) - this.margin.left - this.margin.right;
-      this.height =
+
+      // compute width and height based on parent div
+      this.parentWidth =
+        parseInt(this.el.style("width")) -
+        parseInt(this.el.style("padding-left")) -
+        parseInt(this.el.style("padding-right"));
+      this.parentHeight =
         parseInt(this.el.style("height")) -
-        this.margin.top -
-        this.margin.bottom;
-      this.color = d3.scaleOrdinal(d3.schemeCategory10);
+        parseInt(this.el.style("padding-top")) -
+        parseInt(this.el.style("padding-bottom"));
+      this.width = this.parentWidth - this.margin.left - this.margin.right;
+      this.height = this.parentHeight - this.margin.top - this.margin.bottom;
+
       this.tooltipOffset = 15;
       this.fontSize;
       if (screen.height <= 768) {
@@ -393,6 +397,9 @@ export default {
       }
     }
   },
+  created() {
+    window.addEventListener("resize", this.render);
+  },
   mounted() {
     this.render();
   }
@@ -400,52 +407,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 .graph__container {
-  width: 90%;
-  height: 30rem;
-
-  @media screen and (min-height: 800px) {
-    height: 40rem;
-  }
-
-  @media screen and (max-width: 440px) {
-    height: 20rem;
-  }
-}
-
-.treemap {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  flex: 1;
-
-  &__buttons {
-    transform: translateY(-3.5rem);
-  }
-
-  &__year-buttons {
-    display: flex;
-    justify-content: space-evenly;
-    width: 100%;
-
-    button {
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
-      background-color: #ddd;
-      cursor: pointer;
-      border: none;
-      padding: 1rem;
-      transition: all 0.2s;
-
-      &.selected {
-        background-color: var(--theme-color);
-        color: #fff;
-      }
-
-      &:hover {
-        box-shadow: 0 5px 8px rgba(0, 0, 0, 0.4);
-        transform: translateY(-2px);
-      }
-    }
-  }
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
 }
 </style>
