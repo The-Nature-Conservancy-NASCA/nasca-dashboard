@@ -7,6 +7,10 @@
   height: 100%;
   padding: 1rem;
 }
+
+svg.bar.chart {
+  overflow: visible;
+}
 </style>
 <script>
 import * as d3 from "d3";
@@ -107,7 +111,7 @@ export default {
       const barGroup = this.el
         .append("svg")
         .attr("id", this.graphId)
-        .attr("class", "bar graph")
+        .attr("class", "bar chart")
         .attr(
           "width",
           this.width + this.margin.left + this.margin.right + this.offset.left
@@ -310,8 +314,3 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
-svg.bar.graph {
-  overflow: visible;
-}
-</style>
