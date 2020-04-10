@@ -94,16 +94,21 @@ export default {
         this.fontSize = "2.5rem";
       } else if (screen.width <= 768) {
         this.iconSize = "6rem";
-        this.fontSize = "2.5rem";
-      } else if (screen.height <= 768) {
+        this.fontSize = "2rem";
+      } else if (screen.width <= 900) {
         this.iconSize = "6rem";
         this.fontSize = "1.75rem";
       } else if (screen.width > 900 && screen.width <= 1280) {
-        this.iconSize = "7rem";
+        this.iconSize = "6rem";
         this.fontSize = "2.75rem";
       } else {
-        this.iconSize = "9rem";
-        this.fontSize = "3rem";
+        this.iconSize = "6rem";
+        this.fontSize = "2rem";
+      }
+
+      if (screen.height <= 768) {
+        this.iconSize = "6rem";
+        this.fontSize = "1.75rem";
       }
       const svg = this.el
         .append("svg")
@@ -245,6 +250,9 @@ export default {
 
       return "#" + RR + GG + BB;
     }
+  },
+  created() {
+    window.addEventListener("resize", this.render);
   },
   mounted() {
     this.render();
