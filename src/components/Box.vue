@@ -1,5 +1,5 @@
 <template>
-  <section class="box" :style="gridStyle">
+  <section class="box" :id="`box__${box.titleStr}`" :style="gridStyle">
     <header class="box__header">
       <span class="box__title"> {{ box.title }}</span>
       <span v-show="box.subtitle" class="box__subtitle">

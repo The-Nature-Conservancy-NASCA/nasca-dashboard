@@ -22,22 +22,19 @@ export default {
   },
   data() {
     return {
-      boxTitles: [
+      boxContents: [
         "coberturas",
         "biodiversidad",
-        "carbono",
         "implementaciones",
-        "participantes",
-        "metas",
-        "contribuciones",
-        "aliados"
+        "carbono"
       ],
       exportOptions: {
         filter: this.filterElements,
         style: {
           borderRight: "1px solid lightGray",
           borderLeft: "1px solid lightGray",
-          borderBottom: "1px solid lightGray"
+          borderBottom: "1px solid lightGray",
+          overflow: "hidden"
         }
       },
       mapValores: {
@@ -61,14 +58,20 @@ export default {
     downloadImages() {
       const zip = new JSZip();
       const promises = [];
-      document.querySelectorAll(".box").forEach(box => {
+      this.boxContents.forEach(boxContent => {
+        if (boxContent === "carbono") {
+          if (this.$store.getters.filtro.modo !== "proyecto") {
+            return;
+          }
+        }
+        const box = document.querySelector(`#box__${boxContent}`);
         const promise = domtoimage.toJpeg(box, this.exportOptions);
         promises.push(promise);
       });
       Promise.all(promises).then(results => {
         results.forEach((dataURL, i) => {
           const data = this.dataURLtoBase64(dataURL);
-          zip.file(`${this.boxTitles[i]}.jpg`, data, { base64: true });
+          zip.file(`${this.boxContents[i]}.jpg`, data, { base64: true });
         });
         const value = this.$store.getters.filtro.valor;
         const moment = this.$store.getters.filtro.moment;
