@@ -62,15 +62,22 @@ export default {
         return;
       }
       this.closingYear = this.$store.getters.selectedProjectClosingYear;
-      this.margin = { top: 10, right: 25, bottom: 10, left: 25 };
+      this.margin = { top: 10, right: 10, bottom: 10, left: 20 };
       this.tooltipOffset = 20;
       this.decimals = 2;
-      this.width =
-        parseInt(this.el.style("width")) - this.margin.left - this.margin.right;
-      this.height =
+
+      // compute width and height based on parent div
+      this.parentWidth =
+        parseInt(this.el.style("width")) -
+        parseInt(this.el.style("padding-left")) -
+        parseInt(this.el.style("padding-right"));
+      this.parentHeight =
         parseInt(this.el.style("height")) -
-        this.margin.top -
-        this.margin.bottom;
+        parseInt(this.el.style("padding-top")) -
+        parseInt(this.el.style("padding-bottom"));
+      this.width = this.parentWidth - this.margin.left - this.margin.right;
+      this.height = this.parentHeight - this.margin.top - this.margin.bottom;
+
       this.fontSize;
       if (screen.height <= 768) {
         this.fontSize = "10px";
@@ -360,6 +367,9 @@ export default {
       }
     }
   },
+  created() {
+    window.addEventListener("resize", this.render);
+  },
   mounted() {
     this.render();
   }
@@ -368,11 +378,7 @@ export default {
 <style lang="scss" scoped>
 .graph__container {
   width: 100%;
-  height: 150px;
-  flex: 1;
-
-  @media screen and (min-height: 900px) {
-    height: 18rem;
-  }
+  height: 100%;
+  padding: 0 1rem;
 }
 </style>
