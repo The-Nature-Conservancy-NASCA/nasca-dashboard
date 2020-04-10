@@ -1,35 +1,11 @@
 <template>
-  <section class="bar-chart">
-    <div ref="graph" class="graph__container"></div>
-    <div>
-      <button v-for="year in years" :key="year" @click="changeYear(year)">
-        {{ year }}
-      </button>
-    </div>
-  </section>
+  <section ref="graph" class="graph__container"></section>
 </template>
 <style lang="scss" scoped>
 .graph__container {
-  width: 90%;
-  height: 15rem;
-  margin: 0 auto;
-  flex: 1;
-
-  @media screen and (min-height: 800px) {
-    height: 20rem;
-  }
-
-  @media screen and (min-height: 1000px) {
-    height: 24rem;
-  }
-
-  @media screen and (max-width: 768px) {
-    height: 45rem;
-  }
-
-  @media screen and (max-width: 440px) {
-    height: 25rem;
-  }
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
 }
 </style>
 <script>
@@ -94,14 +70,29 @@ export default {
       if (!this.graphData.length) {
         return;
       }
-      this.margin = { top: 10, right: 10, bottom: 20, left: 10 };
+      this.margin = { top: 5, right: 10, bottom: 5, left: 10 };
       this.offset = { left: 10, bottom: 10 };
-      this.width =
-        parseInt(this.el.style("width")) - this.margin.left - this.margin.right;
-      this.height =
+
+      // compute width and height based on parent div
+      this.parentWidth =
+        parseInt(this.el.style("width")) -
+        parseInt(this.el.style("padding-left")) -
+        parseInt(this.el.style("padding-right"));
+      this.parentHeight =
         parseInt(this.el.style("height")) -
+        parseInt(this.el.style("padding-top")) -
+        parseInt(this.el.style("padding-bottom"));
+      this.width =
+        this.parentWidth -
+        this.margin.left -
+        this.margin.right -
+        this.offset.left;
+      this.height =
+        this.parentHeight -
         this.margin.top -
-        this.margin.bottom;
+        this.margin.bottom -
+        this.offset.bottom;
+
       this.color = "#4AA241";
       this.factor = 0.6;
       this.tooltipOffset = 15;
@@ -117,8 +108,17 @@ export default {
         .append("svg")
         .attr("id", this.graphId)
         .attr("class", "bar graph")
-        .attr("width", this.width + this.margin.left + this.margin.right)
-        .attr("height", this.height + this.margin.top + this.margin.bottom)
+        .attr(
+          "width",
+          this.width + this.margin.left + this.margin.right + this.offset.left
+        )
+        .attr(
+          "height",
+          this.height +
+            this.margin.top +
+            this.margin.bottom +
+            this.offset.bottom
+        )
         .append("g")
         .attr(
           "transform",
@@ -134,13 +134,13 @@ export default {
         this.xScale = d3
           .scaleBand()
           .domain(d3.range(this.graphData.length))
-          .range([this.margin.bottom + this.offset.bottom, this.height])
+          .range([this.offset.bottom, this.height])
           .paddingInner(0.05);
         this.yScale = d3
           .scaleLog()
           .clamp(true)
           .domain([0.1, domainUpperBound])
-          .range([0, this.width - this.margin.left - this.offset.left]);
+          .range([0, this.width - this.offset.left]);
         let exp = -1;
         let domainFits = true;
         let result;
@@ -214,7 +214,6 @@ export default {
           .attr("x", () => this.margin.left + this.offset.left)
           .attr("height", this.xScale.bandwidth() * this.factor)
           .attr("fill", this.color)
-          .transition()
           .attr("width", d => this.yScale(d.value));
         barGroup
           .selectAll("text")
@@ -302,6 +301,9 @@ export default {
         textLength = self.node().getComputedTextLength();
       }
     }
+  },
+  created() {
+    window.addEventListener("resize", this.render);
   },
   mounted() {
     this.render();
