@@ -7,6 +7,10 @@ import * as d3 from "d3";
 export default {
   name: "StackedArea",
   props: {
+    colors: {
+      type: Object,
+      required: true
+    },
     graphData: {
       type: Object,
       required: true
@@ -57,20 +61,6 @@ export default {
       if (!this.graphData.data.length) {
         return;
       }
-      this.color = d3.scaleOrdinal(d3.schemeCategory10);
-      this.colors = {
-        Total: "#49A942",
-        Biomasa: "#49A942",
-        Suelos: "#ffa600",
-        "Madera muerta": "#003f5c",
-        "Cercas vivas": "#ef5675",
-        "Árboles dispersos en potreros": "#ffa600",
-        Bosque: "#49A942",
-        "Bosque secundario": "#4F7942",
-        "Sistemas silvopastoriles intensivos": "#7a5195",
-        "Restauración del bosque": "#49A942",
-        Cacao: "#8B4513"
-      };
       this.closingYear = this.$store.getters.selectedProjectClosingYear;
       this.margin = { top: 10, right: 25, bottom: 10, left: 25 };
       this.tooltipOffset = 20;

@@ -841,5 +841,12 @@ export default {
       ];
     }
     return marked(text);
+  },
+  coloresCarbono: state => {
+    const colors = {};
+    state.colores.forEach(feature => {
+      colors[feature.cobertura] = feature.color;
+    });
+    return colors;
   }
 };

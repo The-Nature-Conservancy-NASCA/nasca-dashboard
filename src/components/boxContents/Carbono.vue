@@ -11,6 +11,7 @@
     >
       <StackedArea
         v-if="this.$store.state.filtro.modo === 'proyecto'"
+        :colors="colors"
         :graphData="carbonoProyecto"
         :graphId="'areachart__carbono'"
         :xlabel="strings.carbonoXLabel"
@@ -88,6 +89,9 @@ export default {
     },
     carbonoProyecto() {
       return this.$store.getters.carbonoPorProyecto;
+    },
+    colors() {
+      return this.$store.getters.coloresCarbono;
     },
     mode() {
       return this.$store.getters.filtro.modo;
