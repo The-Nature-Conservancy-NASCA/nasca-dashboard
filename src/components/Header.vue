@@ -247,6 +247,12 @@ $font-dark: #333;
       max-width: 30rem;
       transform: translateX(-80%);
     }
+
+    @media only screen and (min-width: 1024px) and (max-width: 1800px) {
+      font-size: 2.5rem;
+      max-width: 40rem;
+      transform: translateX(-80%);
+    }
   }
 
   @media screen and (max-width: 1023px) {

@@ -152,7 +152,7 @@ export default {
     }
 
     &-navigation-button {
-      font-size: 20px;
+      font-size: 40px;
     }
   }
 
@@ -184,9 +184,5 @@ export default {
       }
     }
   }
-}
-
-.VueCarousel-navigation-button {
-  font-size: 40px;
 }
 </style>

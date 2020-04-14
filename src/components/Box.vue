@@ -56,6 +56,10 @@ $font-gray: #999;
 
   &__header {
     padding: 0.5rem;
+    max-width: 75%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 
     @media screen and (min-width: 1440px) {
       padding: 1rem;
