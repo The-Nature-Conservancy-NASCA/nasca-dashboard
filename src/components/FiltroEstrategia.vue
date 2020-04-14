@@ -209,7 +209,7 @@ export default {
     opacity: 1;
   }
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 1023px) {
     display: none;
   }
 }

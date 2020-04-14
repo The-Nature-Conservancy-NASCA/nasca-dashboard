@@ -280,7 +280,7 @@ export default {
       transition: all 0.25s;
       opacity: 1;
 
-      @media screen and (max-width: 768px) {
+      @media screen and (max-width: 1023px) {
         height: 100px;
       }
 

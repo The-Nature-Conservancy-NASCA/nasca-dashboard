@@ -185,4 +185,8 @@ export default {
     }
   }
 }
+
+.VueCarousel-navigation-button {
+  font-size: 40px;
+}
 </style>

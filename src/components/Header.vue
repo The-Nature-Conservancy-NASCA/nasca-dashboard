@@ -175,7 +175,7 @@ $font-dark: #333;
       width: 40vw;
     }
 
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 1023px) {
       width: 100%;
     }
   }
@@ -197,7 +197,7 @@ $font-dark: #333;
       width: 15rem;
     }
 
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 1023px) {
       margin-bottom: 2rem;
       margin-right: 0;
       margin-top: 40px;
@@ -249,7 +249,7 @@ $font-dark: #333;
     }
   }
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 1023px) {
     flex-direction: column;
 
     &__filtros {

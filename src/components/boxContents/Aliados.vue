@@ -317,30 +317,8 @@ export default {
   height: 100%;
   justify-content: space-between;
 
-  .donantes {
-    height: 90%;
-
-    img {
-      width: 350px;
-      @media only screen and (max-height: 719px) and (min-width: 901px) {
-        width: 200px;
-      }
-    }
-  }
-
-  .socios img {
-    width: 130px;
-
-    @media only screen and (max-height: 719px) and (min-width: 901px) {
-      width: 80px;
-    }
-  }
-
-  .instituciones__implementadoras img {
-    width: 250px;    
-    @media only screen and (max-height: 719px) and (min-width: 901px) {
-      width: 150px;
-    }
+  img {
+    width: 60%;
   }
 
   .carousel {
@@ -352,6 +330,15 @@ export default {
 
   .VueCarousel {
     margin: auto;
+    width: 85%;
+
+    @media only screen and (max-height: 719px) and (min-width: 901px) {
+      width: 80%;
+    }
+
+    @media screen and (max-width: 1023px) {
+      width: 50%;
+    }
 
     &-inner {
       display: flex;
@@ -377,7 +364,7 @@ export default {
       transition: all 0.25s;
       opacity: 1;
 
-      @media screen and (max-width: 768px) {
+      @media screen and (max-width: 1023px) {
         width: 215px;
       }
 
