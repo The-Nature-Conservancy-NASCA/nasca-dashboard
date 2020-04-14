@@ -289,10 +289,6 @@ export default {
       }
     }
 
-    .VueCarousel-navigation-button {
-      font-size: 40px;
-    }
-
     .VueCarousel-slide {
       text-align: center;
     }
@@ -329,5 +325,9 @@ export default {
       }
     }
   }
+}
+
+.VueCarousel-navigation-button {
+  font-size: 40px;
 }
 </style>

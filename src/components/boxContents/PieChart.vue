@@ -100,7 +100,7 @@ export default {
         this.fontSize = "1.75rem";
       } else if (screen.width > 900 && screen.width <= 1280) {
         this.iconSize = "6rem";
-        this.fontSize = "2.75rem";
+        this.fontSize = "2.25rem";
       } else {
         this.iconSize = "6rem";
         this.fontSize = "2rem";

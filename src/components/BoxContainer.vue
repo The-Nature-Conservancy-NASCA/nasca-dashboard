@@ -31,7 +31,7 @@ export default {
     flex-direction: column;
 
     .box {
-      height: 50vh;
+      height: 33vh;
       margin-bottom: 1rem;
     }
   }
