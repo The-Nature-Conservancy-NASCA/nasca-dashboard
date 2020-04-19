@@ -403,41 +403,57 @@ export default {
       ID_FIELD: "ID_cobertura"
     };
 
+    const ignoreLabels = ["Sin información", "No aplica", "Sin definir"];
+
     const data = { name: constants.NAME, children: [] };
     features.forEach(feat => {
+      const parentLabel = feat[constants.PARENT_LABEL];
+      const childLabel = feat[constants.CHILD_LABEL];
+      const id = feat[constants.ID_FIELD];
+      const value = feat[constants.VALUE_FIELD];
+
+      // omitir features sin parent label o cuyo label se encuentre dentro de la lista de exclusion
+      if (
+        parentLabel === undefined ||
+        parentLabel === "" ||
+        ignoreLabels.includes(parentLabel)
+      ) {
+        return;
+      }
+
       const parentExists = !!data.children.filter(
-        child => child.name === feat[constants.PARENT_LABEL]
+        child => child.name === parentLabel
       ).length;
       if (parentExists) {
         const parent = data.children.filter(
-          child => child.name === feat[constants.PARENT_LABEL]
+          child => child.name === parentLabel
         )[0];
         const childrenExists = !!parent.children.filter(
-          child => child.name === feat[constants.CHILD_LABEL]
+          child => child.name === childLabel
         ).length;
         if (childrenExists) {
           const childEl = parent.children.filter(
-            child => child.name === feat[constants.CHILD_LABEL]
+            child => child.name === childLabel
           )[0];
-          childEl.value += feat[constants.VALUE_FIELD];
+          childEl.value += value;
         } else {
           const obj = {
-            name: feat[constants.CHILD_LABEL],
-            id: feat[constants.ID_FIELD],
-            value: feat[constants.VALUE_FIELD],
-            color: getters.colorPorCobertura(feat[constants.PARENT_LABEL])
+            name: childLabel,
+            id: id,
+            value: value,
+            color: getters.colorPorCobertura(parentLabel)
           };
           parent.children.push(obj);
         }
       } else {
         const obj = {
-          name: feat[constants.PARENT_LABEL],
+          name: parentLabel,
           children: [
             {
-              name: feat[constants.CHILD_LABEL],
-              id: feat[constants.ID_FIELD],
-              value: feat[constants.VALUE_FIELD],
-              color: getters.colorPorCobertura(feat[constants.PARENT_LABEL])
+              name: childLabel,
+              id: id,
+              value: value,
+              color: getters.colorPorCobertura(parentLabel)
             }
           ]
         };
