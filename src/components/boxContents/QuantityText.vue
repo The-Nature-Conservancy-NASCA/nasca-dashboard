@@ -109,7 +109,7 @@ export default {
   &__value {
     color: var(--theme-color);
     font-weight: 300;
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 1023px) {
       font-size: 3.4rem !important;
     }
   }

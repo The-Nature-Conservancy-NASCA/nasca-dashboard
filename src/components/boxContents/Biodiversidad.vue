@@ -152,7 +152,7 @@ export default {
     }
 
     &-navigation-button {
-      font-size: 20px;
+      font-size: 40px;
     }
   }
 

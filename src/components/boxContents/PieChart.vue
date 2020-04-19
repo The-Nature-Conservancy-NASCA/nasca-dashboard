@@ -277,7 +277,7 @@ export default {
     margin: 1rem auto;
   }
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 1023px) {
     width: 20rem;
     height: 20rem;
   }
