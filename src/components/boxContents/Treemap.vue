@@ -192,6 +192,18 @@ export default {
           .attr("stroke-opacity", 1)
           .attr("width", d => d.x1 - d.x0)
           .attr("height", d => d.y1 - d.y0);
+
+        // remover rectangulos que por su area no son visibles y causan comportamientos inesperados
+        treemapGroup
+          .selectAll("rect")
+          .filter(function() {
+            return (
+              d3.select(this).attr("width") <= 0 ||
+              d3.select(this).attr("height") <= 0
+            );
+          })
+          .remove();
+
         treemapGroup
           .selectAll("text")
           .data(this.graphData.children)
