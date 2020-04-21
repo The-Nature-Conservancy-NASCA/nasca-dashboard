@@ -208,7 +208,7 @@ export default {
       let years;
       if (features.length) {
         const baselineYear = getters.baselineYear(idProyecto);
-        years = Array.from(Array(baselineYear + 21).keys()).slice(baselineYear);
+        years = Array.from(Array(baselineYear + 20).keys()).slice(baselineYear);
       } else {
         years = [];
       }
@@ -226,9 +226,9 @@ export default {
             key = feat[field];
           }
         }
-        for (let j = 0; j <= 20; j++) {
+        for (let j = 1; j <= 20; j++) {
           const t = `T${j}`;
-          const year = years[j];
+          const year = years[j - 1];
           if (i == 0) {
             const obj = { year: year };
             obj[key] = feat[t] / factor;
@@ -243,10 +243,8 @@ export default {
           }
         }
       });
-      return {
-        data: data,
-        years: years
-      };
+      console.log(data);
+      return { data, years };
     }
   },
   carbonoPorProyectos: (state, getters) => idsProyecto => {
