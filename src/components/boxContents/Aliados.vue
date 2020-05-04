@@ -317,6 +317,12 @@ export default {
   height: 100%;
   justify-content: space-between;
 
+  .donantes {
+    img {
+      width: 150px;
+    }
+  }
+
   img {
     width: 60%;
   }
