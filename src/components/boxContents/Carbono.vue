@@ -22,12 +22,17 @@
         class="carbono__numbers"
         v-if="this.$store.state.filtro.modo !== 'proyecto'"
       >
-        <div v-for="item in carbono" :key="item.name">
+        <div
+          v-for="item in carbono.filter(
+            item => item.value > Math.pow(10, -decimalPoints)
+          )"
+          :key="item.name"
+        >
           <QuantityText
             :name="item.name"
             :value="item.value"
             :removeDecimals="false"
-            :decimalPoints="2"
+            :decimalPoints="decimalPoints"
             :unit="'MtCO2e'"
           />
         </div>
@@ -74,6 +79,7 @@ export default {
   },
   data() {
     return {
+      decimalPoints: 2,
       selectedField: "total",
       subtitles: {
         total: "fijacionTotal",

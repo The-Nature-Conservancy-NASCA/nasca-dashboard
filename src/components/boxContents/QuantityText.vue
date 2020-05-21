@@ -3,7 +3,9 @@
     <div>
       <span
         v-if="
-          otherValue !== undefined && !ignoreDecimalPoints && typeof otherValue === 'number'
+          otherValue !== undefined &&
+            !ignoreDecimalPoints &&
+            typeof otherValue === 'number'
         "
         class="quantity-text__value"
         :style="`font-size: ${valueSize}rem;`"

@@ -243,7 +243,6 @@ export default {
           }
         }
       });
-      console.log(data);
       return { data, years };
     }
   },
@@ -326,7 +325,7 @@ export default {
     const selectedMomentYear = new Date(
       project[selectedMoment.field]
     ).getFullYear();
-    const delta = selectedMomentYear - baselineYear;
+    const delta = selectedMomentYear - baselineYear + 1;
     return "T" + delta;
   },
   carbonoExport: (state, getters) => {
@@ -397,8 +396,7 @@ export default {
         state.filtro.classificationScheme === "project"
           ? "subcobertura_proyecto"
           : "corine2",
-      VALUE_FIELD: "area",
-      ID_FIELD: "ID_cobertura"
+      VALUE_FIELD: "area"
     };
 
     const ignoreLabels = ["Sin información", "No aplica", "Sin definir"];
@@ -407,7 +405,6 @@ export default {
     features.forEach(feat => {
       const parentLabel = feat[constants.PARENT_LABEL];
       const childLabel = feat[constants.CHILD_LABEL];
-      const id = feat[constants.ID_FIELD];
       const value = feat[constants.VALUE_FIELD];
 
       // omitir features sin parent label o cuyo label se encuentre dentro de la lista de exclusion
@@ -437,7 +434,6 @@ export default {
         } else {
           const obj = {
             name: childLabel,
-            id: id,
             value: value,
             color: getters.colorPorCobertura(parentLabel)
           };
@@ -449,7 +445,6 @@ export default {
           children: [
             {
               name: childLabel,
-              id: id,
               value: value,
               color: getters.colorPorCobertura(parentLabel)
             }
