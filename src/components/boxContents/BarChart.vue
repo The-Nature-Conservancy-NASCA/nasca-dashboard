@@ -224,10 +224,7 @@ export default {
           .data(this.graphData)
           .enter()
           .append("text")
-          .attr(
-            "x",
-            d => this.yScale(d.value) / 2 + this.margin.left + this.offset.left
-          )
+          .attr("x", this.margin.left + this.offset.left + 5)
           .attr(
             "y",
             (d, i) =>
@@ -236,7 +233,7 @@ export default {
               this.offset.bottom +
               this.xScale.bandwidth() / 2
           )
-          .attr("text-anchor", "middle")
+          .attr("text-anchor", "start")
           .attr("dominant-baseline", "middle")
           .attr("font-size", this.fontSize)
           .attr("font-weight", "normal")
@@ -281,8 +278,11 @@ export default {
           barGroup
             .append("text")
             .attr("class", "y label")
-            .attr("text-anchor", "end")
-            .attr("x", 0)
+            .attr("text-anchor", "middle")
+            .attr(
+              "x",
+              -(this.height / 2) + this.margin.bottom + this.offset.bottom
+            )
             .attr("y", 0)
             .attr("transform", "rotate(-90)")
             .attr("font-size", this.fontSize)
