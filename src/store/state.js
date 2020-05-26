@@ -109,10 +109,11 @@ export default {
       donantes: "Donantes",
       especies: "especies",
       estrategias: "Estrategias",
-      fijacionCompartimiento: "Captura por compartimiento",
-      fijacionCobertura: "Captura por cobertura",
-      fijacionSolucion: "Captura por Solución Natural de Clima",
-      fijacionTotal: "Captura total",
+      fijacionCompartimiento: "Captura/emisiones evitadas por compartimiento",
+      fijacionCobertura: "Captura/emisiones evitadas por cobertura",
+      fijacionSolucion:
+        "Captura/emisiones evitadas por Solución Natural de Clima",
+      fijacionTotal: "Captura/emisiones evitadas",
       hombres: "Hombres",
       implementaciones: "Implementaciones",
       implementacionesBosque: "Protección de Ecosistemas Naturales",
@@ -124,8 +125,7 @@ export default {
       individuos: "personas",
       informacion: "Información",
       infoHeader: "Sobre la herramienta",
-      infoContent:
-        `<p>Este tablero fué desarrollado por TNC para mostrar la gestión de los
+      infoContent: `<p>Este tablero fué desarrollado por TNC para mostrar la gestión de los
          proyectos que están y estuvieron en proceso de implementación a través 
          de las estrategias de TNC en la región, y los resultados de nuestro 
          trabajo de conservación.</p>
@@ -174,10 +174,10 @@ export default {
       donantes: "Donors",
       especies: "species",
       estrategias: "Strategies",
-      fijacionCompartimiento: "Capture by compartment",
-      fijacionCobertura: "Capture by landcover",
-      fijacionSolucion: "Capture by Climate Natural Solution",
-      fijacionTotal: "Total capture",
+      fijacionCompartimiento: "Capture/avoided emissions by compartment",
+      fijacionCobertura: "Capture/avoided emissions by landcover",
+      fijacionSolucion: "Capture/avoided emissions by Climate Natural Solution",
+      fijacionTotal: "Capture/avoided emissions",
       hombres: "Men",
       implementaciones: "Implementations",
       implementacionesBosque: "Natural Ecosystems Protection",
