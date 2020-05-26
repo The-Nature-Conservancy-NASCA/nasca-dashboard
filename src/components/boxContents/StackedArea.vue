@@ -334,7 +334,7 @@ export default {
             .text(this.xlabel);
         }
         if (this.ylabel) {
-          areaGroup
+          const text = areaGroup
             .append("text")
             .attr("text-anchor", "middle")
             .attr("font-size", this.fontSize)
@@ -346,6 +346,12 @@ export default {
             )
             .attr("y", 0)
             .text(this.ylabel);
+          const textWidth = text.node().getBBox().width;
+          if (textWidth > this.height) {
+            text
+              .attr("textLength", this.height)
+              .attr("adjustLength", "spacingAndGlyphs");
+          }
         }
         areaGroup
           .append("line")
