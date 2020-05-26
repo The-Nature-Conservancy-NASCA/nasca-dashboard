@@ -102,7 +102,7 @@ export default {
         this.iconSize = "6rem";
         this.fontSize = "2.25rem";
       } else {
-        this.iconSize = "6rem";
+        this.iconSize = "9rem";
         this.fontSize = "2rem";
       }
 
