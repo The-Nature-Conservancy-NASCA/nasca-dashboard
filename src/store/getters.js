@@ -694,10 +694,9 @@ export default {
   },
   selectedProjectClosingYear(state) {
     if (state.filtro.modo === "proyecto") {
-      const ts = state.proyectos.find(
+      return state.proyectos.find(
         project => project.ID_proyecto === state.filtro.valor
-      ).fecha_cierre;
-      return new Date(ts).getFullYear();
+      ).cierre;
     }
   },
   proyectosPorEstrategia: state => estrategia => {
