@@ -2,7 +2,7 @@
   <section class="box" :id="`box__${box.titleStr}`" :style="gridStyle">
     <header class="box__header">
       <span class="box__title"> {{ box.title }}</span>
-      <span v-show="box.subtitle" class="box__subtitle">
+      <span v-show="box.subtitle" :title="box.subtitle" class="box__subtitle">
         {{ box.subtitle }}</span
       >
     </header>
@@ -56,7 +56,7 @@ $font-gray: #999;
 
   &__header {
     padding: 0.5rem;
-    max-width: 75%;
+    max-width: 90%;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
@@ -71,6 +71,7 @@ $font-gray: #999;
     font-size: 1.6rem;
     font-weight: 400;
     text-transform: uppercase;
+    vertical-align: middle;
 
     @media screen and (min-width: 1440px) {
       font-size: 2rem;
