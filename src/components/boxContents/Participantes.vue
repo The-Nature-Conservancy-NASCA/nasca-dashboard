@@ -2,11 +2,13 @@
   <div class="participantes">
     <i class="box__icon esri-icon-description" @click="showModal()"></i>
     <span v-if="hayDatos">
-      <QuantityText
-        class="participantes__quantity__text"
-        :name="strings.campesinos"
-        :value="countOtros(strings.campesinos)"
-      />
+      <div class="participantes__personas sin-grafica">
+        <h3>{{ strings.campesinos }}</h3>
+        <QuantityText
+          class="participantes__quantity__text"
+          :value="countOtros(strings.campesinos)"
+        />
+      </div>
       <div class="participantes__personas">
         <h3>Personas</h3>
         <PieChart
@@ -17,11 +19,13 @@
           :value="count()"
         />
       </div>
-      <QuantityText
-        class="participantes__quantity__text"
-        :name="strings.indigenas"
-        :value="countOtros(strings.indigenas)"
-      />
+      <div class="participantes__personas sin-grafica">
+        <h3>{{ strings.indigenas }}</h3>
+        <QuantityText
+          class="participantes__quantity__text"
+          :value="countOtros(strings.indigenas)"
+        />
+      </div>
     </span>
     <div v-else class="no__data__warning">
       <p>{{ strings.noHayDatos }}</p>
@@ -116,6 +120,11 @@ export default {
       @media only screen and (max-height: 719px) and (min-width: 901px) {
         font-size: 1.4rem;
       }
+    }
+
+    &.sin-grafica {
+      height: 12rem;
+      justify-content: space-between;
     }
   }
 }
