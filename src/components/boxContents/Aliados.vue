@@ -1,13 +1,17 @@
 <template>
   <div class="aliados width-100">
     <i class="box__icon esri-icon-description" @click="showModal()"></i>
-    <span v-if="hayDatos">
+    <span class="width-100" v-if="hayDatos">
       <carousel
         class="carousel donantes"
         v-show="this.$store.state.filtro.allyType == '0'"
         v-bind="carouselSettings"
       >
-        <slide v-for="aliado in donantes" :key="aliado.OBJECTID">
+        <slide
+          v-for="aliado in donantes"
+          :key="aliado.OBJECTID"
+          :centerMode="true"
+        >
           <a :href="aliado.url" target="_blank">
             <img :src="aliado.logo" :name="aliado.nombre" alt />
           </a>
