@@ -63,7 +63,7 @@ export default {
       fetch(
         `${BASE_DATA_URL}/13/${buildQuery({
           outFields:
-            "ID_predio%2C+ID_cobertura%2C+corine1%2C+corine2%2C+cobertura_proyecto%2C+cobertura_comun%2C+momento%2C+subcobertura_proyecto%2C+area"
+            "ID_predio%2C+corine1%2C+corine2%2C+cobertura_proyecto%2C+cobertura_comun%2C+momento%2C+subcobertura_proyecto%2C+area"
         })}`
       )
     ); // Coberturas
@@ -73,6 +73,7 @@ export default {
     Promise.all(requests).then(responses => {
       const parsePromises = responses.map(response => response.json());
       Promise.all(parsePromises).then(dataset => {
+        console.log(dataset);
         this.$store.commit(
           "SET_REGIONES",
           dataset[0].features.map(feature => feature.attributes)
