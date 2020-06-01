@@ -18,11 +18,7 @@ import Modal from "./components/Modal";
 import { buildQuery } from "./lib/queryBuilder";
 
 const BASE_DATA_URL =
-  "https://services9.arcgis.com/LQG65AprqDvQfUnp/ArcGIS/rest/services/TNCServices4/FeatureServer/";
-const ICON_DATA_URL =
-  "https://services9.arcgis.com/LQG65AprqDvQfUnp/ArcGIS/rest/services/iconos_biodiversidad/FeatureServer/";
-const TEXT_DATA_URL =
-  "https://services9.arcgis.com/LQG65AprqDvQfUnp/arcgis/rest/services/textos_generales/FeatureServer/";
+  "https://services.arcgis.com/F7DSX1DSNSiWmOqh/ArcGIS/rest/services/VisorTNC_View/FeatureServer";
 
 export default {
   name: "app",
@@ -38,103 +34,104 @@ export default {
   },
   created() {
     let requests = [];
-    requests.push(fetch(`${BASE_DATA_URL}12/${buildQuery()}`)); // Colores Coberturas
-    requests.push(fetch(`${ICON_DATA_URL}0/${buildQuery()}`)); // Iconos
-    requests.push(fetch(`${BASE_DATA_URL}11/${buildQuery()}`)); // Carbono
-    requests.push(fetch(`${BASE_DATA_URL}6/${buildQuery()}`)); // Metas
+    requests.push(fetch(`${BASE_DATA_URL}/0/${buildQuery()}`)); // Regiones
     requests.push(
       fetch(
-        `${BASE_DATA_URL}13/${buildQuery({
-          outFields:
-            "ID_predio%2C+ID_cobertura%2C+corine1%2C+corine2%2C+cobertura_proyecto%2C+cobertura_comun%2C+momento%2C+subcobertura_proyecto%2C+area"
-        })}`
-      )
-    ); // Coberturas
-    requests.push(fetch(`${BASE_DATA_URL}8/${buildQuery()}`)); // Implementaciones Predios
-    requests.push(fetch(`${BASE_DATA_URL}7/${buildQuery()}`)); // Aliados
-    requests.push(fetch(`${BASE_DATA_URL}5/${buildQuery()}`)); // Participantes
-    requests.push(fetch(`${BASE_DATA_URL}9/${buildQuery()}`)); // Contribuciones
-    requests.push(fetch(`${BASE_DATA_URL}3/${buildQuery()}`)); // Estrategias
-    requests.push(fetch(`${BASE_DATA_URL}4/${buildQuery()}`)); // Proyectos
-    requests.push(
-      fetch(
-        `${BASE_DATA_URL}1/${buildQuery({
+        `${BASE_DATA_URL}/1/${buildQuery({
           outFields: "ID_predio%2C+ID_proyecto"
         })}`
       )
     ); // Predios
     requests.push(
       fetch(
-        `${BASE_DATA_URL}2/${buildQuery({
+        `${BASE_DATA_URL}/2/${buildQuery({
           outFields:
             "ID_proyecto%2C+grupo_tnc%2C+cobertura%2C+cobertura_comun%2C+especie%2C+momento"
         })}`
       )
     ); // Biodiversidad
-    requests.push(fetch(`${BASE_DATA_URL}0/${buildQuery()}`)); // Regiones
-    requests.push(fetch(`${TEXT_DATA_URL}0/${buildQuery()}`)); // Textos generales
+    requests.push(fetch(`${BASE_DATA_URL}/3/${buildQuery()}`)); // Estrategias
+    requests.push(fetch(`${BASE_DATA_URL}/4/${buildQuery()}`)); // Proyectos
+    requests.push(fetch(`${BASE_DATA_URL}/5/${buildQuery()}`)); // Participantes
+    requests.push(fetch(`${BASE_DATA_URL}/6/${buildQuery()}`)); // Metas
+    requests.push(fetch(`${BASE_DATA_URL}/7/${buildQuery()}`)); // Aliados
+    requests.push(fetch(`${BASE_DATA_URL}/8/${buildQuery()}`)); // Implementaciones Predios
+    requests.push(fetch(`${BASE_DATA_URL}/9/${buildQuery()}`)); // Contribuciones
+    requests.push(fetch(`${BASE_DATA_URL}/11/${buildQuery()}`)); // Carbono
+    requests.push(fetch(`${BASE_DATA_URL}/12/${buildQuery()}`)); // Colores Coberturas
+    requests.push(
+      fetch(
+        `${BASE_DATA_URL}/13/${buildQuery({
+          outFields:
+            "ID_predio%2C+ID_cobertura%2C+corine1%2C+corine2%2C+cobertura_proyecto%2C+cobertura_comun%2C+momento%2C+subcobertura_proyecto%2C+area"
+        })}`
+      )
+    ); // Coberturas
+    requests.push(fetch(`${BASE_DATA_URL}/14/${buildQuery()}`)); // Iconos
+    requests.push(fetch(`${BASE_DATA_URL}/15/${buildQuery()}`)); // Textos generales
+
     Promise.all(requests).then(responses => {
       const parsePromises = responses.map(response => response.json());
       Promise.all(parsePromises).then(dataset => {
         this.$store.commit(
-          "SET_TEXTOS_GENERALES",
-          dataset[14].features.map(feature => feature.attributes)
-        );
-        this.$store.commit(
           "SET_REGIONES",
-          dataset[13].features.map(feature => feature.attributes)
-        );
-        this.$store.commit(
-          "SET_BIODIVERSIDAD",
-          dataset[12].features.map(feature => feature.attributes)
-        );
-        this.$store.commit(
-          "SET_COLORES",
           dataset[0].features.map(feature => feature.attributes)
         );
         this.$store.commit(
-          "SET_ICONOS",
+          "SET_PREDIOS",
           dataset[1].features.map(feature => feature.attributes)
         );
         this.$store.commit(
-          "SET_CARBONO",
+          "SET_BIODIVERSIDAD",
           dataset[2].features.map(feature => feature.attributes)
         );
         this.$store.commit(
-          "SET_METAS",
+          "SET_ESTRATEGIAS",
           dataset[3].features.map(feature => feature.attributes)
         );
         this.$store.commit(
-          "SET_COBERTURAS",
+          "SET_PROYECTOS",
           dataset[4].features.map(feature => feature.attributes)
         );
         this.$store.commit(
-          "SET_IMPLEMENTACIONES",
+          "SET_PARTICIPANTES",
           dataset[5].features.map(feature => feature.attributes)
         );
         this.$store.commit(
-          "SET_ALIADOS",
+          "SET_METAS",
           dataset[6].features.map(feature => feature.attributes)
         );
         this.$store.commit(
-          "SET_PARTICIPANTES",
+          "SET_ALIADOS",
           dataset[7].features.map(feature => feature.attributes)
         );
         this.$store.commit(
-          "SET_CONTRIBUCIONES",
+          "SET_IMPLEMENTACIONES",
           dataset[8].features.map(feature => feature.attributes)
         );
         this.$store.commit(
-          "SET_ESTRATEGIAS",
+          "SET_CONTRIBUCIONES",
           dataset[9].features.map(feature => feature.attributes)
         );
         this.$store.commit(
-          "SET_PROYECTOS",
+          "SET_CARBONO",
           dataset[10].features.map(feature => feature.attributes)
         );
         this.$store.commit(
-          "SET_PREDIOS",
+          "SET_COLORES",
           dataset[11].features.map(feature => feature.attributes)
+        );
+        this.$store.commit(
+          "SET_COBERTURAS",
+          dataset[12].features.map(feature => feature.attributes)
+        );
+        this.$store.commit(
+          "SET_ICONOS",
+          dataset[13].features.map(feature => feature.attributes)
+        );
+        this.$store.commit(
+          "SET_TEXTOS_GENERALES",
+          dataset[14].features.map(feature => feature.attributes)
         );
         this.dataLoaded = true;
       });
