@@ -255,7 +255,6 @@ export default {
   },
   mounted() {
     this.changeBoxSubtitle();
-    this.fixCarouselOverflow("0");
     this.setImgsTooltip(".carousel.donantes img", this.donantes);
     this.setImgsTooltip(".carousel.socios img", this.socios);
     this.setImgsTooltip(
@@ -296,11 +295,11 @@ export default {
     },
     filtroModo() {
       if (this.filtroModo === "colombia") {
-        this.fixCarouselOverflow(this.contributionType);
+        this.fixCarouselOverflow(this.allyType);
       }
     },
     filtroValor() {
-      this.fixCarouselOverflow(this.contributionType);
+      this.fixCarouselOverflow(this.allyType);
     },
     strings() {
       this.changeBoxSubtitle();
