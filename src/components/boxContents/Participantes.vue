@@ -120,11 +120,19 @@ export default {
       @media only screen and (max-height: 719px) and (min-width: 901px) {
         font-size: 1.4rem;
       }
+
+      @media screen and (max-height: 900px) {
+        flex-grow: 0.5;
+      }
     }
 
     &.sin-grafica {
       height: 12rem;
       justify-content: space-between;
+
+      @media screen and (max-height: 900px) {
+        justify-content: flex-start;
+      }
     }
   }
 }
