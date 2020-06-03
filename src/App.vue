@@ -73,7 +73,6 @@ export default {
     Promise.all(requests).then(responses => {
       const parsePromises = responses.map(response => response.json());
       Promise.all(parsePromises).then(dataset => {
-        console.log(dataset);
         this.$store.commit(
           "SET_REGIONES",
           dataset[0].features.map(feature => feature.attributes)
