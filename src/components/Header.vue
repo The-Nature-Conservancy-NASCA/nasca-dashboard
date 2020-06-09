@@ -35,7 +35,7 @@
         <DownloadDataBtn />
         <DownloadImageBtn />
         <a
-          href="http://tnc-visor.dreamgis.com/visor.html"
+          href="http://maps.tnc.org/nasca-viewer/visor.html"
           target="_blank"
           title="Ir al visor TNC"
         >
